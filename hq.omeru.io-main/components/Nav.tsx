@@ -1,0 +1,216 @@
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const navItems = [
+  { label: 'How it works', href: '#how-it-works' },
+  { label: 'Features',     href: '#features'     },
+  { label: 'Pricing',      href: '#pricing'       },
+  { label: 'FAQ',          href: '#faq'           },
+];
+
+function scrollToSection(href: string) {
+  const id = href.replace('#', '');
+  const el = document.getElementById(id);
+  if (!el) return;
+  const lenis = (window as unknown as Record<string, unknown>).__lenis as { scrollTo?: (el: Element, opts: Record<string, unknown>) => void } | undefined;
+  if (lenis?.scrollTo) {
+    lenis.scrollTo(el, { offset: -80, duration: 1.4 });
+  } else {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+export default function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    setTimeout(() => scrollToSection(href), menuOpen ? 320 : 0);
+  }, [menuOpen]);
+
+  return (
+    <>
+      <motion.nav
+        initial={{ y: -16, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+          padding: 'clamp(14px, 2vh, 18px) clamp(20px, 4vw, 48px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          transition: 'background 0.35s, box-shadow 0.35s',
+          background: scrolled ? 'rgba(245,244,239,0.92)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.07)' : 'none',
+        }}
+      >
+        {/* Logo */}
+        <a
+          href="#"
+          onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}
+        >
+          <div style={{
+            width: 30, height: 30, background: 'var(--black)',
+            borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
+              <path d="M3 9C3 5.686 5.686 3 9 3s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="var(--lime)"/>
+              <path d="M9 6v6M6 9h6" stroke="var(--black)" strokeWidth="1.6" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 17, letterSpacing: '-0.02em', color: 'var(--black)' }}>
+            Omeru
+          </span>
+        </a>
+
+        {/* ── Desktop nav links ── */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="nav-links">
+          {navItems.map(({ label, href }) => (
+            <a key={label} href={href} className="nav-link" onClick={e => handleNavClick(e, href)}>
+              {label}
+            </a>
+          ))}
+        </div>
+
+        {/* ── Desktop CTAs ── */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} className="nav-cta">
+          <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: '8px 16px', fontSize: 13 }}>
+            Request invite
+          </a>
+          <a
+            href="https://wa.me/27750656348?text=Hi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-lime"
+            style={{ padding: '8px 16px', fontSize: 13 }}
+            data-hover
+          >
+            Shop on WA
+          </a>
+        </div>
+
+        {/* ── Hamburger (mobile only) ── */}
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            padding: 8, display: 'flex', flexDirection: 'column',
+            gap: 5, alignItems: 'flex-end',
+          }}
+        >
+          <motion.span
+            animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6.5 : 0 }}
+            transition={{ duration: 0.25 }}
+            style={{ height: 1.5, width: 22, background: 'var(--black)', borderRadius: 2, display: 'block', transformOrigin: 'center' }}
+          />
+          <motion.span
+            animate={{ opacity: menuOpen ? 0 : 1 }}
+            transition={{ duration: 0.2 }}
+            style={{ height: 1.5, width: 16, background: 'var(--black)', borderRadius: 2, display: 'block' }}
+          />
+          <motion.span
+            animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -6.5 : 0 }}
+            transition={{ duration: 0.25 }}
+            style={{ height: 1.5, width: 22, background: 'var(--black)', borderRadius: 2, display: 'block', transformOrigin: 'center' }}
+          />
+        </button>
+      </motion.nav>
+
+      {/* ── Mobile full-screen menu ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'fixed', inset: 0, background: 'var(--off-white)',
+              zIndex: 199, padding: '88px 28px 40px',
+              display: 'flex', flexDirection: 'column',
+            }}
+          >
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
+              {navItems.map(({ label, href }, i) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  initial={{ opacity: 0, x: -14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.06 + i * 0.06, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  onClick={e => handleNavClick(e, href)}
+                  style={{
+                    textDecoration: 'none', color: 'var(--black)',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(26px, 7vw, 38px)',
+                    fontWeight: 700, letterSpacing: '-0.02em',
+                    padding: '14px 0',
+                    borderBottom: '1px solid rgba(0,0,0,0.07)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  }}
+                >
+                  {label}
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M3 9h12M9 3l6 6-6 6" stroke="rgba(0,0,0,0.2)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </motion.a>
+              ))}
+            </nav>
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.45 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 28 }}
+            >
+              <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-lime" style={{ justifyContent: 'center', padding: '15px 24px' }}>
+                Apply as a merchant
+              </a>
+              <a
+                href="https://wa.me/27750656348?text=Hi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+                style={{ justifyContent: 'center', padding: '15px 24px' }}
+              >
+                Shop on WhatsApp
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        /* Desktop: show links + CTA, hide hamburger */
+        .nav-links  { display: flex !important; }
+        .nav-cta    { display: flex !important; }
+        .nav-hamburger { display: none !important; }
+
+        /* Mobile: hide links + CTA, show hamburger */
+        @media (max-width: 860px) {
+          .nav-links     { display: none !important; }
+          .nav-cta       { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+        }
+      `}</style>
+    </>
+  );
+}
