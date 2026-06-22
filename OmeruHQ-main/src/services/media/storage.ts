@@ -5,13 +5,13 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 /**
  * Durable media storage — fixes the "product images disappear" bug.
  *
- * WHY: WhatsApp/360Dialog media IDs are temporary. Meta deletes uploaded media
- * after ~30 days, and the signed download URL behind a media ID expires within
- * minutes. Storing `message.image.id` as `image_url` therefore guarantees that
- * every product image silently dies.
+ * WHY: WhatsApp media IDs are temporary. Meta deletes uploaded media after ~30
+ * days, and the signed download URL behind a media ID expires within minutes.
+ * Storing `message.image.id` as `image_url` therefore guarantees that every
+ * product image silently dies.
  *
  * FIX: the moment a merchant sends an image, we download it once from the
- * WhatsApp Cloud/360Dialog media endpoint, compress it with sharp, and upload
+ * Meta Cloud API media endpoint, compress it with sharp, and upload
  * it to Supabase Storage (free tier: 1 GB). The permanent public URL is what
  * gets stored in Postgres and what both the bot and the web storefront render.
  *
@@ -35,21 +35,17 @@ const getSupabase = (): SupabaseClient | null => {
     return _supabase;
 };
 
-/** Download raw bytes for a WhatsApp media ID via the 360Dialog API. */
+/** Download raw bytes for a WhatsApp media ID via the Meta Cloud API. */
 const downloadWhatsAppMedia = async (mediaId: string): Promise<{ buffer: Buffer; mimeType: string }> => {
-    const apiUrl = process.env.WHATSAPP_API_URL || 'https://waba-v2.360dialog.io';
-    const apiKey = process.env.WHATSAPP_API_KEY || '';
-    const headers = { 'D360-API-KEY': apiKey };
+    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN || '';
+    const headers = { 'Authorization': `Bearer ${accessToken}` };
 
-    // Step 1: resolve media ID → short-lived signed URL
-    const meta = await axios.get(`${apiUrl}/${mediaId}`, { headers });
-    let mediaUrl: string = meta.data?.url;
+    // Step 1: resolve media ID → short-lived CDN URL
+    const meta = await axios.get(`https://graph.facebook.com/v21.0/${mediaId}`, { headers });
+    const mediaUrl: string = meta.data?.url;
     if (!mediaUrl) throw new Error(`WhatsApp media ${mediaId}: no URL in metadata response`);
 
-    // 360Dialog requires the signed lookaside URL to be rewritten to their host
-    mediaUrl = mediaUrl.replace('https://lookaside.fbsbx.com', apiUrl);
-
-    // Step 2: download the bytes (URL expires in ~5 minutes — do it now)
+    // Step 2: download the bytes using Bearer auth (URL expires in ~5 minutes)
     const file = await axios.get(mediaUrl, { headers, responseType: 'arraybuffer', timeout: 30_000 });
     return {
         buffer: Buffer.from(file.data),

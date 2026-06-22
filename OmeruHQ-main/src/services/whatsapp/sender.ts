@@ -3,10 +3,12 @@ import axios, { AxiosError } from 'axios';
 // ============ CONFIGURATION ============
 // Read dynamically per request so key changes and cold-start timing are never an issue
 const getConfig = () => {
-    const apiUrl = process.env.WHATSAPP_API_URL || 'https://waba-v2.360dialog.io';
-    const apiKey = process.env.WHATSAPP_API_KEY || '';
-    if (!apiKey) console.error('⚠️ CRITICAL: WHATSAPP_API_KEY is not set!');
-    return { apiUrl, apiKey };
+    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID || '';
+    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN || '';
+    if (!phoneNumberId) console.error('⚠️ CRITICAL: WHATSAPP_PHONE_NUMBER_ID is not set!');
+    if (!accessToken) console.error('⚠️ CRITICAL: WHATSAPP_ACCESS_TOKEN is not set!');
+    const apiUrl = `https://graph.facebook.com/v21.0/${phoneNumberId}`;
+    return { apiUrl, accessToken };
 };
 
 // Rate limiting settings
@@ -39,22 +41,22 @@ const sendMessage = async (payload: any): Promise<boolean> => {
         }
         lastMessageTime = Date.now();
 
-        const { apiUrl, apiKey } = getConfig();
+        const { apiUrl, accessToken } = getConfig();
         const response = await axios.post(`${apiUrl}/messages`, payload, {
-            headers: { 'D360-API-KEY': apiKey, 'Content-Type': 'application/json' }
+            headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
         });
-        
+
         if (response.status === 200 || response.status === 201) {
             return true;
         }
-        
+
         console.error(`❌ WhatsApp API returned status ${response.status}`);
         return false;
 
     } catch (error) {
         const err = error as AxiosError;
         if (err.response) {
-            console.error('❌ 360Dialog API Error:', {
+            console.error('❌ Meta Cloud API Error:', {
                 status: err.response.status,
                 data: err.response.data,
                 recipient: payload.to
@@ -209,13 +211,13 @@ export const sendImageMessage = async (to: string, imageUrlOrId: string, caption
 export const markAsRead = async (messageId: string): Promise<boolean> => {
     if (transportOverride) return true;
     try {
-        const { apiUrl, apiKey } = getConfig();
+        const { apiUrl, accessToken } = getConfig();
         const response = await axios.post(`${apiUrl}/messages`, {
             messaging_product: 'whatsapp',
             status: 'read',
             message_id: messageId
         }, {
-            headers: { 'D360-API-KEY': apiKey, 'Content-Type': 'application/json' }
+            headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
         });
         return response.status === 200;
     } catch (err) {
@@ -229,9 +231,5 @@ export const markAsRead = async (messageId: string): Promise<boolean> => {
  * Standardizes phone numbers for the API (removes +, spaces, etc)
  */
 const formatPhoneNumber = (phone: string): string => {
-    // Remove all non-numeric characters
-    let cleaned = phone.replace(/\D/g, '');
-    
-    // 360Dialog expects just the numbers (e.g., 27746854339)
-    return cleaned;
+    return phone.replace(/\D/g, '');
 };
