@@ -4,6 +4,7 @@ import { formatCurrency } from './messageTemplates';
 import { getPlatformBranding, getPlatformSettings } from './platformBranding';
 import { db } from '../../lib/db';
 import { log, AuditAction } from './auditLog';
+import { logOrderStatusChange } from '../../lib/orderHistory';
 
 const ADMIN_NUMBER = process.env.ADMIN_WHATSAPP_NUMBER;
 
@@ -208,7 +209,8 @@ export const handleKitchenActions = async (
                 return;
             }
 
-            await db.order.update({ where: { id: oid }, data: { status: OrderStatus.CANCELLED } });
+            await db.order.update({ where: { id: oid }, data: { status: OrderStatus.CANCELLED, cancellation_reason: 'merchant_action' } });
+            logOrderStatusChange(oid, order.status, 'CANCELLED', from, 'merchant_action');
             await log(AuditAction.ORDER_CANCELLED_MERCHANT, from, 'Order', oid, {
                 merchant_id: merchant.id, merchant_name: merchant.trading_name,
                 customer_wa_id: order.customer_id, order_total: order.total
@@ -261,6 +263,7 @@ export const handleKitchenActions = async (
             }
 
             await db.order.update({ where: { id: oid }, data: { status: OrderStatus.READY_FOR_PICKUP } });
+            logOrderStatusChange(oid, order.status, 'READY_FOR_PICKUP', from);
             await log(AuditAction.ORDER_MARKED_READY, from, 'Order', oid, {
                 merchant_id: merchant.id, merchant_name: merchant.trading_name,
                 customer_wa_id: order.customer_id, order_total: order.total
@@ -287,6 +290,7 @@ export const handleKitchenActions = async (
             }
 
             await db.order.update({ where: { id: oid }, data: { status: OrderStatus.COMPLETED } });
+            logOrderStatusChange(oid, order.status, 'COMPLETED', from);
             await log(AuditAction.ORDER_COMPLETED, from, 'Order', oid, {
                 merchant_id: merchant.id, merchant_name: merchant.trading_name,
                 customer_wa_id: order.customer_id, order_total: order.total

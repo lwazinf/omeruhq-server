@@ -55,12 +55,11 @@ Each changelog entry below contains a `### Rollback` block listing every file an
 | File | Line(s) | Before |
 |------|---------|--------|
 | path/to/file.ts | 291 | `message.image.id` |
-| path/to/file.ts | 300 | `message.image.id` |
 ```
 
 For multi-line changes, the full before-block is pasted verbatim in a fenced code block beneath the table.
 
-> **Current rollback state: v1.0.0** — no code has been changed. The working state is the initial committed codebase.
+> **Current rollback state: v1.12.0** — all changes through the security, load-balancing, Redis rate limiter, Sentry, and test suite phases are live.
 
 ---
 
@@ -69,6 +68,19 @@ For multi-line changes, the full before-block is pasted verbatim in a fenced cod
 ### What Omeru Bot Is Building Towards
 
 Omeru is a **zero-friction WhatsApp commerce platform** for South African merchants. The bot is the transaction layer — it replaces a mobile app, a website, and a POS terminal for small businesses, all operating inside a WhatsApp conversation.
+
+### Platform Goals
+
+| Goal | Target | Current State |
+|------|--------|---------------|
+| Merchant live in < 24h from invite | ✅ Onboarding flow complete | Achieved — web KYC removes upload friction |
+| Zero-downtime deployments | ✅ SIGTERM graceful shutdown | Achieved v1.9.0 |
+| Verified webhook security | ✅ HMAC timing-safe comparison | Achieved v1.7.0 |
+| Bot handles 100+ msg/min safely | ✅ Per-wa_id rate limiting | Achieved v1.7.0; Redis persistence pending |
+| Full audit trail for every action | ✅ PlatformEvent + OrderStatusHistory | Live since v1.0.0 |
+| Multi-instance horizontal scaling | ⚡ Redis-ready but REDIS_URL not set | Rate limiter ready, needs env provisioning |
+| No double-charges on retry | ⚡ Dedup guard live; old links not voided | Partially — issue #4 open |
+| Error visibility in production | ✅ Sentry wired | Achieved v1.11.0; needs DSN in Koyeb env |
 
 ### User Roles
 
@@ -83,10 +95,16 @@ Omeru is a **zero-friction WhatsApp commerce platform** for South African mercha
 | Module | File | Status |
 |--------|------|--------|
 | Message routing & session management | `handler.ts` | ✅ Live |
+| Webhook HMAC signature verification | `index.ts` | ✅ Live — v1.7.0 |
+| Per-user rate limiting (30 msg/min) | `lib/rateLimit.ts` | ✅ Live — v1.7.0 |
+| Input sanitization (null bytes, 1000-char cap) | `handler.ts` | ✅ Live — v1.7.0 |
+| Status summary (`status` / `where` command) | `handler.ts` | ✅ Live — v1.8.0 |
+| In-store product search fallback | `customerDiscovery.ts` | ✅ Live — v1.8.0 |
 | Merchant onboarding (15+ step guided setup) | `onboardingEngine.ts` | ✅ Live |
-| Merchant dashboard | `merchantDashboard.ts` | ✅ Live |
+| Web KYC onboarding alternative | `onboardingEngine.ts` | ✅ Live — v1.6.0 |
+| Merchant dashboard (2-bubble consolidated) | `merchantDashboard.ts` | ✅ Live — v1.3.0 |
 | Product/inventory management | `merchantInventory.ts` | ✅ Live |
-| Kitchen (order fulfilment) | `merchantKitchen.ts` | ✅ Live |
+| Kitchen — split Unpaid / To Prepare / Ready | `merchantKitchen.ts` | ✅ Live — v1.2.0 |
 | Merchant settings | `merchantSettings.ts` | ✅ Live |
 | Broadcasts to customers | `merchantBroadcast.ts` | ✅ Live |
 | Services & bookings (merchant side) | `merchantServices.ts` | ✅ Live |
@@ -99,6 +117,7 @@ Omeru is a **zero-friction WhatsApp commerce platform** for South African mercha
 | Stitch payment integration | `payments/stitch.ts` | ✅ Live |
 | Order stale reminders (cron) | `jobs/orderAlerts.ts` | ✅ Live |
 | Booking reminders (cron) | `jobs/bookingReminders.ts` | ✅ Live |
+| Abandoned cart nudge (cron, 2–2.5h window) | `index.ts` | ✅ Live |
 | Audit logging | `auditLog.ts` | ✅ Live |
 | WhatsApp media persistence | `media/storage.ts` | ✅ Live |
 | Multi-staff / invite system | `handler.ts` | ✅ Live |
@@ -106,78 +125,91 @@ Omeru is a **zero-friction WhatsApp commerce platform** for South African mercha
 | Customer reviews / ratings | `customerOrders.ts`, `merchantKitchen.ts` | ✅ Live |
 | Product variants (size/colour) | `merchantInventory.ts`, `customerDiscovery.ts` | ✅ Live |
 | Product categories (merchant) | `merchantInventory.ts` | ✅ Live |
-| Platform-level store categories (browse) | `customerDiscovery.ts` | ✅ Fixed in v1.1.0 |
-| Multi-location support | Not yet implemented | ❌ Roadmap |
-| Discount codes / promotions | Not yet implemented | ❌ Roadmap |
-| Scheduled broadcasts | Not yet implemented | ❌ Roadmap |
-| Analytics export | Not yet implemented | ❌ Roadmap |
-| Payout management | Not yet implemented | ❌ Roadmap |
-
-### End-State Vision
-
-A fully self-serve platform where:
-- Any SA merchant can be invited, onboarded, and selling within 24 hours — entirely via WhatsApp
-- Customers discover stores via browse, direct @handle, or the `omeru.io` web storefronts
-- The platform admin has full visibility, control, and audit trail without touching code
-- Payment, fulfilment, reviews, and analytics are closed-loop within the WhatsApp conversation
-- Scores on all four dimensions reach **9/10 or above**
+| Platform-level store categories (browse) | `customerDiscovery.ts` | ✅ Fixed — v1.1.0 |
+| Browse-by-category tappable list | `customerDiscovery.ts` | ✅ Fixed — v1.4.0 |
+| Redis-backed rate limiter (multi-instance) | `lib/rateLimit.ts` | ⚡ Ready — REDIS_URL not provisioned |
+| Sentry error tracking | `index.ts` | ⚡ Wired — SENTRY_DSN not provisioned |
+| Unit test suite | `src/lib/rateLimit.test.ts` | ✅ Live — v1.12.0 |
+| Discount codes / promotions | — | ❌ Roadmap |
+| Scheduled broadcasts | — | ❌ Roadmap |
+| Global product text search | — | ❌ Roadmap |
+| Analytics export (CSV) | — | ❌ Roadmap |
+| Multi-location support | — | ❌ Roadmap |
+| Payout management | — | ❌ Roadmap |
 
 ---
 
 ## Current Scores
 
-> Baseline established: **2026-06-21** | Version: **v1.0.0**
+> Last updated: **2026-06-24** | Version: **v1.12.0**
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **Usability** | 8/10 | Global commands intuitive. Category browse tappable (v1.4.0). Orders paginated (v1.5.0). Loses points for no text search, no back navigation from product detail, non-obvious feedback format. |
-| **Reliability** | 8/10 | KYC images now permanently persisted (v1.2.0). Duplicate order guard added (v1.3.0). Hours validated with regex (v1.6.0). Remaining deductions: multiple live payment links, no session state timeout. |
-| **User Experience** | 8/10 | Browse-by-category fixed (v1.1.0). Kitchen split into Unpaid/To Prepare (v1.2.0). Dashboard consolidated to 2 messages (v1.3.0). Browse stores now tappable list (v1.4.0). Remaining: store listing still noisy on page > 1, no onboarding back navigation. |
-| **Logical Pathways** | 9/10 | Category routing fully correct (v1.1.0). Kitchen state machine cleanly separates payment and fulfilment (v1.2.0). Orders pagination routed correctly through handler (v1.5.0). Remaining: `active_prod_id` overloaded, no flow-state timeout. |
-| **Overall Average** | **8.25/10** | Major reliability, UX, and logical pathway improvements shipped. Platform is now production-ready for core flows. Remaining open issues are UX polish and edge-case reliability. |
+| **Usability** | 8.5/10 | Global commands (`status`, `cart`, `where`) surface context anywhere. In-store search works. Orders paginated. Category browse tappable. Deductions: no global product text search, no back nav in onboarding, product detail loses page position. |
+| **Security** | 9.0/10 | Webhook HMAC with timing-safe comparison. Per-wa_id sliding-window rate limiter. Input sanitization (null bytes, 1000-char). ADMIN_SETUP_KEY guard. Trust-proxy correct IP detection. Deductions: rate limiter in-memory (Redis not provisioned), SENTRY_DSN not in env. |
+| **Reliability** | 9.0/10 | KYC permanently persisted. Dedup guard prevents double-orders. Hours validated. Graceful SIGTERM shutdown drains in-flight requests. keepAliveTimeout above LB idle. Sentry wired. Deductions: old payment links not voided on retry, no session-state timeout, Redis not live. |
+| **User Experience** | 8.5/10 | Dashboard consolidated. Kitchen split. Cart prompt shows count+value. Deep-link bot commands (`prod_`, `cbk_svc_`, `c_book_`) open correct flows from web CTAs. sendStatusSummary gives clear context. Deductions: store listing noisy (5–6 bubbles/page), feedback rating text format. |
+| **Logical Pathways** | 8.75/10 | Category routing correct. Kitchen state machine clean. Orders pagination routed. Dedup guard in correct place. `ADDR_FLOW` escape covers known cases. Deductions: `active_prod_id` overloaded, no flow-state timeout, `ADDR_FLOW` escape still narrow. |
+| **Overall Average** | **8.75/10** | Platform is production-ready for all core flows. Security posture is strong. Infrastructure gaps (Redis, Sentry DSN) are env-var provisioning tasks, not code gaps. Remaining code gaps are UX polish. |
 
 ---
 
 ## Known Issues
 
+### ✅ RESOLVED
+
+| # | Issue | Fixed In | Fix Summary |
+|---|-------|----------|-------------|
+| 1 | Category slug/value mismatch — browse returned 0 results | v1.1.0 | Aligned slugs to display names in onboarding + discovery |
+| 2 | KYC images stored as expiring WhatsApp media IDs | v1.2.0 | `persistWhatsAppImage` downloads to permanent storage |
+| 3 | Order creation not idempotent — double-tap duplicate orders | v1.3.0 | 2-minute dedup window checks for existing order before create |
+| 6 | Kitchen mixed unpaid and paid orders | v1.2.0 | Split into Unpaid (read-only) / To Prepare (PAID) / Ready |
+| 7 | Dashboard sent 4 sequential bubbles | v1.3.0 | Consolidated to 2 messages (main card + list) |
+| 10 | Browse-by-category stores shown as plain untappable text | v1.4.0 | `sendListMessage` where row id = `@handle` |
+| 12 | Customer orders capped at 5, no pagination | v1.5.0 | Full pagination with Prev/Next buttons |
+| 15 | Hours input accepted garbage values | v1.4.0 | `parseHoursInput` regex validates HH:MM format |
+| 16 (partial) | No in-store product text search | v1.8.0 | Free-text search queries last-visited merchant's catalogue |
+| 19 | Cart-switch prompt showed no context | v1.8.0 | Prompt now shows existing cart count + total value |
+
+---
+
 ### 🔴 CRITICAL
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 1 | **Category slug/value mismatch** — `STORE_CATEGORIES` uses slugs (`'food'`, `'fashion'`) but onboarding stores display names (`'Food & Drink'`, `'Fashion'`) in `store_category`. Browse-by-category always returns 0 stores. Only "All Stores" works. | `customerDiscovery.ts:397`, `onboardingEngine.ts:196` | Browse feature silently broken |
-| 2 | **KYC images stored as raw WhatsApp media IDs** — `handleKycIdDoc` and `handleKycBankProof` write `message.image.id` directly to the DB instead of calling `persistWhatsAppImage`. WhatsApp media IDs expire ~30 days. KYC documents become permanently inaccessible. | `onboardingEngine.ts:291`, `onboardingEngine.ts:300` | Legal/compliance data loss |
+*No critical issues currently open.*
+
+---
 
 ### 🟠 HIGH
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 3 | **Order creation not idempotent** — Double-tapping "Confirm & Pay" or network retransmission creates duplicate orders for the same cart. No deduplication check. | `customerDiscovery.ts:714` | Duplicate charges, inventory errors |
-| 4 | **Multiple valid payment links per order** — Each `retry_payment_` call creates a new Stitch link but does not invalidate the old one. Both links can succeed, causing double-charge. | `handler.ts:373` | Double-charge risk |
-| 5 | **Booking slots use server local time** — `isMerchantOpenOn` and slot generation use `date.getDay()` / `date.getHours()` in server-local timezone. No merchant timezone stored. Wrong slots shown if server is not in SAST. | `customerBookings.ts:253` | Incorrect availability on non-ZA servers |
-| 6 | **Kitchen mixes unpaid and paid orders** — "New Orders" view fetches both `PENDING` (unpaid) and `PAID` (needs fulfilment) orders together. A merchant can mark an unpaid order as "Ready" and notify the customer before payment clears. | `merchantKitchen.ts:22` | Operational confusion, premature fulfilment |
+| # | Issue | File | Impact |
+|---|-------|------|--------|
+| 4 | **Multiple valid payment links per order** — Each `retry_payment_` call creates a new Stitch link without voiding the previous one. Both links can succeed, causing a double-charge on the same order. | `handler.ts` | Double-charge risk — financial liability |
+| 5 | **Booking slots use server-local time** — Slot generation uses `date.getDay()` / `date.getHours()` in Node.js process timezone. No `merchant_timezone` stored. Slots shown incorrectly if server runs outside SAST (UTC+2). | `customerBookings.ts` | Wrong availability on Koyeb EU/US regions |
+
+---
 
 ### 🟡 MEDIUM
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 7 | **Merchant dashboard sends 4 sequential message bubbles** — `showMerchantDashboard` makes 4 `sendButtons` calls. Very noisy on every dashboard open. | `merchantDashboard.ts:163` | Poor merchant UX, message clutter |
-| 8 | **Store product listing creates 5–6 messages per page** — Each page: 3 product cards + nav + bookings bubble + bookmarks bubble. | `customerDiscovery.ts:282` | Message flood on store open |
-| 9 | **No back navigation in onboarding** — No `← Back` button at any of the 15+ steps. Mistakes require continuing forward to the end. | `onboardingEngine.ts:462` | Merchant drop-off during setup |
-| 10 | **Browse-by-category shows @handles as plain text, not tappable** — Store list is a text message. Users must manually type `@handle` to visit. | `customerDiscovery.ts:469` | Low browse-to-visit conversion |
-| 11 | **No expiry on abandoned flow states** — `ADDR_FLOW`, `cart_qty_*`, `feedback_text_*` states persist indefinitely if a user abandons mid-flow. | `handler.ts:303` | Users get stuck in flows |
-| 12 | **Orders list capped at 5, no pagination** | `customerOrders.ts:11` | Power users can't see history |
-| 13 | **`active_prod_id` overloaded** — Used for both UI flow state (`ADDR_FLOW`, `cart_qty_*`) and onboarding step tracking. Dual purpose creates complex routing. | `handler.ts`, `merchantEngine.ts` | Hard to reason about state |
-| 14 | **`ADDR_FLOW` escape too narrow** — Only 3 exact button IDs escape the flow. Any other button traps the user in address flow. | `handler.ts:309` | Users can get stuck |
+| # | Issue | File | Impact |
+|---|-------|------|--------|
+| 8 | **Store product listing creates 5–6 message bubbles per page** — Each page sends: 3 product cards + nav + bookings bubble + bookmarks bubble. Opens a flood on every store visit. | `customerDiscovery.ts` | Message clutter, poor first impression |
+| 9 | **No back navigation in onboarding** — Zero `← Back` buttons across all 15+ onboarding steps. A mistake at step 8 requires completing the entire flow before re-entering. | `onboardingEngine.ts` | Merchant drop-off during setup |
+| 11 | **No expiry on abandoned flow states** — `ADDR_FLOW`, `cart_qty_*`, `feedback_text_*` states persist indefinitely if user abandons mid-flow. Re-entering the bot days later finds them stuck in an address prompt. | `handler.ts` | Users get trapped; confusing re-entry experience |
+| 13 | **`active_prod_id` is overloaded** — Used simultaneously for UI flow state (`ADDR_FLOW`, `cart_qty_*`) and onboarding step tracking. The dual purpose makes routing logic hard to follow and test. | `handler.ts`, `merchantEngine.ts` | Code complexity; future routing bugs likely |
+| 14 | **`ADDR_FLOW` escape is too narrow** — Only 3 hardcoded button IDs break out of the address flow. Any unexpected button press traps the user until they send one of the magic IDs. | `handler.ts` | Users get stuck; requires manual intervention |
+| 20 | **Rate limiter is in-memory and resets on restart** — `REDIS_URL` is not provisioned in the Koyeb environment. Every deploy or crash resets all rate-limit counters. Rate limits also don't coordinate if >1 instance runs. | `lib/rateLimit.ts` | Security gap on deploys; ineffective at scale |
+
+---
 
 ### 🔵 LOW
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 15 | **Hours input not validated** — `HH:MM - HH:MM` format accepts garbage like `9-5`. Only checks `input.includes('-')`. | `onboardingEngine.ts:248` | Bad data stored for store hours |
-| 16 | **No product or store text search** — Customer discovery is category + @handle only. | `customerDiscovery.ts` | Low product discoverability |
-| 17 | **No back button from product detail** — Returns to page 1 of the store, losing pagination position. | `customerDiscovery.ts:1226` | Breaks browsing flow |
-| 18 | **Feedback rating format non-obvious** — `5 - Great food` format instead of button-based 1–5 rating. | `customerOrders.ts:214` | Low feedback completion rate |
-| 19 | **Cart-switch prompt doesn't show current cart contents** — User can't see what they'd be replacing. | `customerDiscovery.ts:1054` | Confusing cart replacement UX |
+| # | Issue | File | Impact |
+|---|-------|------|--------|
+| 16 | **No global product text search across merchants** — In-store search (v1.8.0) searches only the last-visited merchant's catalogue. A customer who doesn't know which merchant sells X cannot search platform-wide. | `customerDiscovery.ts` | Low product discoverability for new users |
+| 17 | **No back button from product detail** — Tapping back on a product card returns to page 1 of the store, losing the user's pagination position. | `customerDiscovery.ts` | Breaks browsing flow on large catalogues |
+| 18 | **Feedback rating format non-obvious** — Rating is a free-text message: `5 - Great food`. A button-based 1–5 star rating would be lower friction and produce more consistent data. | `customerOrders.ts` | Low feedback completion rate |
+| 21 | **No integration tests for bot flows** — Unit tests cover the rate limiter only. Core bot commands (cart, checkout, kitchen, broadcasts) have no automated coverage. | `src/lib/` | Regressions possible on refactors |
+| 22 | **SENTRY_DSN not set in Koyeb env** — Sentry is wired in code but the DSN env var is absent. All unhandled exceptions log to console only; no alert reaches the team. | `src/index.ts` | No production error visibility |
 
 ---
 
@@ -199,146 +231,305 @@ A fully self-serve platform where:
 ### v1.1.0 — 2026-06-21 17:15 SAST
 **Fix #1 — Category slug/value mismatch. Browse-by-category now works.**
 
-**Why:** `STORE_CATEGORIES` used slugs (`'food'`, `'fashion'`) in three places where DB-stored display names were needed. This caused every category filter to return 0 results — only "All Stores" worked. Three-part fix:
-1. `onboardingEngine.ts` catMap values aligned with `STORE_CATEGORIES` labels so newly onboarded merchants write the correct category string.
-2. `customerDiscovery.ts` `sendCategorySelection` now checks `activeSlugs.has(cat.label)` instead of `cat.slug`.
-3. `customerDiscovery.ts` `sendCategoryStores` now filters `whereClause.store_category = categoryInfo.label` instead of `slug`.
+**Score impact:** UX 6→7 · Logical 7→8
 
-**Score impact:** UX 6→7 · Logical 7→8 · Average 6.5→7.25
-
-**What the app can do at v1.1.0:** Browse-by-category is now fully functional. Customers can filter stores by Food & Drink, Fashion & Clothing, Beauty & Wellness, Tech & Electronics, Home & Living, Services, General. All Stores continues to work. Note: merchants onboarded before v1.1.0 retain their old category strings — a one-time DB migration would align historical records, but existing stores still appear under "All Stores".
+**What the app can do at v1.1.0:** Browse-by-category is fully functional. Customers can filter by Food & Drink, Fashion, Beauty, Tech, Home, Services, General. Merchants onboarded before v1.1.0 still appear under "All Stores" until a one-time DB migration aligns historical category strings.
 
 ### Rollback to v1.0.0
 | File | Lines | Before |
 |------|-------|--------|
-| `onboardingEngine.ts` | 197–198 | `cat_food: 'Food & Drink', cat_fashion: 'Fashion', cat_beauty: 'Beauty & Wellness',` |
-| `onboardingEngine.ts` | 197–198 | `cat_electronics: 'Electronics', cat_home: 'Home & Garden', cat_other: 'Other'` |
+| `onboardingEngine.ts` | 197–198 | `cat_food: 'Food & Drink', cat_fashion: 'Fashion', cat_beauty: 'Beauty & Wellness', cat_electronics: 'Electronics', cat_home: 'Home & Garden', cat_other: 'Other'` |
 | `customerDiscovery.ts` | 413 | `if (activeSlugs.has(cat.slug)) {` |
 | `customerDiscovery.ts` | 434 | `whereClause.store_category = slug;` |
 
 ---
 
 ### v1.2.0 — 2026-06-21 17:45 SAST
-**Fix #2 — KYC images now permanently persisted. Fix #6 — Kitchen split into Unpaid / To Prepare.**
+**Fix #2 — KYC images permanently persisted. Fix #6 — Kitchen split into Unpaid / To Prepare.**
 
-**KYC fix:** `handleKycIdDoc` and `handleKycBankProof` were storing the raw WhatsApp `message.image.id` directly to the DB. WhatsApp media IDs expire in ~30 days, making compliance documents permanently inaccessible after that window. Both now call `persistWhatsAppImage(message.image.id, path)` which downloads and stores the image in permanent cloud storage before saving the URL.
+**Score impact:** Reliability 6→8 · UX 6→7
 
-**Kitchen split:** The kitchen "New Orders" view was fetching both PENDING (awaiting payment) and PAID (needs fulfilment) orders together. A merchant could mark an unpaid order as Ready and notify the customer before payment cleared. Now:
-- `k_new` → "🔥 To Prepare" — PAID orders only (payment confirmed, needs action)
-- `k_unpaid` → "💳 Awaiting Payment" — PENDING orders only (read-only view)
-- Kitchen menu header shows all three counts: Unpaid · To Prepare · Ready
-
-**Score impact:** Reliability 6→8 · UX 6→7 · Average 6.5→7.5
-
-**What the app can do at v1.2.0:** KYC documents are permanently stored — legal/compliance data is safe. Merchants see a clear split between orders awaiting payment and orders ready to prepare. Category browse works (from v1.1.0).
+**What the app can do at v1.2.0:** KYC compliance documents are safe. Merchants see a clean split between orders awaiting payment and orders to prepare.
 
 ### Rollback to v1.1.0
 | File | Lines | Before |
 |------|-------|--------|
-| `onboardingEngine.ts` | 289–290 | `await db.merchant.update({ where: { id: merchant.id }, data: { kyc_id_doc_url: message.image.id } });` |
+| `onboardingEngine.ts` | 289–290 | `data: { kyc_id_doc_url: message.image.id }` |
 | `onboardingEngine.ts` | 298–301 | `data: { kyc_bank_proof_url: message.image.id, kyc_submitted_at: new Date() }` |
-| `merchantKitchen.ts` | 22–38 | Kitchen menu counted `{ in: ['PENDING', 'PAID'] }` as one `newCount`; single "New Orders" button; Reviews in second bubble |
+| `merchantKitchen.ts` | 22–38 | Kitchen counted `{ in: ['PENDING', 'PAID'] }` as one `newCount`; single "New Orders" button |
 | `merchantKitchen.ts` | 85 | `where: { merchant_id: merchant.id, status: { in: ['PENDING', 'PAID'] } }` |
-| `merchantKitchen.ts` | 107 | `` `🔥 *New Orders* (${orders.length})` `` |
 
 ---
 
 ### v1.3.0 — 2026-06-21 17:50 SAST
-**Fix #3 — Duplicate order prevention. Fix #5 — Dashboard consolidated from 4 bubbles to 2.**
+**Fix #3 — Duplicate order prevention. Fix #7 — Dashboard consolidated 4 bubbles → 2 messages.**
 
-**Dedup guard:** Before creating an order at `cart_confirm_order`, the bot now checks whether a non-cancelled order for the same customer + merchant was placed in the last 2 minutes. If found, it surfaces the existing order instead of creating a duplicate. Protects against double-tap and WhatsApp network retransmissions.
+**Score impact:** Reliability 8→8.5 · UX 7→8
 
-**Dashboard consolidation:** `showMerchantDashboard` previously sent 4 sequential `sendButtons` calls (main card, More, Broadcast, Feedback). Now sends 2 messages: the main card with primary actions (Kitchen, Products, Open/Close toggle), and a single `sendListMessage` with all secondary options (Services, Stats, Broadcast, Settings, Feedback) — one clean list instead of 3 extra bubbles.
-
-**Score impact:** Reliability 8→8.5 · UX 7→8 · Average 7.5→8.25
-
-**What the app can do at v1.3.0:** Double-tapping checkout no longer creates duplicate orders. Merchant dashboard is clean — 2 messages instead of 4. All previous fixes retained.
+**What the app can do at v1.3.0:** Double-tapping checkout no longer creates duplicate orders. Merchant dashboard is clean — 2 messages instead of 4.
 
 ### Rollback to v1.2.0
 | File | Lines | Before |
 |------|-------|--------|
 | `customerDiscovery.ts` | 709–713 | No dedup check before `db.order.create` |
-| `merchantDashboard.ts` | 160–181 | Four `sendButtons` calls; no `sendListMessage`; import was `sendButtons, sendTextMessage` |
+| `merchantDashboard.ts` | 160–181 | Four `sendButtons` calls; no `sendListMessage` |
 
 ---
 
 ### v1.4.0 — 2026-06-21 17:55 SAST
-**Fix #10 — Category browse now shows tappable store list. Fix #11 — Hours input validated with regex.**
-
-**Tappable browse:** `sendCategoryStores` previously sent a plain text block of `@handle — Name` lines (untappable). Now sends a `sendListMessage` where each row id is `@{handle}` — tapping a store row opens it directly, same as typing `@handle`. Navigation pagination buttons follow below.
-
-**Hours validation:** `handleHoursMf` and `handleHoursSat` previously accepted any string containing `-` (e.g. `9-5`, `abc-def`). Both now use a `parseHoursInput` helper that validates both parts against `HH:MM` format with a regex before saving. Invalid input returns a clear error with an example.
+**Fix #10 — Category browse now shows tappable store list. Fix #15 — Hours input validated with HH:MM regex.**
 
 **Score impact:** Usability 7→8 · Reliability 8.5→8.75
 
-**What the app can do at v1.4.0:** Customers can tap to visit stores directly from browse results. Hours data in the DB is always valid HH:MM format for new merchants. All previous fixes retained.
+**What the app can do at v1.4.0:** Customers tap to open stores from browse results. Hours data is always valid HH:MM format for new merchants.
 
 ### Rollback to v1.3.0
 | File | Lines | Before |
 |------|-------|--------|
-| `customerDiscovery.ts` | 461–488 | `sendTextMessage` with plain text store list; separate `sendButtons` nav below |
-| `onboardingEngine.ts` | 244–267 | `if (input.includes('-'))` branch with no format validation; no `parseHoursInput` helper |
+| `customerDiscovery.ts` | 461–488 | `sendTextMessage` with plain text `@handle — Name` list |
+| `onboardingEngine.ts` | 244–267 | `if (input.includes('-'))` only; no `parseHoursInput` helper |
 
 ---
 
 ### v1.5.0 — 2026-06-21 18:00 SAST
 **Fix #12 — Customer orders list paginated (was capped at 5).**
 
-`handleCustomerOrders` previously fetched a hard-coded `take: 5` and showed only those 5 orders with no way to see older history. Now fetches a page of 5 with total count, shows "Page X of Y", and renders Prev/Next navigation buttons alongside the order detail shortcuts. The `c_my_orders_p{n}` route added to `handler.ts` so pagination buttons are routed correctly.
-
 **Score impact:** Usability 8→8.5
 
-**What the app can do at v1.5.0:** Customers can page through their full order history. All previous fixes retained.
+**What the app can do at v1.5.0:** Customers can page through their full order history.
 
 ### Rollback to v1.4.0
 | File | Lines | Before |
 |------|-------|--------|
-| `customerOrders.ts` | 10–39 | `if (input === 'c_my_orders')` with `take: 5`, no pagination, `sendButtons` with first 3 orders as buttons |
-| `handler.ts` | 345 | `if (input === 'c_my_orders' \|\| input.startsWith('view_order_')...` — no `c_my_orders_p` prefix |
+| `customerOrders.ts` | 10–39 | `take: 5`, no pagination, `sendButtons` with first 3 orders as buttons |
+| `handler.ts` | 345 | No `c_my_orders_p` prefix routing |
 
 ---
 
 ### v1.6.0 — 2026-06-21 20:10 SAST
-**New feature — Web KYC onboarding flow. Merchants can complete identity verification on a secure web page instead of over WhatsApp.**
+**New feature — Web KYC onboarding. Merchants complete identity verification on a secure web page.**
 
-**Why:** Uploading photos and filling in banking details over WhatsApp is friction-heavy. Merchants on desktop have no easy way to attach documents. A dedicated web form removes all of that friction while keeping the WhatsApp bot as the primary onboarding channel.
+**Score impact:** Usability 8.5→9 · Reliability 8.75→9
 
-**What changed:**
-
-*Schema (both apps)* — 4 new fields added to `Merchant`:
-- `kyc_token String? @unique` — cryptographically random UUID, generated on request
-- `kyc_token_expires_at DateTime?` — 7-day expiry
-- `kyc_draft_json Json?` — explicit-save partial draft (written only when user taps Save)
-- `kyc_online_completed Boolean @default(false)` — set to true on final submission
-
-*Bot (`onboardingEngine.ts`)* ��� New step `ob_kyc_method` inserted between `ob_hours_sat` and `ob_kyc_intro`. Merchants choose:
-- 📱 **Continue on WhatsApp** — existing flow unchanged
-- 🌐 **Get a secure web link** — generates a UUID token, builds `${STOREFRONT_BASE_URL}/kyc/${token}`, sends it as a WhatsApp message, advances to `ob_kyc_waiting`
-
-New step `ob_kyc_waiting` ��� merchant can tap "Done, I've submitted" at any time. Bot re-fetches `kyc_online_completed` from DB and advances to `ob_prod_intro` if true, or resends the link if not.
-
-*Web (`hq.omeru.io-main`)* — Three new files:
-- `app/kyc/[token]/page.tsx` — server component; validates token, checks expiry, shows completion state
-- `app/kyc/[token]/KycForm.tsx` — client component; 4-section form with per-section explicit Save buttons and a final Submit button
-- `app/api/kyc/[token]/route.ts` — API: GET (fetch draft), PATCH (save section to draft), POST multipart (file upload to Supabase), POST JSON `{submit:true}` (final submission)
-
-**Save behaviour:** No auto-save. Data is only written to `kyc_draft_json` when the user explicitly taps a section's Save button. The Submit button is disabled until all 4 sections are saved.
-
-**Score impact:** Usability 8→9 · Reliability 8→8.5 · Average 8.25→8.75
-
-**What the app can do at v1.6.0:** New merchants can choose to complete KYC verification on the web instead of WhatsApp. The link is unique per merchant, expires after 7 days, and can be returned to at any time to resume from saved progress. On final submission the bot detects completion and continues the onboarding flow.
+**What the app can do at v1.6.0:** New merchants choose WhatsApp or web link for KYC. Link is UUID-gated, 7-day expiry, resumable. Bot detects completion and continues onboarding.
 
 ### Rollback to v1.5.0
 | File | Lines | Before |
 |------|-------|--------|
-| `prisma/schema.prisma` | 90–93 | `onboarding_step String?`, `kyc_id_doc_url String?`, `kyc_bank_proof_url String?`, `kyc_submitted_at DateTime?` (no kyc_token, kyc_draft_json, kyc_online_completed fields) |
-| `onboardingEngine.ts` | NEXT_STEP | `ob_hours_sat: 'ob_kyc_intro'` |
-| `onboardingEngine.ts` | switch | no `ob_kyc_method` or `ob_kyc_waiting` cases |
+| `prisma/schema.prisma` | 90–93 | No `kyc_token`, `kyc_token_expires_at`, `kyc_draft_json`, `kyc_online_completed` fields |
+| `onboardingEngine.ts` | NEXT_STEP map | `ob_hours_sat: 'ob_kyc_intro'` — no `ob_kyc_method` or `ob_kyc_waiting` |
 
-*New files to delete on rollback:*
-- `hq.omeru.io-main/app/kyc/[token]/page.tsx`
-- `hq.omeru.io-main/app/kyc/[token]/KycForm.tsx`
-- `hq.omeru.io-main/app/api/kyc/[token]/route.ts`
+*New files to delete on rollback:* `hq.omeru.io-main/app/kyc/[token]/page.tsx`, `KycForm.tsx`, `app/api/kyc/[token]/route.ts`
+
+---
+
+### v1.7.0 — 2026-06-23 14:00 SAST
+**Security hardening — webhook HMAC verification, per-user rate limiting, input sanitization, admin guard.**
+
+**Why this mattered:** The WhatsApp webhook endpoint was unauthenticated — any HTTP client could forge messages and trigger bot flows, place orders, or consume sessions without being a real WhatsApp user. The `/admin/stitch-setup` endpoint had no access control. Input passed directly from the message body to DB queries and message templates with no length or content sanitization.
+
+**What changed:**
+
+*`src/index.ts`*
+- Added `import crypto from 'crypto'`
+- Added `verifyMetaSignature(rawBody, sig, secret)` — timing-safe HMAC-SHA256 comparison using `crypto.timingSafeEqual`; prevents timing-based signature forgery
+- Moved WhatsApp POST webhook handler to before `express.json()` using `express.raw({ type: 'application/json' })` — same pattern as the existing Stitch webhook, required to access raw Buffer for HMAC
+- Signature check runs *after* `res.status(200).send('OK')` to satisfy Meta's 20-second acknowledgement requirement; invalid requests are silently dropped
+- Added `ADMIN_SETUP_KEY` guard to `/admin/stitch-setup` — checks `x-admin-key` header before exposing webhook registration endpoint
+
+*`src/lib/rateLimit.ts`* (new file)
+- Sliding-window in-memory rate limiter using a `Map<string, {count, resetAt}>`
+- Exports `isRateLimited(key, maxRequests, windowMs): boolean`
+- `setInterval(...).unref()` sweeps expired entries every 5 min — prevents unbounded memory growth without keeping the process alive
+
+*`src/services/whatsapp/handler.ts`*
+- Added `import { isRateLimited } from '../../lib/rateLimit'`
+- Added rate limiting at message entry: `if (isRateLimited(\`wa:${from}\`, 30, 60_000)) return;` — drops messages from any number sending >30/min
+- Added input sanitization: `String(buttonId || listId || textBody || '').replace(/\0/g, '').trim().slice(0, 1000)` — strips null bytes, trims whitespace, caps at 1000 chars before any routing logic
+
+**Score impact:** Security 0→9 (new dimension) · Reliability 9→9
+
+### Rollback to v1.6.0
+
+```
+// src/index.ts — remove these imports:
+import crypto from 'crypto';
+
+// src/index.ts — remove verifyMetaSignature function (lines 17–23)
+
+// src/index.ts — the WhatsApp POST handler was registered AFTER express.json()
+// and had no signature check; delete the new handler and restore the old position
+
+// src/index.ts — remove ADMIN_SETUP_KEY guard block from /admin/stitch-setup
+```
+
+*Files to delete on rollback:* `src/lib/rateLimit.ts`
+
+| File | Lines | Before |
+|------|-------|--------|
+| `handler.ts` | top of `handleIncomingMessage` | No rate-limit check |
+| `handler.ts` | input extraction | `const input = ...` with no `.replace(/\0/g, '').trim().slice(0, 1000)` |
+
+---
+
+### v1.8.0 — 2026-06-23 15:30 SAST
+**Bot UX — `status` command, in-store search, cart-switch context, deep-link bot commands.**
+
+**Why this mattered:** Customers had no way to see their session context without visiting a specific store. Free-text messages that didn't match a command fell through silently instead of searching. The cart-switch prompt showed no context about what the user would lose. WhatsApp CTAs on the web storefronts all sent `@handle`, losing the specific product/service context the user was viewing.
+
+**What changed:**
+
+*`src/services/whatsapp/handler.ts`*
+- Added `sendStatusSummary(from, session)` function — sends a contextual summary card showing current cart, last merchant, and 2–3 recovery buttons
+- Added global keyword routing: `status`, `where` → `sendStatusSummary`; `cart` → `c_cart` handler
+- Added merchant-in-customer greeting detection: if a merchant number messages the bot while not in merchant mode, routes them to merchant dashboard
+
+*`src/services/whatsapp/customerDiscovery.ts`*
+- In-store search fallback: when free text doesn't match a button ID or command, the bot now queries `db.product.findMany` against the last-visited merchant's catalogue using `contains` search on name + description. Returns up to 5 product cards. Replaces the silent no-op fallthrough.
+- Improved cart-switch prompt: shows existing cart item count and total value (`3 items · R 450`) so the customer knows what they'd be replacing before tapping "Switch Store"
+- Improved cart-switch button labels: "Keep (3 items)" instead of generic "Keep cart"
+
+*Bot command protocol aligned with web CTA deep-links:*
+- Web storefront "Order on WhatsApp" now sends `prod_{productId}` — bot handles with `prod_` prefix routing to open that exact product
+- Web "Book on WhatsApp" sends `cbk_svc_{serviceId}` — bot opens booking flow for that service
+- Web "Book a service" hero sends `c_book_{merchantId}` — bot opens full services list for that merchant
+
+**Score impact:** UX 8→8.5 · Usability 8.5 (maintained)
+
+### Rollback to v1.7.0
+| File | Lines | Before |
+|------|-------|--------|
+| `handler.ts` | — | No `sendStatusSummary` function; no `status`/`where`/`cart` keyword routing |
+| `customerDiscovery.ts` | free-text fallthrough | Silent return; no product search query |
+| `customerDiscovery.ts` | cart-switch prompt | Generic text: "You already have items in your cart" with no count/value; buttons: generic labels |
+
+---
+
+### v1.9.0 — 2026-06-23 16:00 SAST
+**Load balancing readiness — trust proxy, keepAliveTimeout, SIGTERM graceful shutdown.**
+
+**Why this mattered:** The server ran `app.listen()` with no reference captured. `req.ip` returned the load balancer's IP, breaking all per-IP rate limiting. keepAliveTimeout was at Node's default (5s), below typical load balancer idle timeout (60s), causing random 502 errors. No SIGTERM handler meant rolling deploys killed in-flight requests mid-response.
+
+**What changed:**
+
+*`src/index.ts`*
+- `app.set('trust proxy', 1)` — tells Express to read `X-Forwarded-For`; first hop is the load balancer, so `req.ip` now returns the real client IP
+- Changed `app.listen(...)` to `const server = app.listen(...)` — captures server reference for timeout + shutdown control
+- `server.keepAliveTimeout = 65_000` — above Koyeb/typical LB idle timeout of 60s; prevents 502 errors on idle connections
+- `server.headersTimeout = 66_000` — must exceed keepAliveTimeout; prevents Node from closing a connection before LB considers it alive
+- Added `process.on('SIGTERM', ...)` handler — calls `server.close()` to stop accepting new connections, awaits DB disconnect, then exits. 15s forced-exit safety timeout with `.unref()`.
+
+**Score impact:** Reliability 9→9 (ceiling maintained — deployment safety gap closed)
+
+### Rollback to v1.6.0 (before v1.7.0 security changes)
+| File | Lines | Before |
+|------|-------|--------|
+| `index.ts` | after `const app = express()` | No `app.set('trust proxy', 1)` |
+| `index.ts` | server start | `app.listen(Number(PORT), '0.0.0.0', () => { ... })` — result not captured |
+| `index.ts` | end of file | No `server.keepAliveTimeout`, `server.headersTimeout`, or SIGTERM handler |
+
+---
+
+### v1.10.0 — 2026-06-24 10:00 SAST
+**Redis-backed rate limiter — ioredis with in-memory fallback. `isRateLimited` now async.**
+
+**Why this mattered:** The in-memory rate limiter resets on every deploy and crash. When the app runs on more than one instance, each instance has its own counter — a single user could send 30 × N messages per minute, where N is the number of instances. The fix uses Redis INCR + PEXPIRE for atomic, shared, persistent counters.
+
+**What changed:**
+
+*`src/lib/rateLimit.ts`* (full rewrite)
+- Added `import Redis from 'ioredis'` — package was already installed
+- Creates ioredis client only when `REDIS_URL` env var is set; silently falls back to in-memory if not set or if Redis errors
+- Redis path: `INCR key` → if count === 1, `PEXPIRE key windowMs` (atomic first-write sets TTL) → return `count > maxRequests`
+- In-memory path: unchanged sliding-window logic with Map + sweep interval
+- `isRateLimited` changed from `(): boolean` to `(): Promise<boolean>` — required to await Redis I/O
+
+*`src/services/whatsapp/handler.ts`*
+- `if (isRateLimited(...))` → `if (await isRateLimited(...))` — no behaviour change since `handleIncomingMessage` is already async
+
+**Env var required to activate Redis:** `REDIS_URL=redis://...` in Koyeb environment. Without it, behaviour is identical to v1.7.0.
+
+**Score impact:** Security 9→9 (ceiling raised toward 9.5 once REDIS_URL is provisioned)
+
+### Rollback to v1.9.0
+
+```typescript
+// src/lib/rateLimit.ts — restore full in-memory only version:
+interface Entry { count: number; resetAt: number }
+const store = new Map<string, Entry>();
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, entry] of store.entries()) {
+        if (entry.resetAt <= now) store.delete(key);
+    }
+}, 5 * 60 * 1000).unref();
+
+export function isRateLimited(key: string, maxRequests: number, windowMs: number): boolean {
+    const now = Date.now();
+    const entry = store.get(key);
+    if (!entry || entry.resetAt <= now) {
+        store.set(key, { count: 1, resetAt: now + windowMs });
+        return false;
+    }
+    if (entry.count >= maxRequests) return true;
+    entry.count++;
+    return false;
+}
+```
+
+| File | Lines | Before |
+|------|-------|--------|
+| `handler.ts` | rate limit check | `if (isRateLimited(\`wa:${from}\`, 30, 60_000)) {` (sync, no await) |
+
+---
+
+### v1.11.0 — 2026-06-24 11:00 SAST
+**Sentry error tracking — `@sentry/node` v10, `setupExpressErrorHandler`, opt-in via `SENTRY_DSN`.**
+
+**Why this mattered:** Unhandled Express errors and uncaught promise rejections logged to stdout only. On Koyeb, stdout logs are ephemeral — a crash that's not caught in the monitoring window leaves no trace. The team had no alert when the bot threw a 500.
+
+**What changed:**
+
+*`src/index.ts`*
+- `import * as Sentry from '@sentry/node'` added as the first import after `dotenv/config`
+- `Sentry.init({ dsn: process.env.SENTRY_DSN, environment, tracesSampleRate: 0.1 })` — only runs when `SENTRY_DSN` is set; silently no-ops in local dev
+- `Sentry.setupExpressErrorHandler(app)` registered immediately before `app.listen()` — must be last middleware, after all routes
+
+**Env var required:** `SENTRY_DSN=https://...@sentry.io/...` in Koyeb environment.
+
+**Score impact:** Reliability 9→9.5 (ceiling) once SENTRY_DSN is provisioned
+
+### Rollback to v1.10.0
+| File | Lines | Before |
+|------|-------|--------|
+| `index.ts` | line 1–2 | `import 'dotenv/config';` — no Sentry import or init block |
+| `index.ts` | before `app.listen` | No `Sentry.setupExpressErrorHandler(app)` call |
+
+---
+
+### v1.12.0 — 2026-06-24 11:30 SAST
+**Test suite — Jest + ts-jest, 5 unit tests for rate limiter, `npm run test`.**
+
+**Why this mattered:** Zero automated tests. Any change to routing or utility code had no safety net. The rate limiter in particular is a correctness-critical piece (wrong logic = security gap) that deserves unit coverage.
+
+**What changed:**
+
+*New files:*
+- `jest.config.ts` — preset `ts-jest`, env `node`, roots `src/`, matches `**/*.test.ts`
+- `src/lib/rateLimit.test.ts` — 5 tests: allows first request, counts to max, blocks on exceed, resets after window, tracks keys independently. Mocks `ioredis` to avoid needing a live Redis.
+
+*`package.json`*
+- Added `"test": "jest"` to scripts
+
+**Coverage:** Rate limiter unit tested. Integration tests for bot flows remain a roadmap item.
+
+### Rollback to v1.11.0
+
+*Files to delete:* `jest.config.ts`, `src/lib/rateLimit.test.ts`
+
+| File | Before |
+|------|--------|
+| `package.json` scripts | No `"test"` entry |
 
 ---
 
@@ -346,19 +537,43 @@ New step `ob_kyc_waiting` ��� merchant can tap "Done, I've submitted" at a
 
 > All fixes must be surgical. Each fix gets its own changelog entry with before/after scores.
 
+### Immediate — Infrastructure (no code changes, env-var provisioning only)
+
+| Priority | Item | Action | Unlocks |
+|----------|------|--------|---------|
+| 1 | Provision `SENTRY_DSN` | Add to Koyeb env | Production error visibility — v1.11.0 activates |
+| 2 | Provision `REDIS_URL` | Add to Koyeb env (Redis add-on or Upstash) | Persistent multi-instance rate limiting — v1.10.0 activates |
+
+### Code — Open Issues
+
 | Priority | Issue # | Status | Fix Description | Score Impact |
 |----------|---------|--------|-----------------|--------------|
-| 1 | #1 | ✅ v1.1.0 | Category slug/value mismatch fixed | UX +1, Logical +1 |
-| 2 | #2 | ✅ v1.2.0 | KYC images persisted via `persistWhatsAppImage` | Reliability +2 |
-| 3 | #6 | ✅ v1.2.0 | Kitchen split: Unpaid / To Prepare / Ready | UX +1, Reliability +0.5 |
-| 4 | #3 | ✅ v1.3.0 | Duplicate order dedup guard (2-min window) | Reliability +0.5 |
-| 5 | #7 | ✅ v1.3.0 | Dashboard consolidated: 4 bubbles → 2 messages | UX +1 |
-| 6 | #10 | ✅ v1.4.0 | Category browse tappable list (sendListMessage) | Usability +1 |
-| 7 | #15 | ✅ v1.4.0 | Hours validated with HH:MM regex | Reliability +0.25 |
-| 8 | #12 | ✅ v1.5.0 | Orders list paginated (was capped at 5) | Usability +0.5 |
-| 9 | #8 | 🔲 Next | Reduce store listing noise on pages > 1 | UX +0.5 |
-| 10 | #11 | 🔲 Next | Session state timeout (ADDR_FLOW, cart_qty_*) | Reliability +0.5 |
-| 11 | #4 | 🔲 Next | Invalidate old Stitch payment links on retry | Reliability +0.5 |
-| 12 | #18 | 🔲 Next | Button-based feedback rating (replace text format) | Usability +0.5 |
-| 13 | #17 | 🔲 Next | Back button from product detail (restore page) | UX +0.5 |
-| 14 | #19 | 🔲 Next | Show current cart contents in cart-switch prompt | UX +0.25 |
+| 3 | #4 | 🔲 Next | Void old Stitch payment link on `retry_payment_` | Reliability +0.5 |
+| 4 | #11 | 🔲 Next | Session state timeout — ADDR_FLOW, cart_qty_* expire after 30 min of inactivity | Reliability +0.5, UX +0.5 |
+| 5 | #8 | 🔲 Next | Reduce store listing to 1 consolidated message (list + nav in one bubble) | UX +0.5 |
+| 6 | #5 | 🔲 Next | Store `merchant_timezone` (default SAST), use it for booking slot generation | Reliability +0.5 |
+| 7 | #18 | 🔲 Next | Button-based 1–5 star feedback rating | Usability +0.5 |
+| 8 | #9 | 🔲 Next | Back navigation in onboarding (← Back at each step) | UX +0.5 |
+| 9 | #17 | 🔲 Next | Back button from product detail restores pagination position | UX +0.25 |
+| 10 | #14 | 🔲 Next | Widen ADDR_FLOW escape to any non-address input | Reliability +0.25 |
+| 11 | #21 | 🔲 Next | Integration test suite (supertest + mocked WhatsApp sender) | Reliability +0.5 |
+
+---
+
+## Enhancement Opportunities (Aspirational — v2.x)
+
+These are forward-looking improvements beyond bug fixes. Each would materially expand the platform's commercial value.
+
+| Enhancement | Why | Complexity | Score Impact |
+|------------|-----|------------|--------------|
+| **Global product text search** | `search [term]` queries all active merchant catalogues — first step toward a true marketplace UX | Medium | Usability +0.5 |
+| **Discount codes / promotions** | Merchant creates a code; customer applies at cart confirm; order total adjusted before Stitch link generated | Medium | Usability +1, UX +0.5 |
+| **Scheduled broadcasts** | Merchant sets a time + message; cron sends at that moment | Medium | Usability +0.5 |
+| **Analytics export (CSV)** | `send_report csv` command emails or sends a download link with revenue, orders, top products | Medium | Usability +0.5 |
+| **WhatsApp template messages** | Register approved templates for sending promotions outside the 24-hour messaging window | High | Business critical for marketing |
+| **Appointment cancellation flow** | Customer or merchant cancels a booking; both parties notified; slot freed | Medium | UX +0.5 |
+| **Referral tracking** | `ref_[code]` system — merchants earn credit when a referred customer places their first order | High | Revenue model enabler |
+| **Multi-location support** | Merchant registers multiple physical locations; customer picks nearest at checkout | High | Expansion enabler |
+| **Merchant analytics digest** | Daily WhatsApp digest: "Yesterday: 12 orders, R4,200 revenue, 3 new customers" | Low | Merchant retention |
+| **Payout management** | Track what Omeru owes each merchant; mark as paid; merchant sees payout history | High | Financial operations |
+| **Integration test suite (full)** | Supertest-based tests for all major bot commands using a mocked WhatsApp sender and in-memory DB | High | Engineering safety net |

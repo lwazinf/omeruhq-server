@@ -12,6 +12,7 @@ import { createPaymentRequest } from '../payments/stitch';
 import { db } from '../../lib/db';
 import { handleAddressActions } from './customerAddress';
 import { handleCustomerBookings } from './customerBookings';
+import { isRateLimited } from '../../lib/rateLimit';
 
 /**
  * Main entry point for all incoming WhatsApp messages
@@ -24,12 +25,19 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
 
     const from = message.from;
 
+    // Drop messages from a number that's sending faster than 30/min
+    if (await isRateLimited(`wa:${from}`, 30, 60_000)) {
+        console.warn(`⚠️ Rate limited: ${from}`);
+        return;
+    }
+
     // Extract user input from various possible WhatsApp interactive types
     const textBody = message.text?.body;
     const buttonId = message.interactive?.button_reply?.id;
     const listId = message.interactive?.list_reply?.id;
 
-    const input = String(buttonId || listId || textBody || '').trim();
+    // Sanitize: strip null bytes, trim whitespace, cap at 1 000 chars
+    const input = String(buttonId || listId || textBody || '').replace(/\0/g, '').trim().slice(0, 1000);
 
     // Ignore empty messages unless they contain media/location for specific flows
     if (!input && message.type !== 'image' && message.type !== 'location') {
@@ -42,9 +50,9 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
 
         // 1. Session Management: Get or create session
         const session = await db.userSession.upsert({
-            where: { wa_id: from },
-            update: {},
-            create: { wa_id: from, mode: 'CUSTOMER' }
+            where:  { wa_id: from },
+            update: { message_count: { increment: 1 } },
+            create: { wa_id: from, mode: 'CUSTOMER', message_count: 1 },
         });
 
         // 2. Identify User Role (Merchant or Owner)
@@ -67,15 +75,9 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
 
         // 3. GLOBAL COMMANDS
 
-        // Help command — platform admin only (prevents leaking backend info to lower profiles)
-        if (input === 'HelpOmeru' || normalizedInput === 'helpomeru') {
-            if (isPlatformAdmin(from)) {
-                await handleHelpCommand(from);
-            } else if (session.mode === 'MERCHANT' && merchantForUser) {
-                await handleMerchantAction(from, 'menu', session, merchantForUser, message);
-            } else {
-                await sendCustomerWelcome(from);
-            }
+        // Help — public keywords show role-appropriate content; handleHelpCommand handles all levels
+        if (input === 'HelpOmeru' || normalizedInput === 'helpomeru' || normalizedInput === 'help' || input === '?') {
+            await handleHelpCommand(from);
             return;
         }
 
@@ -288,6 +290,17 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
         }
 
         if (input === 'c_home' || normalizedInput === 'hi' || normalizedInput === 'hello' || normalizedInput === 'hey' || normalizedInput === 'start') {
+            // Merchant in customer mode — surface the dashboard without forcing a mode switch
+            if (session.mode === 'CUSTOMER' && merchantForUser) {
+                await sendButtons(from,
+                    `👋 Welcome back! Shopping today?\n\n🏪 You also manage *${merchantForUser.trading_name}*.`,
+                    [
+                        { id: 'browse_shops',                        title: '🛍️ Browse Stores'  },
+                        { id: `sw_merchant_${merchantForUser.id}`,   title: '🏪 My Dashboard'   },
+                    ],
+                );
+                return;
+            }
             await sendCustomerWelcome(from);
             return;
         }
@@ -411,6 +424,18 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
                 '📝 *Step 1 of 6: Shop Name*\n' +
                 'What is your trading/shop name?'
             );
+            return;
+        }
+
+        // "status" / "where" — show current session context
+        if (normalizedInput === 'status' || normalizedInput === 'where') {
+            await sendStatusSummary(from, session);
+            return;
+        }
+
+        // "cart" — quick access without needing the button ID
+        if (normalizedInput === 'cart') {
+            await handleCustomerDiscovery(from, 'c_cart');
             return;
         }
 
@@ -690,4 +715,31 @@ const isPlatformAdmin = (waId: string): boolean => {
         .filter(Boolean)
         .map(normalizePhone);
     return admins.includes(normalizePhone(waId));
+};
+
+const sendStatusSummary = async (from: string, session: any): Promise<void> => {
+    let cartLine = '🛒 Cart is empty';
+    if (session.cart_json) {
+        try {
+            const cart = JSON.parse(session.cart_json);
+            const count: number = cart.items?.reduce((n: number, i: any) => n + i.qty, 0) || 0;
+            if (count > 0) cartLine = `🛒 ${count} item${count !== 1 ? 's' : ''} in cart — *${cart.merchant_name}*`;
+        } catch { /* bad JSON */ }
+    }
+
+    const lastMerchant = session.last_merchant_id
+        ? await db.merchant.findUnique({ where: { id: session.last_merchant_id }, select: { trading_name: true, handle: true } })
+        : null;
+
+    const lines = [
+        `📍 *Your Omeru*`,
+        cartLine,
+        lastMerchant ? `🏪 Last store: *${lastMerchant.trading_name}*` : '',
+    ].filter(Boolean).join('\n');
+
+    const btns: Array<{ id: string; title: string }> = [{ id: 'browse_shops', title: '🛍️ Browse Stores' }];
+    if (session.cart_json) btns.unshift({ id: 'c_cart', title: '🛒 View Cart' });
+    if (lastMerchant)      btns.push({ id: `@${lastMerchant.handle}`, title: '↩️ Back to Store' });
+
+    await sendButtons(from, lines, btns.slice(0, 3));
 };

@@ -23,8 +23,8 @@ const features = [
         <path d="M1 10h22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
-    title: 'PayFast instant EFT',
-    body: "South Africa's leading payment gateway. Customers pay from their banking app. Funds settle directly to your account.",
+    title: 'Stitch instant EFT',
+    body: "Instant EFT powered by Stitch. Customers pay from their banking app — no card needed. Funds settle directly to your account.",
     badge: 'ZAR payments',
     highlight: false,
   },

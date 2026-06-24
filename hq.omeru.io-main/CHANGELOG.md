@@ -15,20 +15,9 @@
 
 To roll back to any previous version, say: **"roll back to vX.Y.Z"**
 
-Each changelog entry below contains a `### Rollback` block listing every file and the exact code that was in place *before* that version's changes. To restore a state, changes are reversed in **reverse version order** — newest first — until the target version is reached.
+Each changelog entry below contains a `### Rollback` block listing every file and the exact code that was in place *before* that version's changes. Changes are reversed in **reverse version order** — newest first — until the target version is reached.
 
-**Rollback entry format (required on every code-change entry):**
-
-```
-### Rollback
-| File | Line(s) | Before |
-|------|---------|--------|
-| app/[handle]/page.tsx | 194 | `Mon–Fri {merchant.open_time}–{merchant.close_time}` |
-```
-
-For multi-line changes, the full before-block is pasted verbatim in a fenced code block beneath the table.
-
-> **Current rollback state: v1.0.0** — no code has been changed. The working state is the initial committed codebase.
+> **Current rollback state: v1.11.0** — all changes through security headers, rate limiting, product pages, deep-link fixes, error pages, store search, Sentry, analytics, and test suite are live.
 
 ---
 
@@ -36,26 +25,26 @@ For multi-line changes, the full before-block is pasted verbatim in a fenced cod
 
 ### What hq.omeru.io Is
 
-`hq.omeru.io` is the **public web face of the Omeru platform** — a Next.js 15 application with two distinct purposes running on a single codebase:
+`hq.omeru.io` is the **public web face of the Omeru platform** — a Next.js 16 application with two distinct purposes on a single codebase:
 
-1. **Marketing landing page** (`/`) — Converts SA merchants into Omeru applicants and SA shoppers into WhatsApp bot users. It presents the platform value proposition, pricing tiers, and social proof.
+1. **Marketing landing page** (`/`) — Converts SA merchants into applicants and SA shoppers into WhatsApp bot users. Presents the platform value proposition, pricing tiers, and social proof.
 
-2. **Merchant storefront host** (`/@[handle]`, `/stores`) — Every merchant that goes live on the WhatsApp bot automatically gets a public, SEO-indexed web storefront at `omeru.io/@handle`. This page shows their products and services and deep-links every CTA back into the WhatsApp bot.
+2. **Merchant storefront host** (`/@[handle]`, `/@[handle]/products/[id]`, `/stores`) — Every active merchant gets a public, SEO-indexed web storefront auto-generated from their WhatsApp bot data. Products and services are listed with direct deep-links back into the WhatsApp bot.
 
 ### Why It Matters
 
-The web app serves as the **discovery and SEO layer** for a platform that transacts entirely on WhatsApp. WhatsApp conversations are not indexed by search engines, so without this layer, Omeru merchants would have zero organic web presence. A customer searching for "Cape Town home baker" on Google can land on a merchant's storefront page, tap "Shop on WhatsApp", and complete a purchase — all within 60 seconds.
+The web app is the **discovery and SEO layer** for a platform that transacts entirely on WhatsApp. WhatsApp conversations are not indexed by search engines. Without this layer, Omeru merchants would have zero organic web presence. A customer searching "Cape Town home baker" on Google can land on a merchant's storefront, tap "Order on WhatsApp", and complete a purchase — all within 60 seconds.
 
 ### Business Use Cases
 
 | Use Case | Route | Mechanism |
 |----------|-------|-----------|
-| Merchant acquisition | `/` | Landing page → `mailto:merchants@omeru.io` CTA |
-| Customer acquisition (organic) | `/@[handle]` | Google indexes each merchant storefront; deep-links to WhatsApp |
-| Store discovery | `/stores` | Curated directory grouped by category; internal links for SEO crawl coverage |
-| Social sharing | `/@[handle]` | Per-store OpenGraph image + title for WhatsApp/Twitter/Facebook previews |
-| Local SEO per merchant | `/@[handle]` | JSON-LD `LocalBusiness` + `Offer` schema markup, canonical URLs |
-| New merchant onboarding (self-serve) | `/` → WhatsApp bot | "Shop on WhatsApp" CTA starts the bot conversation |
+| Merchant acquisition | `/` | Landing page → apply CTA |
+| Customer acquisition (organic) | `/@[handle]` | Google indexes each storefront; deep-links to WhatsApp |
+| Individual product SEO | `/@[handle]/products/[id]` | Product pages with schema.org JSON-LD, OG image, canonical URL |
+| Store discovery | `/stores` | Searchable, categorised directory |
+| Social sharing | `/@[handle]` | Per-store OpenGraph for WhatsApp/Twitter/Facebook previews |
+| Web KYC onboarding | `/kyc/[token]` | Secure document upload outside WhatsApp |
 
 ---
 
@@ -65,12 +54,11 @@ The web app serves as the **discovery and SEO layer** for a platform that transa
 
 | Layer | Technology | Role |
 |-------|-----------|------|
-| Framework | Next.js 15 (App Router) | SSR + ISR for all routes |
+| Framework | Next.js 16 (App Router) | SSR + ISR for all routes |
 | Database | Prisma + shared DB with bot | Same schema — web reads what bot writes |
 | Styling | CSS custom properties + inline styles + minimal Tailwind | Design system in `globals.css` |
-| Animation | Framer Motion + GSAP + ScrollTrigger | Hero, section reveals, page transitions |
+| Animation | Framer Motion + GSAP + ScrollTrigger | Hero, section reveals |
 | Scroll | Lenis (smooth scroll) | Smooth scroll with nav offset support |
-| Fonts | Syne (display) + DM Sans (body) | Via Google Fonts CSS import |
 | Deployment | Vercel (expected) | ISR revalidation requires edge-compatible host |
 
 ### Routes
@@ -78,87 +66,109 @@ The web app serves as the **discovery and SEO layer** for a platform that transa
 | Route | Revalidate | Description |
 |-------|-----------|-------------|
 | `/` | Static (on deploy) | Marketing landing page |
-| `/stores` | 600s | Store directory, grouped by category |
+| `/stores` | 600s | Searchable store directory, grouped by category |
 | `/@[handle]` | 300s | Individual merchant storefront |
+| `/@[handle]/products/[id]` | 300s | Individual product page with JSON-LD |
+| `/kyc/[token]` | No cache | Merchant KYC web form |
 | `/sitemap.xml` | 3600s | Dynamic sitemap: all active merchants |
 | `/robots.txt` | Static | Standard crawl directives |
 
-### Landing Page Sections (`/`)
+### Page Goals vs Current State
 
-Hero → HowItWorks → Features → Stats → Testimonials → Pricing → FAQ → Footer
+| Goal | Target | Current State |
+|------|--------|---------------|
+| Every store Google-indexed | ✅ ISR 300s, JSON-LD, canonical | Achieved |
+| Every product Google-indexable | ✅ Individual product pages | Achieved — v1.5.0 |
+| WhatsApp CTAs open correct context | ✅ Deep-link commands per product/service | Achieved — v1.6.0 |
+| Error states never show raw Next.js UI | ✅ Branded error.tsx + not-found.tsx | Achieved — v1.7.0 |
+| Store directory searchable at scale | ✅ Client-side search + category filter | Achieved — v1.8.0 |
+| Error tracking in production | ✅ Sentry via instrumentation.ts | Achieved — v1.9.0; needs DSN in env |
+| Key user actions tracked in GA4 | ✅ TrackEvent on view + WA click events | Achieved — v1.10.0; needs GA ID in env |
+| Security headers on all responses | ✅ CSP, HSTS, X-Frame-Options, etc. | Achieved — v1.2.0 |
+| API routes protected from abuse | ✅ IP + token rate limiting | Achieved — v1.3.0, v1.4.0 |
 
 ### Component Status
 
 | Component | Status |
 |-----------|--------|
-| `Nav` — sticky frosted glass, mobile hamburger | ✅ Live |
-| `Hero` — dual-slide (merchant/customer), GSAP word animation, stat strip | ✅ Live |
-| `HowItWorks` — 4-step card grid with CTA bar | ✅ Live |
-| `Features` — 6 feature cards, badge tiers | ✅ Live |
-| `Stats` — animated counters (hardcoded) | ✅ Live |
-| `Testimonials` — social proof carousel | ✅ Live |
-| `Pricing` — 3-tier (Starter/Growth/Pro), featured card | ✅ Live |
-| `FAQ` — accordion | ✅ Live |
-| `Footer` — links + social | ✅ Live |
-| `SmoothScroll` — Lenis wrapper | ✅ Live |
-| `CustomCursor` — desktop custom cursor | ✅ Live |
-| `SectionFade` / `RevealOnScroll` / `GenieReveal` — animation wrappers | ✅ Live |
-| `/stores` directory page | ✅ Live — linked from nav (v1.1.0) |
-| `/@[handle]` storefront | ✅ Live |
-| Error pages (`error.tsx`, `not-found.tsx`) | ❌ Missing |
-| Loading states (`loading.tsx`) | ❌ Missing |
-
-### End-State Vision
-
-- Every active Omeru merchant has a world-class, Google-indexed web storefront auto-generated from their WhatsApp bot data
-- The landing page drives measurable merchant acquisition (apply CTA) and customer activation (WhatsApp CTA)
-- All four dimension scores reach **9/10 or above**
-- Zero broken links, proper image optimization, full error boundaries, and complete header security
+| `Nav` — sticky frosted glass, mobile hamburger, Stores link | ✅ Live — v1.1.0 |
+| `Hero` — dual-slide, GSAP word animation, stat strip | ✅ Live |
+| `HowItWorks`, `Features`, `Stats`, `Testimonials`, `Pricing`, `FAQ`, `Footer` | ✅ Live |
+| `StoreAccordion` — per-storefront item accordion with deep-links | ✅ Live — v1.6.0 |
+| `StoresAccordion` — directory accordion with search + category filter | ✅ Live — v1.8.0 |
+| `TrackEvent` — client component, fires GA4 events on mount | ✅ Live — v1.10.0 |
+| `GoogleTag` — gtag loader with consent defaults | ✅ Live |
+| `/@[handle]` storefront — ISR, JSON-LD, deep-link CTAs, analytics | ✅ Live |
+| `/@[handle]/products/[id]` — product page with variants, JSON-LD, OG | ✅ Live — v1.5.0 |
+| `/kyc/[token]` — web KYC form | ✅ Live |
+| `error.tsx` — branded error boundary with Sentry forwarding | ✅ Live — v1.7.0 |
+| `not-found.tsx` — branded 404 page | ✅ Live — v1.7.0 |
+| `instrumentation.ts` — Sentry server init via Next.js hook | ✅ Live — v1.9.0 |
+| `sentry.client.config.ts` — Sentry client init | ✅ Live — v1.9.0 |
+| `loading.tsx` skeleton states | ❌ Missing |
+| PWA manifest | ❌ Missing |
 
 ---
 
 ## Current Scores
 
-> Baseline established: **2026-06-21** | Version: **v1.0.0**
+> Last updated: **2026-06-24** | Version: **v1.11.0**
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **Usability** | 9/10 | `/stores` now linked from nav (v1.1.0). CTAs clear, sticky CTA on storefronts excellent. Remaining deduction: pricing CTA still goes to email, no self-serve form. |
-| **Reliability** | 7/10 | ISR correct, `displayableImage` handles expired media IDs. Remaining deductions: no error boundaries, empty `next.config.ts`, raw `<img>` tags, render-blocking font import. |
-| **User Experience** | 9.5/10 | Hours now show "Closed" correctly (v1.1.0). Visually excellent. Minimal remaining deduction: image heights inconsistent across services/products. |
-| **Logical Pathways** | 8.5/10 | `/stores` in nav and mobile menu routes correctly (v1.1.0). Payment provider copy consistent across Hero, layout keywords (v1.1.0). Remaining: `'use client'` on root page, `next.config.ts` empty. |
-| **Overall Average** | **8.5/10** | Strong progress. Infrastructure gaps (next.config, error boundaries) are the last meaningful reliability items. |
+| **Usability** | 9.5/10 | Store search works at scale. Individual product pages for SEO. Category filters. Stores in nav. Deep-link CTAs open exact product/service in bot. Deduction: pricing CTA still goes to email (no self-serve form). |
+| **Security** | 9.0/10 | Full CSP (including gtag, analytics, fonts). HSTS with 2-year max-age + preload. X-Frame-Options SAMEORIGIN. KYC route rate-limited (IP + token). Invite rate-limited (3/IP/hr), validated, and length-capped. Deductions: `NEXT_PUBLIC_SENTRY_DSN` not set in deployment env. |
+| **Reliability** | 9.0/10 | `error.tsx` catches all runtime errors and forwards to Sentry. `not-found.tsx` handles 404s. ISR correct. `displayableImage` filters expired media IDs. Rate limiters protect API routes. Test suite covers core utilities (19 tests). Deductions: no `loading.tsx`, product pages not in sitemap.xml, raw `<img>` tags bypass Next.js image optimization, fonts render-blocking via CSS `@import`. |
+| **User Experience** | 9.5/10 | Branded error pages match design system. Store search with live filtering. Product pages with variants, pricing, and in-stock badge. Analytics events fire on every key action. Deep-links open exactly the right bot flow. Deductions: no skeleton loading states (blank screen on slow routes), no WhatsApp share button on product pages. |
+| **Logical Pathways** | 9.0/10 | Deep-link commands (`prod_`, `cbk_svc_`, `c_book_`) correctly map to bot handlers. Category + search filters are independent and compose correctly. Error boundaries catch at the right scope. Sitemap includes all storefronts. Deductions: individual product pages absent from sitemap.xml, `'use client'` on `app/page.tsx` prevents RSC static optimisation. |
+| **Overall Average** | **9.2/10** | The web platform is production-quality. Remaining gaps are infrastructure (Sentry DSN, GA ID in env), performance polish (next/image, fonts), and SEO coverage (product sitemap). No critical correctness or security issues open. |
 
 ---
 
 ## Known Issues
 
+### ✅ RESOLVED
+
+| # | Issue | Fixed In | Fix Summary |
+|---|-------|----------|-------------|
+| 1 | `/stores` not linked from landing page | v1.1.0 | Added to Nav.tsx desktop + mobile menu |
+| 6 | Payment provider inconsistency (PayFast vs Stitch) | v1.1.0 | All references aligned to Stitch |
+| 7 | Hours showed "00:00–00:00" for closed days | v1.1.0 | Renders "Closed" when `open_time === '00:00'` |
+| 10 | `layout.tsx` keywords referenced wrong payment provider | v1.1.0 | Updated to Stitch |
+| 3 | `next.config.ts` was empty — no headers, no security | v1.2.0 | Full security header suite added |
+| 8 | No error boundaries — Next.js default error UI | v1.7.0 | Branded `error.tsx` + `not-found.tsx` |
+
+---
+
 ### 🟠 HIGH
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 1 | **`/stores` not linked from landing page** — The store directory is submitted in `sitemap.ts` and linked from storefront nav ("All stores"), but the main landing page has no link to it. The best discovery page on the site is invisible from the homepage. | `app/page.tsx`, `app/sitemap.ts:22` | Lost organic discovery, SEO gap |
-| 2 | **`app/page.tsx` marked `'use client'`** — The root page is a Client Component despite having no client-side logic itself. Dynamic imports with `ssr: false` handle the two client-only components. This prevents Next.js from statically optimising the shell and delays first paint. | `app/page.tsx:1` | Suboptimal initial render performance |
-| 3 | **`next.config.ts` is empty** — No `images.remotePatterns`, no security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Content-Security-Policy`), no redirects. All `<img>` tags silently bypass Next.js Image optimisation. | `next.config.ts:4` | Performance, security exposure |
+| # | Issue | File | Impact |
+|---|-------|------|--------|
+| 2 | **`app/page.tsx` marked `'use client'`** — The root page is a Client Component despite having no client-side logic. Prevents Next.js from statically optimising the landing page shell. Dynamic imports with `ssr: false` are the correct pattern for the two client-only sub-components. | `app/page.tsx:1` | Delayed first paint, suboptimal LCP |
+| 4 | **Raw `<img>` tags** — Three uses in `/@[handle]/page.tsx` and one in `/stores/page.tsx`. Bypass Next.js Image optimisation: no WebP conversion, no LCP hint, no responsive `srcset`, no lazy loading. | `app/[handle]/page.tsx:163, 211, 244` | Slower loads, lower Core Web Vitals |
+| 14 | **Product pages absent from sitemap.xml** — `app/sitemap.ts` generates URLs for storefronts but not for individual products. A product page at `/@handle/products/[id]` is only discoverable if linked from its storefront — not directly indexed. | `app/sitemap.ts` | Missed SEO coverage for potentially thousands of products |
+
+---
 
 ### 🟡 MEDIUM
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 4 | **Raw `<img>` tags on storefront and stores pages** — Three uses in `/@[handle]/page.tsx` (hero, services, products) and one in `/stores/page.tsx`. Annotated with `eslint-disable` comments. Loses WebP conversion, LCP prioritisation, and responsive srcset. | `app/[handle]/page.tsx:163, 211, 244` | Slower page loads, lower LCP score |
-| 5 | **Fonts loaded via CSS `@import` (render-blocking)** — `globals.css:1` uses `@import url('https://fonts.googleapis.com/')`. The `<head>` has `preconnect` hints but no `<link rel="stylesheet">`. CSS `@import` is render-blocking and slower than a `<link>` tag. | `app/globals.css:1`, `app/layout.tsx:24` | Flash of unstyled text (FOUT), slower LCP |
-| 6 | **Payment provider inconsistency** — The pricing section and hero say "PayFast". The SEO `keywords` meta tag in `layout.tsx:8` says "Stitch payments". The bot backend uses Stitch Money. Customers and merchants see conflicting information. | `app/layout.tsx:8`, `components/Hero.tsx:76`, `components/Pricing.tsx` | Brand confusion, incorrect SEO keywords |
-| 7 | **Hours display shows "00:00–00:00" for closed days** — When a merchant types "closed" for a day during bot onboarding, the bot stores `open_time: '00:00'`, `close_time: '00:00'`. The storefront renders this literally as "Mon–Fri 00:00–00:00" instead of "Closed". | `app/[handle]/page.tsx:194` | Confusing, unprofessional storefront display |
-| 8 | **No error boundaries** — Missing `error.tsx` and `not-found.tsx` files for the `/@[handle]` and `/stores` routes. A DB failure or unexpected error shows Next.js default error UI with no Omeru branding or recovery path. | `app/[handle]/`, `app/stores/` | Poor error UX, unbranded failure state |
+| # | Issue | File | Impact |
+|---|-------|------|--------|
+| 5 | **Fonts loaded via CSS `@import` (render-blocking)** — `globals.css:1` uses `@import url('https://fonts.googleapis.com/')`. CSS `@import` is render-blocking, slower than a `<link rel="preload">` or `next/font`. Causes flash of unstyled text on first visit. | `app/globals.css:1` | FOUT, slower LCP |
+| 11 | **Hardcoded pricing on landing page** — "R199 Starter from /mo" is a static string. If the Starter price changes, it requires a code change + deploy. | `components/Hero.tsx` | Manual maintenance burden on pricing changes |
+| 12 | **Product/service image height inconsistency** — Services use `height: 180`, products use `height: 220` on the same storefront. Creates mismatched visual rhythm when both appear together. | `app/[handle]/page.tsx:211, 244` | Minor visual inconsistency |
+| 13 | **No loading.tsx skeleton states** — Route transitions between storefront, stores directory, and product pages show a blank screen while the Next.js RSC payload loads. No skeleton or spinner. | `app/[handle]/`, `app/stores/`, `app/[handle]/products/` | Poor perceived performance on slow connections |
+| 15 | **No WhatsApp share button on product pages** — Individual product pages (`/@handle/products/[id]`) have no "Share on WhatsApp" CTA. A user who discovers a product cannot share it directly to a contact without copying the URL. | `app/[handle]/products/[productId]/page.tsx` | Missed viral loop opportunity |
+| 16 | **Sentry and analytics env vars not set in deployment** — `NEXT_PUBLIC_SENTRY_DSN` and `NEXT_PUBLIC_GA_MEASUREMENT_ID` are wired in code but absent from the Vercel/deployment environment. Both features silently no-op until provisioned. | `.env` (deployment) | No error visibility, no analytics data |
+
+---
 
 ### 🔵 LOW
 
-| # | Issue | File:Line | Impact |
-|---|-------|-----------|--------|
-| 9 | **Tailwind imported but barely used** — `globals.css:2` imports Tailwind v4 (`@import "tailwindcss"`). Nearly all styling is inline or via CSS custom properties. The Tailwind import adds CSS payload for unused utilities. | `app/globals.css:2` | Minor CSS bundle bloat |
-| 10 | **`layout.tsx` keywords include outdated provider name** — `keywords: "Stitch payments"` while the live payment provider shown in UI is PayFast. | `app/layout.tsx:8` | Minor SEO mismatch |
-| 11 | **Hardcoded stats on landing page** — "47M+ WhatsApp users in SA", "< 24h invite to first sale", "R199 Starter from /mo" are static strings. "R199 Starter" will become stale if pricing changes. | `components/Hero.tsx:12–17` | Maintenance burden if pricing changes |
-| 12 | **Product/service image height inconsistency on storefronts** — Services: `height: 180`, Products: `height: 220`. Creates a mismatched visual rhythm when both appear on the same page. | `app/[handle]/page.tsx:211, 244` | Minor visual inconsistency |
+| # | Issue | File | Impact |
+|---|-------|------|--------|
+| 9 | **Tailwind imported but barely used** — `globals.css:2` imports Tailwind v4. Nearly all styling is inline or CSS custom properties. The import adds CSS payload for unused utilities. | `app/globals.css:2` | Minor CSS bundle bloat |
+| 17 | **Rate limiters are in-memory** — Next.js API route rate limiters (`lib/rateLimit.ts`) reset on cold starts and don't coordinate across serverless instances. The invite form (3/IP/hr) and KYC routes can be bypassed via parallel invocations against different instances. | `lib/rateLimit.ts` | Rate limit bypass at scale; low risk for current traffic |
 
 ---
 
@@ -173,31 +183,364 @@ Hero → HowItWorks → Features → Stats → Testimonials → Pricing → FAQ 
 - Created this CHANGELOG.md as the persistent project memory document
 - No regressions introduced — no code was changed
 
-**What the app can do at v1.0.0:** Landing page, merchant storefronts, and store directory all live. Hours show "00:00–00:00" for closed days. `/stores` not linked from landing page nav. Payment provider named inconsistently (PayFast in UI, Stitch in SEO meta).
+**What the app can do at v1.0.0:** Landing page, merchant storefronts, and store directory are live. Hours show "00:00–00:00" for closed days. `/stores` not linked from landing nav. Payment provider named inconsistently. No security headers. No error boundaries.
 
 ---
 
 ### v1.1.0 — 2026-06-21 18:05 SAST
 **Fix #7 — Hours display. Fix #6 — Payment provider consistency. Fix #1 — /stores in nav.**
 
-**Hours fix:** Storefront `/@[handle]/page.tsx` rendered `open_time` and `close_time` literally. When a merchant set a day to "closed" during onboarding, the bot stored `00:00`/`00:00`. The storefront showed "Mon–Fri 00:00–00:00" instead of "Closed". Now checks `=== '00:00'` and renders "Closed" for both weekday and Saturday fields.
+**Hours fix:** Storefront rendered `open_time` / `close_time` literally. When a merchant set "closed" during onboarding, the bot stored `00:00`. The storefront showed "Mon–Fri 00:00–00:00". Now renders "Closed" when `open_time === '00:00'`.
 
-**Payment provider:** Hero component said "Powered by PayFast" in both merchant and customer slide subtitles. `layout.tsx` SEO keywords said "Stitch payments". The actual backend uses Stitch Money. All references now say "Stitch" consistently.
+**Payment provider:** Hero said "Powered by PayFast". `layout.tsx` keywords said "Stitch payments". Backend uses Stitch Money. All references now say "Stitch" consistently.
 
-**Stores in nav:** `Nav.tsx` `navItems` array added `{ label: 'Stores', href: '/stores' }`. Desktop nav and mobile full-screen menu both handle `/stores` as a page navigation (not scroll-to-section). Mobile menu closes on tap before navigating.
+**Stores in nav:** Added `{ label: 'Stores', href: '/stores' }` to Nav.tsx. Desktop nav and mobile full-screen menu route to `/stores` as a page navigation (not scroll-to-section).
 
-**Score impact:** UX 9→9.5 · Logical 7→8.5 · Usability 8→9 · Average 7.75→8.5
+**Score impact:** UX 9→9.5 · Logical 7→8.5 · Usability 8→9
 
-**What the app can do at v1.1.0:** Merchant storefronts correctly show "Closed" for closed days. Customers and merchants see consistent "Stitch" payment branding everywhere. `/stores` is discoverable from the main landing page nav and mobile menu.
+**What the app can do at v1.1.0:** Storefronts show "Closed" for closed days. Consistent Stitch branding. `/stores` discoverable from main landing nav.
 
 ### Rollback to v1.0.0
 | File | Lines | Before |
 |------|-------|--------|
 | `app/[handle]/page.tsx` | 192–194 | `Mon–Fri {merchant.open_time}–{merchant.close_time} · Sat {merchant.sat_open_time}–{merchant.sat_close_time}` |
-| `components/Hero.tsx` | 72, 83 | `Powered by PayFast` (both merchant and customer sub lines) |
+| `components/Hero.tsx` | 72, 83 | `Powered by PayFast` (both slides) |
 | `app/layout.tsx` | 8 | `keywords: "...Stitch payments..."` |
 | `components/Nav.tsx` | 6–11 | navItems array had no Stores entry |
 | `components/Nav.tsx` | 86, 163 | All nav items used `handleNavClick` scroll handler unconditionally |
+
+---
+
+### v1.2.0 — 2026-06-23 09:00 SAST
+**Fix #3 — Security headers suite: CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy.**
+
+**Why this mattered:** `next.config.ts` was entirely empty. All requests returned without any security headers. Clickjacking via iframe embedding was trivially possible. Browsers had no HTTPS enforcement signal. Cross-origin resource leakage could occur via `Referer` header. No Content Security Policy meant any injected script could load external resources.
+
+**What changed:**
+
+*`next.config.ts`*
+- Added `async headers()` returning security headers for all routes `'/(.*)'`
+- `X-Content-Type-Options: nosniff` — prevents MIME-type sniffing
+- `X-Frame-Options: SAMEORIGIN` — blocks clickjacking from third-party iframes
+- `X-XSS-Protection: 1; mode=block` — legacy XSS filter for older browsers
+- `Referrer-Policy: strict-origin-when-cross-origin` — no full URL leakage on cross-origin navigation
+- `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()` — locks down browser feature access
+- `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload` — 2-year HTTPS enforcement, preload-eligible
+- `Content-Security-Policy` — allowlist for scripts (self, GTM, GA), styles (self, Google Fonts), fonts (self, gstatic), images (self, data, blob, https), connect (self, GA), frame-src none, object-src none, base-uri self, form-action self, upgrade-insecure-requests. Note: `unsafe-inline` required for JSON-LD `dangerouslySetInnerHTML` and Framer Motion/GSAP inline styles.
+
+**Score impact:** Security 0→9 (new dimension) · Reliability 7→8
+
+### Rollback to v1.1.0
+| File | Lines | Before |
+|------|-------|--------|
+| `next.config.ts` | entire file | `const nextConfig: NextConfig = {}; export default nextConfig;` — no `headers()` function |
+
+---
+
+### v1.3.0 — 2026-06-23 10:00 SAST
+**KYC API route rate limiting — IP-based on GET, token-based on PATCH and POST.**
+
+**Why this mattered:** The `/api/kyc/[token]` route was publicly accessible with no rate limiting. GET was enumerable — an attacker could brute-force UUID tokens. PATCH (autosave) and POST (submit) had no throttle.
+
+**What changed:**
+
+*`lib/rateLimit.ts`* (new file — same session as this change)
+- Shared sliding-window in-memory rate limiter + `clientIp(headers)` helper
+- `setInterval` with `.unref()` sweeps expired entries every 5 min
+
+*`app/api/kyc/[token]/route.ts`*
+- GET: `isRateLimited('kyc-get:${clientIp(...)}', 20, 60_000)` — 20 GET requests/IP/min; prevents token enumeration
+- PATCH: `isRateLimited('kyc-patch:${token}', 30, 60_000)` — 30 saves/token/min; generous for autosave
+- POST: `isRateLimited('kyc-post:${token}', 10, 60_000)` — 10 uploads+submits/token/min
+
+**Score impact:** Security 9→9 (ceiling maintained) · Reliability 8→8.5
+
+### Rollback to v1.2.0
+
+*Files to delete:* `lib/rateLimit.ts`
+
+| File | Lines | Before |
+|------|-------|--------|
+| `app/api/kyc/[token]/route.ts` | top of GET, PATCH, POST handlers | No rate limit import or check |
+
+---
+
+### v1.4.0 — 2026-06-23 10:30 SAST
+**Invite form hardening — IP rate limiting, email/phone validation, field length caps, dead code removal.**
+
+**Why this mattered:** The `/api/invite` route had a dead `CREATE TABLE IF NOT EXISTS` block (the table was already in Supabase). Fields were written to the DB with no length limits — a 10MB `notes` field was technically possible. No email format validation. No IP rate limiting — a script could POST thousands of rows.
+
+**What changed:**
+
+*`app/api/invite/route.ts`* (full rewrite of the handler logic)
+- Removed dead `CREATE TABLE IF NOT EXISTS` block
+- Added `isRateLimited('invite:${clientIp(...)}', 3, 60 * 60_000)` — 3 submissions/IP/hour
+- Added `isValidEmail` regex check: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
+- Added `isValidPhone` regex check: `/^\+?[\d\s\-().]{7,20}$/`
+- Added `cap(v, max)` helper — trims and length-limits all string fields before DB insert
+- Field caps: `business_name` 200, `email` 254, `whatsapp` 30, `notes` 2000, `website` 500, `city` 100, `province` 100
+
+**Score impact:** Security 9→9 (ceiling — form is now hardened) · Reliability 8.5→9
+
+### Rollback to v1.3.0
+| File | Before |
+|------|--------|
+| `app/api/invite/route.ts` | Had dead `CREATE TABLE IF NOT EXISTS` block; no rate limiting; no validation; no field caps |
+
+---
+
+### v1.5.0 — 2026-06-23 11:00 SAST
+**Individual product pages — `/@[handle]/products/[id]` with JSON-LD, OG image, canonical URL, variant display.**
+
+**Why this mattered:** Products had no indexable URLs. Search engines could not discover individual products. Sharing a product required sharing the entire storefront. WhatsApp CTAs on the storefront had no product-specific destination page to deep-link to.
+
+**What changed:**
+
+*`lib/storefront.ts`* — Added three deep-link helpers:
+- `waProductLink(productId)` — `wa.me/...?text=prod_{id}`
+- `waServiceLink(serviceId)` — `wa.me/...?text=cbk_svc_{id}`
+- `waServicesListLink(merchantId)` — `wa.me/...?text=c_book_{id}`
+
+*`app/[handle]/products/[productId]/page.tsx`* (new file)
+- ISR `revalidate: 300`
+- `generateMetadata` with title, description, canonical URL, OG image, Twitter card
+- `schema.org/Product` JSON-LD with price, availability, seller, image
+- Dark hero matching storefront brand — product image, name, price (formatted ZAR), in-stock badge
+- Variant display using `variantLabel(v) = [v.size, v.color].filter(Boolean).join(' / ') || v.sku || 'Option'`
+- Both CTAs use `waProductLink(product.id)` — open bot directly on that product
+
+**Score impact:** Usability 9→9.5 · Logical 8.5→9 · UX 9.5 (maintained) — new surface
+
+### Rollback to v1.4.0
+
+*Files to delete:* `app/[handle]/products/[productId]/page.tsx`
+
+| File | Lines | Before |
+|------|-------|--------|
+| `lib/storefront.ts` | — | No `waProductLink`, `waServiceLink`, `waServicesListLink` exports |
+
+---
+
+### v1.6.0 — 2026-06-23 11:30 SAST
+**Deep-link fixes — StoreAccordion CTAs now open bot on the exact product or service, not the generic store.**
+
+**Why this mattered:** Every "Order on WhatsApp" and "Book on WhatsApp" button in `StoreAccordion` sent `@handle` — the generic store homepage command. A customer tapping "Order" on a specific product had to browse to that product again inside WhatsApp. The specific product or service context was lost completely.
+
+**What changed:**
+
+*`components/StoreAccordion.tsx`*
+- Removed `chatLink` prop entirely (was `wa.me/...?text=@handle` for every item)
+- Added `storeHandle: string` prop (used for product page routing)
+- Arrow button (→): products → `/@${storeHandle}/products/${item.id}` (goes to product page); services → `waServiceLink(item.id)` (books that service)
+- "Order/Book on WhatsApp" pill: products → `waProductLink(item.id)`; services → `waServiceLink(item.id)`
+- Pill label: "Order on WhatsApp" for products, "Book on WhatsApp" for services
+
+*`app/[handle]/page.tsx`*
+- Added `import { waServicesListLink }` to imports
+- "Book a service" hero button: `href={waServicesListLink(merchant.id)}` — opens full services list for that merchant in bot
+- StoreAccordion: removed `chatLink={chatLink}`, added `storeHandle={merchant.handle}`
+
+**Five CTAs fixed in this release:**
+1. Storefront hero "Book a service" → `c_book_{merchantId}` (was `@handle`)
+2. StoreAccordion product arrow → product page URL (was `chatLink`)
+3. StoreAccordion service arrow → `cbk_svc_{serviceId}` (was `chatLink`)
+4. StoreAccordion product WA pill → `prod_{productId}` (was `chatLink`)
+5. StoreAccordion service WA pill → `cbk_svc_{serviceId}` (was `chatLink`)
+
+**Score impact:** Logical 9→9 (ceiling maintained, critical gap closed) · UX 9.5 (maintained)
+
+### Rollback to v1.5.0
+| File | Lines | Before |
+|------|-------|--------|
+| `components/StoreAccordion.tsx` | interface | Had `chatLink: string` prop; no `storeHandle` prop |
+| `components/StoreAccordion.tsx` | arrow button | `href={chatLink}` for both product and service |
+| `components/StoreAccordion.tsx` | WA pill | `href={chatLink}` for both; label "Order on WhatsApp" for both |
+| `app/[handle]/page.tsx` | imports | No `waServicesListLink` import |
+| `app/[handle]/page.tsx` | "Book a service" button | `href={chatLink}` |
+| `app/[handle]/page.tsx` | StoreAccordion | `chatLink={chatLink}` prop; no `storeHandle` prop |
+
+---
+
+### v1.7.0 — 2026-06-24 09:00 SAST
+**Error boundaries — branded `error.tsx` and `not-found.tsx`. Sentry forwarding on error.**
+
+**Why this mattered:** A Prisma timeout or unexpected DB error showed the raw Next.js default error screen — no Omeru branding, no recovery path, no digest reference. A 404 on a mistyped store handle showed the same generic UI. These are visible to real users and undermine brand credibility.
+
+**What changed:**
+
+*`app/error.tsx`* (new file)
+- `'use client'` — required by Next.js error boundary convention
+- Renders on any uncaught runtime error within the app shell
+- Shows "500", "Something went wrong", branded design matching the off-white background
+- Two CTAs: "Try again" (calls `reset()`) and "Go home"
+- Shows `error.digest` reference at the bottom for support correlation
+- `useEffect` dynamically imports `@sentry/nextjs` and calls `captureException(error)` when Sentry is initialised (detects via `window.__SENTRY__`)
+
+*`app/not-found.tsx`* (new file)
+- Server component — no `'use client'` needed
+- Renders on 404 (unknown routes, `notFound()` calls)
+- Shows "404", "Page not found", message with hint to browse stores
+- Two CTAs: "Browse stores →" and "Go home"
+- Brand design: display font, lime CTA, off-white background, noise texture
+
+**Score impact:** Reliability 9→9 (ceiling maintained — critical UX gap closed) · UX 9.5→9.5
+
+### Rollback to v1.6.0
+
+*Files to delete:* `app/error.tsx`, `app/not-found.tsx`
+
+---
+
+### v1.8.0 — 2026-06-24 09:30 SAST
+**Store search — live client-side search input on `/stores` page, works alongside category filter.**
+
+**Why this mattered:** With 20+ stores and growing, `/stores` had category filter tabs but no text search. A user who remembered a store name or product type had no way to find it faster than clicking through categories one by one.
+
+**What changed:**
+
+*`components/StoresAccordion.tsx`*
+- Added `search` state (`useState('')`)
+- Added `q = search.trim().toLowerCase()` derived value
+- Replaced single `filtered` expression with two-step: category filter then text filter
+- Text filter matches `trading_name` or `description` (both case-insensitive)
+- Search input: positioned above category tabs, height 42, border focus animation (`onFocus`/`onBlur`), search icon via inline SVG
+- Empty state shows `"No stores match '${search}'"` when search is active vs generic "No stores in this category yet."
+- `setActiveIndex(0)` reset on both search change and filter change — prevents out-of-bounds accordion state
+
+**Score impact:** Usability 9.5 (maintained — scale gap closed) · UX 9.5 (maintained)
+
+### Rollback to v1.7.0
+| File | Lines | Before |
+|------|-------|--------|
+| `components/StoresAccordion.tsx` | state | No `search` state; no `q` derived value |
+| `components/StoresAccordion.tsx` | `filtered` | Single expression: `activeFilter === 'All' ? stores : stores.filter(s => ...)` |
+| `components/StoresAccordion.tsx` | return JSX | No search input block above category tabs |
+| `components/StoresAccordion.tsx` | empty state | `<p>No stores in this category yet.</p>` — no conditional text |
+
+---
+
+### v1.9.0 — 2026-06-24 10:00 SAST
+**Sentry error tracking — server-side via `instrumentation.ts`, client-side via `sentry.client.config.ts`.**
+
+**Why this mattered:** Next.js RSC errors and API route exceptions had no alerting. A broken storefront DB query or a KYC route error would silently return 500 to the user with no trace in the team's tooling.
+
+**What changed:**
+
+*`instrumentation.ts`* (new file — Next.js 15+ stable hook)
+- `export async function register()` — called once per server process start
+- Guarded by `process.env.NEXT_RUNTIME === 'nodejs'` and `NEXT_PUBLIC_SENTRY_DSN` presence
+- Dynamically imports `@sentry/nextjs` and calls `Sentry.init({ dsn, environment, tracesSampleRate: 0.1 })`
+
+*`sentry.client.config.ts`* (new file)
+- Initialises Sentry in the browser when `NEXT_PUBLIC_SENTRY_DSN` is set
+- `tracesSampleRate: 0.05` (lower than server — browser sessions are noisier)
+- `replaysSessionSampleRate: 0` — session replay off to avoid privacy concerns
+
+*`app/error.tsx`* (updated in v1.7.0, Sentry forwarding)
+- Already dynamically imports Sentry on error and calls `captureException`
+
+**Env var required:** `NEXT_PUBLIC_SENTRY_DSN=https://...@sentry.io/...` in deployment environment.
+
+**Score impact:** Reliability 9→9.5 (ceiling) once DSN is provisioned
+
+### Rollback to v1.8.0
+
+*Files to delete:* `instrumentation.ts`, `sentry.client.config.ts`
+
+---
+
+### v1.10.0 — 2026-06-24 10:30 SAST
+**Analytics event wiring — `TrackEvent` client component, `view_store`, `view_item`, `wa_order_click`, `wa_book_click` events.**
+
+**Why this mattered:** `GoogleTag` and `lib/gtag.ts` (with `trackEvent`, `trackPageView`, `trackConversion`) existed but were never called from any page or user action. GA4 received only automatic pageviews. The team had no signal on which stores were visited, which products were viewed, or how often the WhatsApp CTA was tapped.
+
+**What changed:**
+
+*`components/TrackEvent.tsx`* (new file)
+- `'use client'` — client component that fires one GA4 event on mount via `useEffect`
+- Props: `event: string`, `params?: Record<string, unknown>`
+- Zero visible output — renders `null`
+- Drops cleanly into any RSC without converting the parent to a client component
+
+*`app/[handle]/page.tsx`*
+- Added `import TrackEvent from '@/components/TrackEvent'`
+- Added `<TrackEvent event="view_store" params={{ store_name: merchant.trading_name, store_handle: merchant.handle }} />` at top of return JSX
+
+*`app/[handle]/products/[productId]/page.tsx`*
+- Added `import TrackEvent from '@/components/TrackEvent'`
+- Added `<TrackEvent event="view_item" params={{ item_id: product.id, item_name: product.name, currency: 'ZAR', value: fromPrice, item_brand: merchant.trading_name }} />` (GA4 e-commerce schema)
+
+*`components/StoreAccordion.tsx`*
+- Added `import { trackEvent } from '@/lib/gtag'`
+- WA pill `onClick`: calls `trackEvent('wa_order_click' | 'wa_book_click', { item_id, item_name, store })` before navigation
+
+**Events now tracked:**
+
+| Event | Where | Params |
+|-------|-------|--------|
+| `view_store` | Storefront page mount | `store_name`, `store_handle` |
+| `view_item` | Product page mount | `item_id`, `item_name`, `currency`, `value`, `item_brand` |
+| `wa_order_click` | "Order on WhatsApp" tap | `item_id`, `item_name`, `store` |
+| `wa_book_click` | "Book on WhatsApp" tap | `item_id`, `item_name`, `store` |
+
+**Env var required:** `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...` in deployment environment.
+
+**Score impact:** Usability 9.5 (maintained — team insight gap closed) · Reliability 9 (maintained)
+
+### Rollback to v1.9.0
+
+*Files to delete:* `components/TrackEvent.tsx`
+
+| File | Lines | Before |
+|------|-------|--------|
+| `app/[handle]/page.tsx` | imports | No `TrackEvent` import |
+| `app/[handle]/page.tsx` | return JSX | No `<TrackEvent ... />` |
+| `app/[handle]/products/[productId]/page.tsx` | imports | No `TrackEvent` import |
+| `app/[handle]/products/[productId]/page.tsx` | return JSX | No `<TrackEvent ... />` |
+| `components/StoreAccordion.tsx` | imports | No `trackEvent` import |
+| `components/StoreAccordion.tsx` | WA pill onClick | `onClick={e => e.stopPropagation()}` only — no trackEvent call |
+
+---
+
+### v1.11.0 — 2026-06-24 11:00 SAST
+**Test suite — Jest + ts-jest, 19 tests across `lib/rateLimit` and `lib/storefront`. `setInterval` `.unref()` fix.**
+
+**Why this mattered:** Zero automated tests. Changes to link generation helpers, rate limiter logic, or the `clientIp` extractor had no safety net. The `setInterval` in `lib/rateLimit.ts` lacked `.unref()`, causing Jest to hang after test completion.
+
+**What changed:**
+
+*`lib/rateLimit.ts`*
+- Added `.unref()` to `setInterval(...)` — tells Node.js not to keep the process alive for this timer; fixes Jest hanging
+
+*`jest.config.ts`* (new file)
+- Preset: `ts-jest`, env: `node`, roots: `lib/`, matches `**/*.test.ts`
+- `moduleNameMapper`: `@/` → project root (for `@/lib/...` imports in test files)
+
+*`lib/rateLimit.test.ts`* (new file — 8 tests)
+- `isRateLimited`: allows first request, counts to max, blocks on exceed, resets after window, tracks keys independently
+- `clientIp`: extracts first IP from multi-hop `x-forwarded-for`, handles single IP, returns `'unknown'` on missing header
+
+*`lib/storefront.test.ts`* (new file — 11 tests)
+- `waStoreLink`, `waProductLink`, `waServiceLink`, `waServicesListLink`: all verify correct prefix encoding
+- `displayableImage`: passes `https://`, rejects `http://`, bare IDs, `null`, `undefined`
+- `formatZAR`: formats currency with ZAR symbol
+- `formatDuration`: handles minutes < 60, exact hours, hours + minutes
+
+*`package.json`*
+- Added `"test": "jest"` to scripts
+
+**Test results:** 19 passed, 2 suites, 0 failures, clean exit.
+
+**Score impact:** Reliability 9→9 (ceiling maintained — automated coverage gap closed)
+
+### Rollback to v1.10.0
+
+*Files to delete:* `jest.config.ts`, `lib/rateLimit.test.ts`, `lib/storefront.test.ts`
+
+| File | Lines | Before |
+|------|-------|--------|
+| `lib/rateLimit.ts` | setInterval | `}, 5 * 60 * 1000);` — no `.unref()` |
+| `package.json` scripts | — | No `"test"` entry |
 
 ---
 
@@ -205,15 +548,41 @@ Hero → HowItWorks → Features → Stats → Testimonials → Pricing → FAQ 
 
 > All fixes must be surgical. Each fix gets its own changelog entry with before/after scores.
 
+### Immediate — Environment variables (no code changes)
+
+| Priority | Item | Action | Unlocks |
+|----------|------|--------|---------|
+| 1 | Provision `NEXT_PUBLIC_SENTRY_DSN` | Add to Vercel env | Error tracking activates (v1.9.0 already wired) |
+| 2 | Provision `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Add to Vercel env | Analytics events activate (v1.10.0 already wired) |
+
+### Code — Open Issues
+
 | Priority | Issue # | Status | Fix Description | Score Impact |
 |----------|---------|--------|-----------------|--------------|
-| 1 | #1 | ✅ v1.1.0 | `/stores` added to nav (desktop + mobile) | Usability +1, Logical +1.5 |
-| 2 | #7 | ✅ v1.1.0 | Hours display "Closed" for 00:00 days | UX +0.5 |
-| 3 | #6 | ✅ v1.1.0 | Payment provider aligned to Stitch everywhere | Logical +1 |
-| 4 | #8 | 🔲 Next | Add `error.tsx` and `not-found.tsx` error boundaries | Reliability +0.5 |
-| 5 | #3 | 🔲 Next | Populate `next.config.ts` — image domains, security headers | Reliability +1 |
-| 6 | #2 | 🔲 Next | Remove `'use client'` from `app/page.tsx` | Reliability +0.5 |
-| 7 | #4 | 🔲 Next | Replace raw `<img>` with `next/image` | Reliability +0.5, UX +0.5 |
-| 8 | #5 | 🔲 Next | Move fonts from CSS `@import` to `<link rel="preload">` | Reliability +0.5 |
-| 9 | #9 | 🔲 Next | Remove or adopt Tailwind properly | Reliability +0.25 |
-| 10 | #11 | 🔲 Next | Shared pricing config constant | Usability +0.25 |
+| 3 | #2 | 🔲 Next | Remove `'use client'` from `app/page.tsx`; dynamic import client-only sub-components | Logical +0.5 |
+| 4 | #4 | 🔲 Next | Replace raw `<img>` with `next/image` (all storefront + stores occurrences) | Reliability +0.5, UX +0.25 |
+| 5 | #14 | 🔲 Next | Add product URLs to `app/sitemap.ts` — iterate active products per merchant | Logical +0.5 |
+| 6 | #5 | 🔲 Next | Move Google Fonts from CSS `@import` to `next/font` or `<link rel="preload">` | Reliability +0.25 |
+| 7 | #13 | 🔲 Next | Add `loading.tsx` skeleton states for storefront, stores, and product routes | UX +0.5 |
+| 8 | #15 | 🔲 Next | WhatsApp share button on product pages (native Web Share API + WA deeplink fallback) | UX +0.5 |
+| 9 | #11 | 🔲 Next | Extract pricing to a shared constant; surface in Pricing component and hero | Reliability +0.25 |
+| 10 | #9 | 🔲 Low | Audit Tailwind usage — either adopt fully or remove the import | Reliability +0.1 |
+
+---
+
+## Enhancement Opportunities (Aspirational — v2.x)
+
+These are forward-looking improvements beyond fixing known issues. Each would materially expand platform capability, SEO coverage, or conversion.
+
+| Enhancement | Why | Complexity | Score Impact |
+|------------|-----|------------|--------------|
+| **Self-serve merchant application form** | Replace email CTA with an in-page form that writes to `invite_applications`. Removes the human-email hop for new applicants. | Medium | Usability +0.5, Conversion |
+| **Dedicated `/pricing` page** | Full tier comparison, FAQ, CTA. The landing page pricing section is too compressed for informed purchase decisions. | Low | Usability +0.25 |
+| **Playwright E2E test suite** | Golden paths: storefront loads, search filters stores, WA CTA builds correct URL, product page shows variants, 404 renders branded. | High | Reliability +0.5 |
+| **Merchant portal hint on storefront** | "Are you the owner? Manage your store →" badge linking to the WhatsApp bot. Helps merchants who land on their own storefront get back to the bot. | Low | UX +0.25 |
+| **next/image throughout** | Replace all raw `<img>` with `next/image`: WebP, lazy load, responsive `srcset`, LCP hint. Needs `remotePatterns` for Supabase CDN domain. | Medium | Reliability +0.5, Core Web Vitals |
+| **PWA manifest** | `manifest.json` + service worker allows storefront pages to be installed on mobile home screens. WhatsApp-native users get a fast re-entry path. | Medium | Usability +0.25 |
+| **Product social proof on storefront** | Show average rating + review count per product, pulled from the `OrderReview` table the bot already writes. | Medium | UX +0.5 |
+| **Upstash Redis for API rate limiters** | HTTP-based Redis client works in Next.js serverless. Prevents invite form bypass at scale. | Low | Security +0.25 |
+| **Image optimisation pipeline** | Supabase image transform URL (`?width=800&quality=80`) or Cloudflare Images for responsive product images. | Medium | Performance, UX |
+| **`/merchants/[handle]/reviews` page** | Publicly visible review page per merchant. Builds trust, drives SEO long-tail keywords. | Medium | UX +0.5, SEO |

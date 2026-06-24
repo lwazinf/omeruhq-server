@@ -165,18 +165,16 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <a
-                  href="mailto:merchants@omeru.io"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))}
                   style={{
-                    display: 'block', textAlign: 'center',
+                    display: 'block', textAlign: 'center', width: '100%',
                     padding: '13px 20px', borderRadius: 100,
                     background: tier.featured ? 'var(--lime)' : 'transparent',
                     color: 'var(--black)',
                     border: tier.featured ? 'none' : '1.5px solid rgba(0,0,0,0.15)',
                     fontWeight: 500, fontSize: 13,
-                    textDecoration: 'none',
+                    cursor: 'pointer', fontFamily: 'inherit',
                     transition: 'all 0.2s ease',
                     marginBottom: 10,
                   }}
@@ -184,7 +182,7 @@ export default function Pricing() {
                   onMouseLeave={e => { if (!tier.featured) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,0,0,0.15)'; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}}
                 >
                   {tier.cta}
-                </a>
+                </button>
                 <div style={{ textAlign: 'center', fontSize: 11, color: tier.featured ? 'rgba(255,255,255,0.25)' : 'var(--mid-gray)', letterSpacing: '0.03em' }}>
                   {tier.note}
                 </div>
@@ -199,7 +197,7 @@ export default function Pricing() {
           transition={{ delay: 0.4 }}
           style={{ textAlign: 'center', marginTop: 36, fontSize: 13, color: 'var(--mid-gray)', fontWeight: 300 }}
         >
-          All plans include PayFast payment processing. Merchant payouts go directly to your SA bank account. Upgrade or downgrade at any time.
+          All plans include Stitch instant EFT processing. Merchant payouts go directly to your SA bank account. Upgrade or downgrade at any time.
         </motion.p>
       </div>
       </GenieReveal>

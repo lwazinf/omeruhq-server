@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { trackEvent, trackConversion } from '@/lib/gtag';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,7 +72,7 @@ export default function Hero() {
     body: 'Zero-friction commerce for South African merchants. Customers browse and buy without ever leaving WhatsApp.',
     sub: 'Powered by Stitch · Invite-only · From R199/mo',
     primaryLabel: 'Apply as a merchant',
-    primaryHref: 'mailto:merchants@omeru.io',
+    primaryHref: '#invite',
     secondaryLabel: 'Shop on WhatsApp',
     secondaryHref: 'https://wa.me/27750656348?text=Hi%2C+I%27d+like+to+browse+stores+on+Omeru',
   };
@@ -80,11 +81,11 @@ export default function Hero() {
     headline: ['SHOP LOCAL.', 'NO APP.', 'JUST WA.'],
     headlineAccent: 1,
     body: 'Discover South African merchants and buy from them directly on WhatsApp. No downloads, no accounts — just tap and shop.',
-    sub: 'Secure checkout · PayFast · Works on any phone',
+    sub: 'Secure checkout · Stitch · Works on any phone',
     primaryLabel: 'Open the bot',
     primaryHref: 'https://wa.me/27750656348?text=Hi%2C+I%27d+like+to+shop',
     secondaryLabel: 'Are you a merchant?',
-    secondaryHref: 'mailto:merchants@omeru.io',
+    secondaryHref: '#invite',
   };
   const left = isMerchant ? merchantLeft : customerLeft;
 
@@ -175,35 +176,68 @@ export default function Hero() {
                 </p>
 
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', marginBottom: 24 }}>
-                  <a
-                    href={left.primaryHref}
-                    target={left.primaryHref.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    data-hover
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--black)', color: 'white', borderRadius: 12, padding: 'clamp(12px, 1.5vw, 15px) clamp(16px, 2vw, 22px)', fontWeight: 600, fontSize: 'clamp(13px, 1.2vw, 14px)', textDecoration: 'none', transition: 'background 0.2s, transform 0.15s', whiteSpace: 'nowrap' as const }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#222'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--black)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
-                  >
-                    {left.primaryLabel}
-                    <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </a>
+                  {left.primaryHref === '#invite' ? (
+                    <button
+                      data-hover
+                      onClick={() => {
+                        trackEvent('generate_lead', { event_category: 'merchant', event_label: 'hero_apply' });
+                        trackConversion(process.env.NEXT_PUBLIC_GADS_MERCHANT_LABEL);
+                        window.dispatchEvent(new CustomEvent('omeru:invite'));
+                      }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--black)', color: 'white', borderRadius: 12, padding: 'clamp(12px, 1.5vw, 15px) clamp(16px, 2vw, 22px)', fontWeight: 600, fontSize: 'clamp(13px, 1.2vw, 14px)', cursor: 'pointer', fontFamily: 'inherit', border: 'none', transition: 'background 0.2s, transform 0.15s', whiteSpace: 'nowrap' as const }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#222'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--black)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
+                    >
+                      {left.primaryLabel}
+                      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </button>
+                  ) : (
+                    <a
+                      href={left.primaryHref}
+                      target={left.primaryHref.startsWith('http') ? '_blank' : undefined}
+                      rel="noopener noreferrer"
+                      data-hover
+                      onClick={() => {
+                        trackEvent('contact', { event_category: 'shopper', event_label: 'hero_bot_open' });
+                        trackConversion(process.env.NEXT_PUBLIC_GADS_SHOPPER_LABEL);
+                      }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--black)', color: 'white', borderRadius: 12, padding: 'clamp(12px, 1.5vw, 15px) clamp(16px, 2vw, 22px)', fontWeight: 600, fontSize: 'clamp(13px, 1.2vw, 14px)', textDecoration: 'none', transition: 'background 0.2s, transform 0.15s', whiteSpace: 'nowrap' as const }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#222'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--black)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
+                    >
+                      {left.primaryLabel}
+                      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </a>
+                  )}
 
-                  <a
-                    href={left.secondaryHref}
-                    target={left.secondaryHref.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    data-hover
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--lime)', color: 'var(--black)', borderRadius: 12, padding: 'clamp(12px, 1.5vw, 15px) clamp(16px, 2vw, 22px)', fontWeight: 600, fontSize: 'clamp(13px, 1.2vw, 14px)', textDecoration: 'none', transition: 'background 0.2s, transform 0.15s', whiteSpace: 'nowrap' as const }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#a8d420'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--lime)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
-                  >
-                    {isMerchant && (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L0 24l6.335-1.509A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
-                      </svg>
-                    )}
-                    {left.secondaryLabel}
-                  </a>
+                  {left.secondaryHref === '#invite' ? (
+                    <button
+                      data-hover
+                      onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--lime)', color: 'var(--black)', borderRadius: 12, padding: 'clamp(12px, 1.5vw, 15px) clamp(16px, 2vw, 22px)', fontWeight: 600, fontSize: 'clamp(13px, 1.2vw, 14px)', cursor: 'pointer', fontFamily: 'inherit', border: 'none', transition: 'background 0.2s, transform 0.15s', whiteSpace: 'nowrap' as const }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#a8d420'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--lime)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
+                    >
+                      {left.secondaryLabel}
+                    </button>
+                  ) : (
+                    <a
+                      href={left.secondaryHref}
+                      target={left.secondaryHref.startsWith('http') ? '_blank' : undefined}
+                      rel="noopener noreferrer"
+                      data-hover
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--lime)', color: 'var(--black)', borderRadius: 12, padding: 'clamp(12px, 1.5vw, 15px) clamp(16px, 2vw, 22px)', fontWeight: 600, fontSize: 'clamp(13px, 1.2vw, 14px)', textDecoration: 'none', transition: 'background 0.2s, transform 0.15s', whiteSpace: 'nowrap' as const }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#a8d420'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--lime)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
+                    >
+                      {isMerchant && (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L0 24l6.335-1.509A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+                        </svg>
+                      )}
+                      {left.secondaryLabel}
+                    </a>
+                  )}
                 </div>
 
                 {/* Pagination */}

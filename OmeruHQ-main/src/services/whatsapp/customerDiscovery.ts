@@ -6,6 +6,7 @@ import { createPaymentRequest } from '../payments/stitch';
 import { db } from '../../lib/db';
 import { getCustomerAddress, startAddressFlow } from './customerAddress';
 import { log, AuditAction } from './auditLog';
+import { track } from '../../lib/track';
 
 const STORE_PROD_PAGE_SIZE = 3;
 const BROWSE_PAGE_SIZE = 5;
@@ -219,6 +220,8 @@ const sendStoreProductPage = async (from: string, merchantHandle: string, page: 
     await upsertMerchantCustomer(merchant.id, from);
     await setCustomerLastMerchant(from, merchant.id);
 
+    if (page === 1) track('store_visit', { session_wa_id: from, merchant_handle: merchantHandle });
+
     const merchantBranding = await db.merchantBranding.findUnique({ where: { merchant_id: merchant.id } });
 
     // First-visit welcome
@@ -388,6 +391,7 @@ const sendStoreProductPage = async (from: string, merchantHandle: string, page: 
 // ── Browse: category selection ────────────────────────────────────────────────
 
 const sendCategorySelection = async (from: string): Promise<void> => {
+    track('menu_browse', { session_wa_id: from });
     // Only show categories that have at least one active, browse-visible store
     const storesWithCats = await (db.merchant as any).findMany({
         where: { status: 'ACTIVE', show_in_browse: true, store_category: { not: null } },
@@ -495,13 +499,13 @@ const processCartQtyUpdate = async (from: string, stateKey: string, qty: number,
         const idx = cart.items.findIndex(i => i.variant_id === variantId);
         if (idx === -1) { await sendTextMessage(from, '❌ Item not found in cart.'); return; }
         itemName = `${cart.items[idx].product_name}${cart.items[idx].variant_label ? ` (${cart.items[idx].variant_label})` : ''}`;
-        if (qty === 0) { cart.items.splice(idx, 1); } else { cart.items[idx].qty = qty; }
+        if (qty === 0) { track('cart_remove', { session_wa_id: from, merchant_handle: cart.merchant_handle }); cart.items.splice(idx, 1); } else { cart.items[idx].qty = qty; }
     } else {
         const productId = stateKey.replace('cart_qty_', '');
         const idx = cart.items.findIndex(i => i.product_id === productId && !i.variant_id);
         if (idx === -1) { await sendTextMessage(from, '❌ Item not found in cart.'); return; }
         itemName = cart.items[idx].product_name;
-        if (qty === 0) { cart.items.splice(idx, 1); } else { cart.items[idx].qty = qty; }
+        if (qty === 0) { track('cart_remove', { session_wa_id: from, merchant_handle: cart.merchant_handle, product_id: productId }); cart.items.splice(idx, 1); } else { cart.items[idx].qty = qty; }
     }
 
     if (cart.items.length === 0) {
@@ -641,6 +645,12 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
             await sendTextMessage(from, '⚠️ Your cart is empty.');
             return;
         }
+
+        track('checkout_start', {
+            session_wa_id:   from,
+            merchant_handle: cart.merchant_handle,
+            metadata: { total: cartTotal(cart), item_count: cartItemCount(cart) },
+        });
 
         const merchant = await db.merchant.findUnique({ where: { id: cart.merchant_id } });
         const merchantBranding = merchant
@@ -819,6 +829,7 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
         }
 
         const added = await toggleWishlist(from, productId);
+        track(added ? 'wishlist_add' : 'wishlist_remove', { session_wa_id: from, product_id: productId, merchant_handle: product.merchant.handle });
         await sendButtons(
             from,
             added ? `❤️ *${product.name}* saved to Wishlist!` : `💔 *${product.name}* removed from Wishlist.`,
@@ -1062,12 +1073,14 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
 
         const existing = await getCart(from);
         if (existing && existing.merchant_id !== product.merchant.id) {
+            const existingCount = cartItemCount(existing);
+            const existingTotal = formatCurrency(cartTotal(existing), { platform: platformBranding });
             await sendButtons(from,
-                `⚠️ Your cart has items from *${existing.merchant_name}*.\n\nStart a new cart for *${product.merchant.trading_name}*?`,
+                `⚠️ You have *${existingCount} item${existingCount !== 1 ? 's' : ''}* (${existingTotal}) in your cart from *${existing.merchant_name}*.\n\nSwitch to *${product.merchant.trading_name}*? Your current cart will be cleared.`,
                 [
-                    { id: `replace_cart_prod_${productId}`, title: '🆕 New Cart' },
-                    { id: 'c_cart', title: '🛒 Keep Current' }
-                ]
+                    { id: 'c_cart',                     title: `🛒 Keep (${existingCount} item${existingCount !== 1 ? 's' : ''})` },
+                    { id: `replace_cart_prod_${productId}`, title: '🔄 Switch Store' },
+                ],
             );
             return;
         }
@@ -1086,6 +1099,7 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
             cart.items.push({ product_id: productId, product_name: product.name, price: product.price, qty: 1 });
         }
         await saveCart(from, cart);
+        track('cart_add', { session_wa_id: from, merchant_handle: product.merchant.handle, product_id: productId });
         const newCount = cartItemCount(cart);
         await sendButtons(from,
             `🛒 *${product.name}* added!\n_${newCount} item${newCount !== 1 ? 's' : ''} in cart_`,
@@ -1112,12 +1126,14 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
         const merchant = variant.product.merchant;
         const existing = await getCart(from);
         if (existing && existing.merchant_id !== merchant.id) {
+            const existingCount = cartItemCount(existing);
+            const existingTotal = formatCurrency(cartTotal(existing), { platform: platformBranding });
             await sendButtons(from,
-                `⚠️ Your cart has items from *${existing.merchant_name}*.\n\nStart a new cart for *${merchant.trading_name}*?`,
+                `⚠️ You have *${existingCount} item${existingCount !== 1 ? 's' : ''}* (${existingTotal}) from *${existing.merchant_name}*.\n\nSwitch to *${merchant.trading_name}*? Your current cart will be cleared.`,
                 [
-                    { id: `replace_cart_variant_${variantId}`, title: '🆕 New Cart' },
-                    { id: 'c_cart', title: '🛒 Keep Current' }
-                ]
+                    { id: 'c_cart',                         title: `🛒 Keep (${existingCount} item${existingCount !== 1 ? 's' : ''})` },
+                    { id: `replace_cart_variant_${variantId}`, title: '🔄 Switch Store' },
+                ],
             );
             return;
         }
@@ -1144,6 +1160,7 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
             });
         }
         await saveCart(from, cart);
+        track('cart_add', { session_wa_id: from, merchant_handle: merchant.handle, product_id: variant.product_id, metadata: { variant_id: variantId } });
         const newCountV = cartItemCount(cart);
         const addedLabel = variantLabel ? ` (${variantLabel})` : '';
         await sendButtons(from,
@@ -1186,6 +1203,7 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
 
         await upsertMerchantCustomer(product.merchant.id, from);
         await setCustomerLastMerchant(from, product.merchant.id);
+        track('product_view', { session_wa_id: from, merchant_handle: product.merchant.handle, product_id: product.id });
         const merchantBranding = await db.merchantBranding.findUnique({ where: { merchant_id: product.merchant.id } });
 
         const displayPrice = product.variants.length
@@ -1378,6 +1396,61 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
         const slug = hasPageNum ? parts.slice(0, -1).join('_') : rest;
         await sendCategoryStores(from, slug, page);
         return;
+    }
+
+    // In-store text search — try to match within the last visited merchant's catalogue
+    if (input.length >= 2 && !input.startsWith('c_') && !input.startsWith('m_') && !input.startsWith('k_')) {
+        const storeCtx = await db.userSession.findUnique({
+            where:  { wa_id: from },
+            select: { last_merchant_id: true },
+        });
+
+        if (storeCtx?.last_merchant_id) {
+            const merchant = await db.merchant.findUnique({ where: { id: storeCtx.last_merchant_id } });
+            if (merchant) {
+                const matches = await db.product.findMany({
+                    where: {
+                        merchant_id: merchant.id,
+                        status: 'ACTIVE',
+                        OR: [
+                            { name:        { contains: input, mode: 'insensitive' } },
+                            { description: { contains: input, mode: 'insensitive' } },
+                        ],
+                    },
+                    take: 6,
+                });
+
+                db.searchQuery.create({
+                    data: { wa_id: from, merchant_handle: merchant.handle, query: input, results_count: matches.length },
+                }).catch(() => {});
+
+                if (matches.length > 0) {
+                    const rows = matches.map(p => ({
+                        id:          `prod_${p.id}`,
+                        title:       p.name.substring(0, 24),
+                        description: `${p.is_in_stock ? '✅' : '❌'} ${formatCurrency(p.price, { platform: platformBranding })}`,
+                    }));
+                    await sendListMessage(from,
+                        `🔍 *"${input}"* in *${merchant.trading_name}*\n\n${matches.length} result${matches.length !== 1 ? 's' : ''} found:`,
+                        '👀 View',
+                        [{ title: 'Matching Products', rows }],
+                    );
+                    return;
+                }
+
+                await sendButtons(from,
+                    `😔 No products matching *"${input}"* in *${merchant.trading_name}*.\n\nTry browsing or visit another store.`,
+                    [
+                        { id: `@${merchant.handle}`, title: `🛍️ ${merchant.trading_name.substring(0, 16)}` },
+                        { id: 'browse_shops',         title: '🔍 All Stores' },
+                    ],
+                );
+                return;
+            }
+        }
+
+        // No store context — log as platform-level search intent
+        db.searchQuery.create({ data: { wa_id: from, query: input, results_count: 0 } }).catch(() => {});
     }
 
     await sendTextMessage(from, '🔍 To find a shop, type *@shophandle*\nOr type *browse* to see all stores.');

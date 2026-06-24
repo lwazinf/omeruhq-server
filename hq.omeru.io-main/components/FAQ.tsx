@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: 'How do payments work?',
-    a: "We use PayFast, one of South Africa's most trusted payment gateways. Customers pay by card, Instant EFT, or SnapScan — whatever works for them. Once a payment clears, the money settles directly to your SA bank account. We automatically deduct our commission so you never have to calculate it.",
+    a: "We use Stitch for secure instant EFT payments. Customers pay directly from their banking app — no card details required. Once a payment clears, the money settles directly to your SA bank account. We automatically deduct our commission so you never have to calculate it.",
   },
   {
     q: 'What happens when I hit the 5-product limit on Starter?',
@@ -162,9 +162,9 @@ export default function FAQ() {
               </a>
             </motion.p>
             <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.22 }}>
-              <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-lime" style={{ fontSize: 14, padding: '12px 22px' }} data-hover>
+              <button onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))} className="btn-lime" style={{ fontSize: 14, padding: '12px 22px' }} data-hover>
                 Apply for access
-              </a>
+              </button>
             </motion.div>
           </div>
 

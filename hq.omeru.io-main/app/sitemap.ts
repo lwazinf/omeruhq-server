@@ -10,20 +10,27 @@ import { SITE_URL } from '@/lib/storefront';
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const merchants = await db.merchant.findMany({
-    where: { status: 'ACTIVE', show_in_browse: true },
-    select: { handle: true, updatedAt: true },
-    take: 5000,
-  });
-
-  return [
+  const base: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${SITE_URL}/stores`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    ...merchants.map((m) => ({
-      url: `${SITE_URL}/@${m.handle}`,
-      lastModified: m.updatedAt,
-      changeFrequency: 'daily' as const,
-      priority: 0.8,
-    })),
   ];
+
+  try {
+    const merchants = await db.merchant.findMany({
+      where: { status: 'ACTIVE', show_in_browse: true },
+      select: { handle: true, updatedAt: true },
+      take: 5000,
+    });
+    return [
+      ...base,
+      ...merchants.map((m) => ({
+        url: `${SITE_URL}/@${m.handle}`,
+        lastModified: m.updatedAt,
+        changeFrequency: 'daily' as const,
+        priority: 0.8,
+      })),
+    ];
+  } catch {
+    return base;
+  }
 }

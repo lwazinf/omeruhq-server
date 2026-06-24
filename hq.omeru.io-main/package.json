@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "jest"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@prisma/client": "^6.19.2",
+    "@sentry/nextjs": "^10.60.0",
     "@supabase/supabase-js": "^2.108.2",
     "framer-motion": "^12.36.0",
     "gsap": "^3.14.2",
@@ -22,13 +24,17 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
     "prisma": "^6.19.2",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.11",
     "typescript": "^5"
   }
 }

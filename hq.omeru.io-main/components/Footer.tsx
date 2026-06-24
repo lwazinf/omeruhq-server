@@ -32,9 +32,9 @@ export default function Footer() {
             Apply for an invite and start selling this week.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-lime" data-hover>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))} className="btn-lime" data-hover>
               Apply for invite →
-            </a>
+            </button>
             <a href="mailto:hello@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ color: 'rgba(255,255,255,0.6)', borderColor: 'rgba(255,255,255,0.12)' }} data-hover>
               Talk to us
             </a>
@@ -56,7 +56,8 @@ export default function Footer() {
               <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16, color: 'white', letterSpacing: '-0.02em' }}>Omeru</span>
             </div>
             <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, lineHeight: 1.7, fontWeight: 300, maxWidth: 220 }}>
-              Zero-friction WhatsApp commerce for South African merchants. Powered by PayFast.
+              Zero-friction WhatsApp commerce for South African merchants. Powered by{' '}
+              <a href="https://stitch.money/express" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'underline', textDecorationColor: 'rgba(255,255,255,0.18)', textUnderlineOffset: 3, transition: 'color 0.2s' }}>Stitch Money</a>.
             </p>
           </div>
 
@@ -89,8 +90,15 @@ export default function Footer() {
 
         <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 24 }} />
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300 }}>© 2025 Omeru. All rights reserved.</span>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300 }}>Made in South Africa 🇿🇦</span>
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300 }}>© 2026 Omeru. All rights reserved.</span>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+            <a href="/privacy" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300, textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}>
+              Privacy Policy
+            </a>
+            <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300 }}>Made in South Africa 🇿🇦</span>
+          </div>
         </div>
       </div>
 

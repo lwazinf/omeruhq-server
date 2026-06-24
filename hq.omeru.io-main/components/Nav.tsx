@@ -23,9 +23,12 @@ function scrollToSection(href: string) {
   }
 }
 
-export default function Nav() {
+export default function Nav({ darkHero = false }: { darkHero?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // When over a dark hero and not yet scrolled, flip to light-on-dark palette
+  const dark = darkHero && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -59,6 +62,7 @@ export default function Nav() {
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
           boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.07)' : 'none',
         }}
+
       >
         {/* Logo */}
         <a
@@ -67,15 +71,18 @@ export default function Nav() {
           style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}
         >
           <div style={{
-            width: 30, height: 30, background: 'var(--black)',
+            width: 30, height: 30,
+            background: dark ? 'rgba(255,255,255,0.1)' : 'var(--black)',
+            border: dark ? '1px solid rgba(255,255,255,0.15)' : 'none',
             borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'background 0.35s, border-color 0.35s',
           }}>
             <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
               <path d="M3 9C3 5.686 5.686 3 9 3s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="var(--lime)"/>
-              <path d="M9 6v6M6 9h6" stroke="var(--black)" strokeWidth="1.6" strokeLinecap="round"/>
+              <path d="M9 6v6M6 9h6" stroke={dark ? 'rgba(0,0,0,0.6)' : 'var(--black)'} strokeWidth="1.6" strokeLinecap="round"/>
             </svg>
           </div>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 17, letterSpacing: '-0.02em', color: 'var(--black)' }}>
+          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 17, letterSpacing: '-0.02em', color: dark ? 'white' : 'var(--black)', transition: 'color 0.35s' }}>
             Omeru
           </span>
         </a>
@@ -84,18 +91,27 @@ export default function Nav() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="nav-links">
           {navItems.map(({ label, href }) =>
             href.startsWith('/') ? (
-              <a key={label} href={href} className="nav-link">{label}</a>
+              <a key={label} href={href} className="nav-link" style={{ color: dark ? 'rgba(255,255,255,0.65)' : undefined, transition: 'color 0.35s' }}>{label}</a>
             ) : (
-              <a key={label} href={href} className="nav-link" onClick={e => handleNavClick(e, href)}>{label}</a>
+              <a key={label} href={href} className="nav-link" style={{ color: dark ? 'rgba(255,255,255,0.65)' : undefined, transition: 'color 0.35s' }} onClick={e => handleNavClick(e, href)}>{label}</a>
             )
           )}
         </div>
 
         {/* ── Desktop CTAs ── */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} className="nav-cta">
-          <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: '8px 16px', fontSize: 13 }}>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))}
+            className="btn-outline"
+            style={{
+              padding: '8px 16px', fontSize: 13,
+              color: dark ? 'rgba(255,255,255,0.8)' : undefined,
+              borderColor: dark ? 'rgba(255,255,255,0.25)' : undefined,
+              transition: 'color 0.35s, border-color 0.35s',
+            }}
+          >
             Request invite
-          </a>
+          </button>
           <a
             href="https://wa.me/27750656348?text=Hi"
             target="_blank"
@@ -119,21 +135,25 @@ export default function Nav() {
             gap: 5, alignItems: 'flex-end',
           }}
         >
-          <motion.span
-            animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6.5 : 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ height: 1.5, width: 22, background: 'var(--black)', borderRadius: 2, display: 'block', transformOrigin: 'center' }}
-          />
-          <motion.span
-            animate={{ opacity: menuOpen ? 0 : 1 }}
-            transition={{ duration: 0.2 }}
-            style={{ height: 1.5, width: 16, background: 'var(--black)', borderRadius: 2, display: 'block' }}
-          />
-          <motion.span
-            animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -6.5 : 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ height: 1.5, width: 22, background: 'var(--black)', borderRadius: 2, display: 'block', transformOrigin: 'center' }}
-          />
+          {(['first', 'second', 'third'] as const).map((pos, i) => (
+            <motion.span
+              key={pos}
+              animate={
+                i === 0 ? { rotate: menuOpen ? 45 : 0, y: menuOpen ? 6.5 : 0 } :
+                i === 1 ? { opacity: menuOpen ? 0 : 1 } :
+                          { rotate: menuOpen ? -45 : 0, y: menuOpen ? -6.5 : 0 }
+              }
+              transition={{ duration: i === 1 ? 0.2 : 0.25 }}
+              style={{
+                height: 1.5,
+                width: i === 1 ? 16 : 22,
+                background: dark ? 'rgba(255,255,255,0.8)' : 'var(--black)',
+                borderRadius: 2, display: 'block',
+                transformOrigin: 'center',
+                transition: 'background 0.35s',
+              }}
+            />
+          ))}
         </button>
       </motion.nav>
 
@@ -184,9 +204,9 @@ export default function Nav() {
               transition={{ delay: 0.3, duration: 0.45 }}
               style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 28 }}
             >
-              <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-lime" style={{ justifyContent: 'center', padding: '15px 24px' }}>
+              <button onClick={() => { setMenuOpen(false); setTimeout(() => window.dispatchEvent(new CustomEvent('omeru:invite')), 320); }} className="btn-lime" style={{ justifyContent: 'center', padding: '15px 24px' }}>
                 Apply as a merchant
-              </a>
+              </button>
               <a
                 href="https://wa.me/27750656348?text=Hi"
                 target="_blank"

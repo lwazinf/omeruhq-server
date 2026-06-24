@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { db } from '@/lib/db';
+import { isRateLimited, clientIp } from '@/lib/rateLimit';
 
 const BUCKET = process.env.SUPABASE_BUCKET || 'omeru-media';
 
@@ -32,9 +33,13 @@ async function getMerchant(token: string) {
 }
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ) {
+  // 20 GETs per IP per minute — prevents token enumeration
+  if (isRateLimited(`kyc-get:${clientIp(req.headers)}`, 20, 60_000))
+    return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+
   const { token } = await params;
   const merchant = await getMerchant(token);
   if (!merchant) return NextResponse.json({ error: 'not_found' }, { status: 404 });
@@ -57,6 +62,10 @@ export async function PATCH(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+  // 30 saves per token per minute — generous for autosave but blocks bots
+  if (isRateLimited(`kyc-patch:${token}`, 30, 60_000))
+    return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+
   const merchant = await getMerchant(token);
   if (!merchant) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   if (merchant.kyc_online_completed)
@@ -79,6 +88,10 @@ export async function POST(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+  // 10 POSTs per token per minute — covers multiple file uploads + submit
+  if (isRateLimited(`kyc-post:${token}`, 10, 60_000))
+    return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+
   const merchant = await getMerchant(token);
   if (!merchant) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   if (merchant.kyc_online_completed)

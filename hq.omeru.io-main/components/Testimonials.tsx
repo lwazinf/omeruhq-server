@@ -17,7 +17,7 @@ const testimonials = [
     name: 'Sipho Dlamini',
     role: 'Founder, Cape Biltong Co.',
     location: 'Cape Town, WC',
-    quote: 'My biggest problem before Omeru was people ordering, then not paying. PayFast integration means they only get the order confirmation once they\'ve paid. My cash flow is night and day compared to before.',
+    quote: 'My biggest problem before Omeru was people ordering, then not paying. The payment integration means they only get the order confirmation once they\'ve paid. My cash flow is night and day compared to before.',
     metric: '0 unpaid',
     metricLabel: 'orders this month',
     color: '#0a1f2d',
@@ -160,16 +160,14 @@ export default function Testimonials() {
             }}>
               Merchants who applied for early access and went live in under 24 hours.
             </p>
-            <a
-              href="mailto:merchants@omeru.io"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))}
               className="btn-lime"
               style={{ fontSize: 13, padding: '10px 20px' }}
               data-hover
             >
               Join them →
-            </a>
+            </button>
           </motion.div>
         </div>
 

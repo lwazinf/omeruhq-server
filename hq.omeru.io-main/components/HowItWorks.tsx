@@ -14,7 +14,7 @@ const steps = [
   {
     number: '02',
     title: 'Set up your WhatsApp store',
-    body: 'Add products, set prices, configure PayFast payment. Your store lives inside WhatsApp — no app, no website required.',
+    body: 'Add products, set prices, configure Stitch instant EFT. Your store lives inside WhatsApp — no app, no website required.',
     accent: true,
   },
   {
@@ -26,7 +26,7 @@ const steps = [
   {
     number: '04',
     title: 'Get paid, grow',
-    body: 'PayFast processes payments to your bank. Broadcast promotions, view analytics, and scale across multiple locations.',
+    body: 'Stitch processes payments directly to your bank. Broadcast promotions, view analytics, and scale across multiple locations.',
     accent: false,
   },
 ];
@@ -169,9 +169,9 @@ export default function HowItWorks() {
               Limited merchant spots available on our invite-only launch.
             </div>
           </div>
-          <a href="mailto:merchants@omeru.io" target="_blank" rel="noopener noreferrer" className="btn-lime" data-hover style={{ flexShrink: 0, position: 'relative', zIndex: 1 }}>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('omeru:invite'))} className="btn-lime" data-hover style={{ flexShrink: 0, position: 'relative', zIndex: 1 }}>
             Apply for early access
-          </a>
+          </button>
         </motion.div>
       </div>
       </GenieReveal>

@@ -7,13 +7,21 @@ export const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER || '27750656348';
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://omeru.io';
 
-/**
- * Deep link that opens the Omeru WhatsApp bot with the merchant's @handle
- * pre-filled as the first message — one tap and the customer is inside the
- * merchant's WhatsApp store. This is the storefront's single call to action.
- */
+/** Opens the bot at the merchant's store homepage. */
 export const waStoreLink = (handle: string): string =>
   `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`@${handle}`)}`;
+
+/** Opens the bot directly on a specific product — skips store browsing. */
+export const waProductLink = (productId: string): string =>
+  `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`prod_${productId}`)}`;
+
+/** Opens the bot on a specific service booking flow — skips the services list. */
+export const waServiceLink = (serviceId: string): string =>
+  `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`cbk_svc_${serviceId}`)}`;
+
+/** Opens the bot on the merchant's full services list. */
+export const waServicesListLink = (merchantId: string): string =>
+  `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`c_book_${merchantId}`)}`;
 
 /**
  * Only fully-qualified https URLs render on the web. Legacy rows may still

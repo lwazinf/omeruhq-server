@@ -5,6 +5,7 @@ import { createPaymentRequest } from '../payments/stitch';
 import { db } from '../../lib/db';
 import { Prisma } from '@prisma/client';
 import { log, AuditAction } from './auditLog';
+import { logOrderStatusChange } from '../../lib/orderHistory';
 
 export const handleCustomerOrders = async (from: string, input: string): Promise<void> => {
     const ordersPageMatch = input === 'c_my_orders' ? 1 : (input.startsWith('c_my_orders_p') ? parseInt(input.replace('c_my_orders_p', ''), 10) || 1 : null);
@@ -133,7 +134,8 @@ export const handleCustomerOrders = async (from: string, input: string): Promise
             return;
         }
 
-        await db.order.update({ where: { id: orderId }, data: { status: 'CANCELLED' } });
+        await db.order.update({ where: { id: orderId }, data: { status: 'CANCELLED', cancellation_reason: 'customer_action' } });
+        logOrderStatusChange(orderId, order.status, 'CANCELLED', from, 'customer_action');
         await log(AuditAction.ORDER_CANCELLED_CUSTOMER, from, 'Order', orderId, {
             merchant_id: order.merchant_id, order_total: order.total
         });
