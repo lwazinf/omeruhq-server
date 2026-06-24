@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const navItems = [
   { label: 'How it works', href: '#how-it-works' },
   { label: 'Features',     href: '#features'     },
+  { label: 'Stores',       href: '/stores'       },
   { label: 'Pricing',      href: '#pricing'       },
   { label: 'FAQ',          href: '#faq'           },
 ];
@@ -81,11 +82,13 @@ export default function Nav() {
 
         {/* ── Desktop nav links ── */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="nav-links">
-          {navItems.map(({ label, href }) => (
-            <a key={label} href={href} className="nav-link" onClick={e => handleNavClick(e, href)}>
-              {label}
-            </a>
-          ))}
+          {navItems.map(({ label, href }) =>
+            href.startsWith('/') ? (
+              <a key={label} href={href} className="nav-link">{label}</a>
+            ) : (
+              <a key={label} href={href} className="nav-link" onClick={e => handleNavClick(e, href)}>{label}</a>
+            )
+          )}
         </div>
 
         {/* ── Desktop CTAs ── */}
@@ -157,7 +160,7 @@ export default function Nav() {
                   initial={{ opacity: 0, x: -14 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.06 + i * 0.06, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  onClick={e => handleNavClick(e, href)}
+                  onClick={href.startsWith('/') ? () => setMenuOpen(false) : e => handleNavClick(e, href)}
                   style={{
                     textDecoration: 'none', color: 'var(--black)',
                     fontFamily: 'var(--font-display)',

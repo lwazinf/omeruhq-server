@@ -122,8 +122,30 @@ export default async function StorefrontPage({ params }: Props) {
   };
 
   return (
-    <div style={{ background: 'var(--off-white)', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--off-white)', minHeight: '100vh', position: 'relative', isolation: 'isolate' }}>
+      {/* Noise grain overlay — matches main page */}
+      <div className="noise" />
+
+      {/* Tile texture — same technique as hero on main page */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: "url('/bg-tile.jpg')",
+        backgroundSize: '500px 333px',
+        backgroundRepeat: 'repeat',
+        mixBlendMode: 'multiply',
+        opacity: 0.10,
+      }} />
+
+      {/* Ambient lime glow */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        background: 'radial-gradient(ellipse 70% 50% at 80% 20%, rgba(200,241,53,0.10) 0%, transparent 65%)',
+      }} />
+
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      {/* ── Content (above bg layers) ── */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
 
       {/* ── Nav ── */}
       <nav className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 48px' }}>
@@ -167,7 +189,8 @@ export default async function StorefrontPage({ params }: Props) {
               )}
             </div>
             <p style={{ fontSize: 13, color: 'var(--mid-gray)', marginTop: 14 }}>
-              Mon–Fri {merchant.open_time}–{merchant.close_time} · Sat {merchant.sat_open_time}–{merchant.sat_close_time}
+              Mon–Fri {merchant.open_time === '00:00' ? 'Closed' : `${merchant.open_time}–${merchant.close_time}`}
+              {' · '}Sat {merchant.sat_open_time === '00:00' ? 'Closed' : `${merchant.sat_open_time}–${merchant.sat_close_time}`}
               {merchant.sun_open ? ' · Sun open' : ''}
               {merchant.location_visible && merchant.address ? ` · 📍 ${merchant.address}` : ''}
             </p>
@@ -266,6 +289,8 @@ export default async function StorefrontPage({ params }: Props) {
           {' '}<Link href="/stores" style={{ color: 'var(--mid-gray)' }}>Discover more stores</Link>
         </p>
       </footer>
+
+      </div>{/* end content wrapper */}
     </div>
   );
 }

@@ -342,7 +342,7 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
             return;
         }
 
-        if (input === 'c_my_orders' || input.startsWith('view_order_') || input.startsWith('delete_order_') ||
+        if (input === 'c_my_orders' || input.startsWith('c_my_orders_p') || input.startsWith('view_order_') || input.startsWith('delete_order_') ||
             input.startsWith('pay_stale_') || input.startsWith('cfb_')) {
             await handleCustomerOrders(from, input);
             return;

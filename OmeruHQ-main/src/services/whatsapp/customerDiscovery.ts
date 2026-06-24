@@ -410,7 +410,7 @@ const sendCategorySelection = async (from: string): Promise<void> => {
         { id: 'bcat_all', title: '🛒 All Stores', description: `Browse all ${totalStores} shop${totalStores !== 1 ? 's' : ''}` }
     ];
     for (const cat of STORE_CATEGORIES) {
-        if (activeSlugs.has(cat.slug)) {
+        if (activeSlugs.has(cat.label)) {
             rows.push({ id: `bcat_${cat.slug}`, title: `${cat.emoji} ${cat.label}`, description: '' });
         }
     }
@@ -431,7 +431,7 @@ const sendCategoryStores = async (from: string, slug: string, page: number): Pro
 
     const whereClause: any = { status: 'ACTIVE', manual_closed: false, show_in_browse: true };
     if (!isAll && categoryInfo) {
-        whereClause.store_category = slug;
+        whereClause.store_category = categoryInfo.label;
     }
 
     const skip = (page - 1) * BROWSE_PAGE_SIZE;
@@ -458,34 +458,24 @@ const sendCategoryStores = async (from: string, slug: string, page: number): Pro
 
     const totalPages = Math.ceil(total / BROWSE_PAGE_SIZE);
 
-    // Top 3 trending stores (first page only)
-    let topLine = '';
-    if (page === 1 && merchants.length > 0) {
-        const top = merchants.slice(0, 3).map((m: any) => `@${m.handle}`).join(' • ');
-        topLine = `\n\n⭐ *Top stores:* ${top}`;
-    }
+    // Build tappable store rows — each row id is @handle so tapping opens the store directly
+    const storeRows = merchants.map((m: any) => ({
+        id: `@${m.handle}`,
+        title: m.trading_name.substring(0, 24),
+        description: `@${m.handle}${m.store_category ? ` · ${m.store_category}` : ''}`
+    }));
 
-    // List all stores on this page
-    const storeList = merchants.map((m: any) => `@${m.handle} — ${m.trading_name}`).join('\n');
-
-    const msg = [
-        `${categoryLabel}  •  Page ${page} of ${totalPages}`,
-        topLine,
-        ``,
-        storeList,
-        ``,
-        `_Type any @handle to visit a store_`
-    ].filter(s => s !== undefined && s !== null).join('\n').trim();
-
-    await sendTextMessage(from, msg);
-
-    // Navigation buttons
     const navBtns: Array<{ id: string; title: string }> = [];
     if (page > 1) navBtns.push({ id: `bcat_${slug}_${page - 1}`, title: '◀ Prev' });
     if (page < totalPages) navBtns.push({ id: `bcat_${slug}_${page + 1}`, title: 'Next ▶' });
     navBtns.push({ id: 'browse_shops', title: '← Categories' });
 
-    await sendButtons(from, `Browse ${categoryLabel}:`, navBtns.slice(0, 3));
+    await sendListMessage(from,
+        `${categoryLabel}  •  Page ${page} of ${totalPages}\n\n_Tap a store to start shopping_`,
+        '🏪 Stores',
+        [{ title: 'Stores', rows: storeRows }]
+    );
+    await sendButtons(from, `Page ${page} of ${totalPages}:`, navBtns.slice(0, 3));
 };
 
 // ── Cart qty update (text input flow) ────────────────────────────────────────
@@ -703,6 +693,27 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
 
         if (!merchant) {
             await sendTextMessage(from, '❌ Shop not found.');
+            return;
+        }
+
+        // Dedup guard — reject if a non-cancelled order for this cart was created in the last 2 minutes
+        const recentOrder = await db.order.findFirst({
+            where: {
+                customer_id: from,
+                merchant_id: merchant.id,
+                status: { notIn: ['CANCELLED'] },
+                createdAt: { gte: new Date(Date.now() - 2 * 60 * 1000) }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+        if (recentOrder) {
+            await sendButtons(from,
+                `⚠️ Your order *#${recentOrder.id.slice(-5)}* was just placed. Tap below to view or pay.`,
+                [
+                    { id: `view_order_${recentOrder.id}`, title: '📦 View Order' },
+                    { id: 'c_my_orders', title: '📦 My Orders' }
+                ]
+            );
             return;
         }
 

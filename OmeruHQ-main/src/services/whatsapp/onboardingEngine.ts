@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { MerchantOwnerRole, Merchant, UserSession } from '@prisma/client';
 import { sendTextMessage, sendButtons, sendListMessage } from './sender';
 import { getPlatformSettings } from './platformBranding';
@@ -17,7 +18,7 @@ const NEXT_STEP: Record<string, string> = {
     ob_location_visible: 'ob_hours',
     ob_hours:            'ob_kyc_intro',
     ob_hours_mf:         'ob_hours_sat',
-    ob_hours_sat:        'ob_kyc_intro',
+    ob_hours_sat:        'ob_kyc_method',
     ob_kyc_intro:        'ob_kyc_id_num',
     ob_kyc_id_num:       'ob_kyc_id_doc',
     ob_kyc_id_doc:       'ob_kyc_bank_proof',
@@ -116,7 +117,9 @@ export const handleOnboardingAction = async (
             case 'ob_hours':      return handleHoursMenu(from, input, merchant);
             case 'ob_hours_mf':   return handleHoursMf(from, input, merchant);
             case 'ob_hours_sat':  return handleHoursSat(from, input, merchant);
-            case 'ob_kyc_intro':  return handleKycIntro(from, input, merchant);
+            case 'ob_kyc_method':  return handleKycMethod(from, input, merchant);
+            case 'ob_kyc_waiting': return handleKycWaiting(from, input, merchant);
+            case 'ob_kyc_intro':   return handleKycIntro(from, input, merchant);
             case 'ob_kyc_id_num': return handleKycIdNum(from, input, merchant);
             case 'ob_kyc_id_doc': return handleKycIdDoc(from, input, merchant, message);
             case 'ob_kyc_bank_proof': return handleKycBankProof(from, input, merchant, message);
@@ -194,8 +197,8 @@ const handleDescription = async (from: string, input: string, merchant: Merchant
 const handleCategory = async (from: string, input: string, merchant: Merchant): Promise<void> => {
     const validIds = ['cat_food', 'cat_fashion', 'cat_beauty', 'cat_electronics', 'cat_home', 'cat_other'];
     const catMap: Record<string, string> = {
-        cat_food: 'Food & Drink', cat_fashion: 'Fashion', cat_beauty: 'Beauty & Wellness',
-        cat_electronics: 'Electronics', cat_home: 'Home & Garden', cat_other: 'Other'
+        cat_food: 'Food & Drink', cat_fashion: 'Fashion & Clothing', cat_beauty: 'Beauty & Wellness',
+        cat_electronics: 'Tech & Electronics', cat_home: 'Home & Living', cat_other: 'General'
     };
     if (!validIds.includes(input)) {
         await sendStepMessage(from, merchant, 'ob_category');
@@ -241,15 +244,25 @@ const handleHoursMenu = async (from: string, input: string, merchant: Merchant):
     }
 };
 
+const parseHoursInput = (input: string): { open: string; close: string } | null => {
+    const TIME_RE = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    const parts = input.split('-').map(s => s.trim());
+    if (parts.length !== 2) return null;
+    const [o, c] = parts;
+    if (!TIME_RE.test(o) || !TIME_RE.test(c)) return null;
+    return { open: o, close: c };
+};
+
 const handleHoursMf = async (from: string, input: string, merchant: Merchant): Promise<void> => {
     if (input.toLowerCase() === 'closed') {
         await db.merchant.update({ where: { id: merchant.id }, data: { open_time: '00:00', close_time: '00:00' } });
-    } else if (input.includes('-')) {
-        const [o, c] = input.split('-').map(s => s.trim());
-        await db.merchant.update({ where: { id: merchant.id }, data: { open_time: o, close_time: c } });
     } else {
-        await sendTextMessage(from, '⚠️ Use format *HH:MM - HH:MM* or type *closed*.');
-        return;
+        const parsed = parseHoursInput(input);
+        if (!parsed) {
+            await sendTextMessage(from, '⚠️ Use format *HH:MM - HH:MM* (e.g. 09:00 - 17:00) or type *closed*.');
+            return;
+        }
+        await db.merchant.update({ where: { id: merchant.id }, data: { open_time: parsed.open, close_time: parsed.close } });
     }
     await advanceTo(from, merchant, 'ob_hours_sat');
 };
@@ -257,14 +270,69 @@ const handleHoursMf = async (from: string, input: string, merchant: Merchant): P
 const handleHoursSat = async (from: string, input: string, merchant: Merchant): Promise<void> => {
     if (input.toLowerCase() === 'closed') {
         await db.merchant.update({ where: { id: merchant.id }, data: { sat_open_time: '00:00', sat_close_time: '00:00', sun_open: false } });
-    } else if (input.includes('-')) {
-        const [o, c] = input.split('-').map(s => s.trim());
-        await db.merchant.update({ where: { id: merchant.id }, data: { sat_open_time: o, sat_close_time: c, sun_open: false } });
     } else {
-        await sendTextMessage(from, '⚠️ Use format *HH:MM - HH:MM* or type *closed*.');
-        return;
+        const parsed = parseHoursInput(input);
+        if (!parsed) {
+            await sendTextMessage(from, '⚠️ Use format *HH:MM - HH:MM* (e.g. 09:00 - 13:00) or type *closed*.');
+            return;
+        }
+        await db.merchant.update({ where: { id: merchant.id }, data: { sat_open_time: parsed.open, sat_close_time: parsed.close, sun_open: false } });
     }
     await advanceTo(from, merchant, 'ob_kyc_intro');
+};
+
+const handleKycMethod = async (from: string, input: string, merchant: Merchant): Promise<void> => {
+    if (input === 'ob_kyc_whatsapp') {
+        await advanceTo(from, merchant, 'ob_kyc_intro');
+        return;
+    }
+    if (input === 'ob_kyc_online') {
+        const token = randomUUID();
+        const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+        await db.merchant.update({
+            where: { id: merchant.id },
+            data: { kyc_token: token, kyc_token_expires_at: expires, onboarding_step: 'ob_kyc_waiting' }
+        });
+        await db.userSession.update({
+            where: { wa_id: from },
+            data: { active_prod_id: 'ob_kyc_waiting' }
+        });
+        const base = process.env.STOREFRONT_BASE_URL || 'https://omeru.io';
+        await sendButtons(from,
+            `🌐 *Your KYC Link is Ready*\n\n` +
+            `Complete your identity verification securely online:\n` +
+            `${base}/kyc/${token}\n\n` +
+            `📝 *You'll fill in:*\n` +
+            `• SA ID or CIPC number\n` +
+            `• Photo of your ID document\n` +
+            `• Bank proof document\n` +
+            `• Banking account details\n\n` +
+            `_Progress saves only when you tap Save. Link valid for 7 days. Come back here once you've submitted._`,
+            [{ id: 'ob_kyc_check', title: '✅ Done, I\'ve submitted' }]
+        );
+        return;
+    }
+    await sendStepMessage(from, merchant, 'ob_kyc_method');
+};
+
+const handleKycWaiting = async (from: string, input: string, merchant: Merchant): Promise<void> => {
+    if (input === 'ob_kyc_check') {
+        const fresh = await db.merchant.findUnique({ where: { id: merchant.id } });
+        if (fresh?.kyc_online_completed) {
+            await advanceTo(from, fresh, 'ob_prod_intro');
+            return;
+        }
+        const base = process.env.STOREFRONT_BASE_URL || 'https://omeru.io';
+        const link = fresh?.kyc_token ? `${base}/kyc/${fresh.kyc_token}` : base;
+        await sendButtons(from,
+            `⏳ *Not submitted yet*\n\n` +
+            `We haven't received your KYC submission. Make sure you tap *Submit KYC* at the bottom of the form.\n\n` +
+            `🔗 ${link}`,
+            [{ id: 'ob_kyc_check', title: '✅ Check again' }]
+        );
+        return;
+    }
+    await sendStepMessage(from, merchant, 'ob_kyc_waiting');
 };
 
 const handleKycIntro = async (from: string, input: string, merchant: Merchant): Promise<void> => {
@@ -287,7 +355,8 @@ const handleKycIdNum = async (from: string, input: string, merchant: Merchant): 
 
 const handleKycIdDoc = async (from: string, _input: string, merchant: Merchant, message?: any): Promise<void> => {
     if (message?.type === 'image' && message?.image?.id) {
-        await db.merchant.update({ where: { id: merchant.id }, data: { kyc_id_doc_url: message.image.id } });
+        const persistedUrl = await persistWhatsAppImage(message.image.id, `kyc/${merchant.id}/id`);
+        await db.merchant.update({ where: { id: merchant.id }, data: { kyc_id_doc_url: persistedUrl } });
         await advanceTo(from, merchant, 'ob_kyc_bank_proof');
     } else {
         await sendTextMessage(from, '📄 Please send a clear photo of your ID document.');
@@ -296,9 +365,10 @@ const handleKycIdDoc = async (from: string, _input: string, merchant: Merchant, 
 
 const handleKycBankProof = async (from: string, _input: string, merchant: Merchant, message?: any): Promise<void> => {
     if (message?.type === 'image' && message?.image?.id) {
+        const persistedUrl = await persistWhatsAppImage(message.image.id, `kyc/${merchant.id}/bank`);
         await db.merchant.update({
             where: { id: merchant.id },
-            data: { kyc_bank_proof_url: message.image.id, kyc_submitted_at: new Date() }
+            data: { kyc_bank_proof_url: persistedUrl, kyc_submitted_at: new Date() }
         });
         await log(AuditAction.KYC_SUBMITTED, from, 'Merchant', merchant.id, {
             merchant_name: merchant.trading_name
@@ -562,6 +632,36 @@ const sendStepMessage = async (from: string, merchant: Merchant, step: string): 
                 `Or type *closed* if you're closed on Saturdays.`
             );
             break;
+
+        case 'ob_kyc_method':
+            await sendButtons(from,
+                `🔐 *Identity Verification — Step 7*\n\n` +
+                `Omeru is required by law to verify all merchants for compliance. ` +
+                `This protects you and your customers.\n\n` +
+                `You'll need:\n` +
+                `• SA ID or CIPC number\n` +
+                `• Photo of your ID document\n` +
+                `• Bank proof (statement or letter)\n` +
+                `• Your bank account details\n\n` +
+                `How would you like to complete this?`,
+                [
+                    { id: 'ob_kyc_whatsapp', title: '📱 Continue on WhatsApp' },
+                    { id: 'ob_kyc_online',   title: '🌐 Get a secure web link' }
+                ]
+            );
+            break;
+
+        case 'ob_kyc_waiting': {
+            const base = process.env.STOREFRONT_BASE_URL || 'https://omeru.io';
+            const link = merchant.kyc_token ? `${base}/kyc/${merchant.kyc_token}` : base;
+            await sendButtons(from,
+                `⏳ *Waiting for your online KYC*\n\n` +
+                `Your secure verification link:\n${link}\n\n` +
+                `Tap below once you've filled in and submitted the form.`,
+                [{ id: 'ob_kyc_check', title: '✅ I\'ve submitted it' }]
+            );
+            break;
+        }
 
         case 'ob_kyc_intro': {
             await sendButtons(from,

@@ -7,35 +7,49 @@ import { Prisma } from '@prisma/client';
 import { log, AuditAction } from './auditLog';
 
 export const handleCustomerOrders = async (from: string, input: string): Promise<void> => {
-    if (input === 'c_my_orders') {
+    const ordersPageMatch = input === 'c_my_orders' ? 1 : (input.startsWith('c_my_orders_p') ? parseInt(input.replace('c_my_orders_p', ''), 10) || 1 : null);
+    if (ordersPageMatch !== null) {
+        const PAGE_SIZE = 5;
+        const page = ordersPageMatch;
+        const skip = (page - 1) * PAGE_SIZE;
         const platformBranding = await getPlatformBranding(db);
-        const orders = await db.order.findMany({
-            where: { customer_id: from },
-            orderBy: { createdAt: 'desc' },
-            take: 5,
-            include: { merchant: { include: { branding: true } } }
-        });
 
-        if (orders.length === 0) {
+        const [orders, total] = await Promise.all([
+            db.order.findMany({
+                where: { customer_id: from },
+                orderBy: { createdAt: 'desc' },
+                take: PAGE_SIZE,
+                skip,
+                include: { merchant: { include: { branding: true } } }
+            }),
+            db.order.count({ where: { customer_id: from } })
+        ]);
+
+        if (total === 0) {
             await sendButtons(from, '📭 You have no recent orders.\n\nBrowse shops to place your first order!', [
                 { id: 'browse_shops', title: '🛍️ Browse Stores' }
             ]);
             return;
         }
 
-        let msg = '📦 *Your Recent Orders*\n\n';
+        const totalPages = Math.ceil(total / PAGE_SIZE);
+        let msg = `📦 *Your Orders*  •  Page ${page} of ${totalPages}\n\n`;
         orders.forEach(o => {
             const emoji = getStatusEmoji(o.status);
             msg += `${emoji} #${o.id.slice(-5)} — ${o.merchant?.trading_name || 'Shop'}\n`;
             msg += `   ${formatCurrency(o.total, { merchant: o.merchant, merchantBranding: o.merchant?.branding, platform: platformBranding })}  •  ${formatStatus(o.status)}\n\n`;
         });
 
-        const buttons = orders.slice(0, 3).map(o => ({
+        const navBtns: Array<{ id: string; title: string }> = [];
+        if (page > 1) navBtns.push({ id: `c_my_orders_p${page - 1}`, title: '◀ Prev' });
+        if (page < totalPages) navBtns.push({ id: `c_my_orders_p${page + 1}`, title: 'Next ▶' });
+
+        const viewBtns = orders.slice(0, 3 - navBtns.length).map(o => ({
             id: `view_order_${o.id}`,
             title: `#${o.id.slice(-5)} ${getStatusEmoji(o.status)}`
         }));
 
-        await sendButtons(from, msg.trim(), buttons);
+        await sendButtons(from, msg.trim(), [...viewBtns, ...navBtns].slice(0, 3));
         return;
     }
 

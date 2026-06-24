@@ -87,10 +87,15 @@ model Merchant {
   welcome_image_url String?
   store_category    String?
   location_visible  Boolean        @default(false)
-  onboarding_step   String?
-  kyc_id_doc_url    String?
-  kyc_bank_proof_url String?
-  kyc_submitted_at  DateTime?
+  services_enabled     Boolean   @default(false)
+  onboarding_step      String?
+  kyc_token            String?   @unique
+  kyc_token_expires_at DateTime?
+  kyc_draft_json       Json?
+  kyc_online_completed Boolean   @default(false)
+  kyc_id_doc_url       String?
+  kyc_bank_proof_url   String?
+  kyc_submitted_at     DateTime?
   status            MerchantStatus @default(ACTIVE)
   categories        Category[]
   products          Product[]
@@ -101,8 +106,28 @@ model Merchant {
   branding          MerchantBranding?
   services          Service[]
   bookings          Booking[]
+  serviceApplications ServiceApplication[]
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
+}
+
+model ServiceApplication {
+  id             String           @id @default(cuid())
+  merchant_id    String
+  merchant       Merchant         @relation(fields: [merchant_id], references: [id])
+  svc_category   String
+  description    String
+  status         ServiceAppStatus @default(PENDING)
+  reviewer_wa_id String?
+  reviewer_note  String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+enum ServiceAppStatus {
+  PENDING
+  APPROVED
+  DENIED
 }
 
 model MerchantOwner {

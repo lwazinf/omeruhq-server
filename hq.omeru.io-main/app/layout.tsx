@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://omeru.io"),
   title: "Omeru — WhatsApp Commerce for South African Merchants",
   description: "Sell on WhatsApp. No app downloads. No account creation. Start selling in minutes with Omeru's zero-friction commerce platform.",
-  keywords: "WhatsApp commerce, South Africa, merchant, online store, instant EFT, Stitch payments, sell on WhatsApp",
+  keywords: "WhatsApp commerce, South Africa, merchant, online store, instant EFT, sell on WhatsApp, WhatsApp store",
   openGraph: {
     title: "Omeru — WhatsApp Commerce",
     description: "Sell on WhatsApp. No app downloads. No account creation.",

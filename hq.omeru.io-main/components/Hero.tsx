@@ -69,7 +69,7 @@ export default function Hero() {
     headline: ['SELL MORE.', 'WHATSAPP', 'ALREADY.'],
     headlineAccent: 1,
     body: 'Zero-friction commerce for South African merchants. Customers browse and buy without ever leaving WhatsApp.',
-    sub: 'Powered by PayFast · Invite-only · From R199/mo',
+    sub: 'Powered by Stitch · Invite-only · From R199/mo',
     primaryLabel: 'Apply as a merchant',
     primaryHref: 'mailto:merchants@omeru.io',
     secondaryLabel: 'Shop on WhatsApp',

@@ -1,5 +1,5 @@
 import { Merchant } from '@prisma/client';
-import { sendButtons, sendTextMessage } from './sender';
+import { sendButtons, sendTextMessage, sendListMessage } from './sender';
 import { formatCurrency } from './messageTemplates';
 import { getPlatformBranding } from './platformBranding';
 import { db } from '../../lib/db';
@@ -158,27 +158,34 @@ export const showMerchantDashboard = async (to: string, merchant: Merchant): Pro
         card += `━━━━━━━━━━━━━━━━━━━━`;
 
         const kitchenTitle = pendingCount > 0 ? `🍳 Kitchen (${pendingCount})` : '🍳 Kitchen';
-
         const toggleTitle = merchant.manual_closed ? '🔓 Open Shop' : '🔒 Close Shop';
+
         await sendButtons(to, card, [
             { id: 'm_kitchen', title: kitchenTitle.substring(0, 20) },
             { id: 'm_inventory', title: '📦 Products' },
             { id: 'dash_toggle', title: toggleTitle }
         ]);
-        const pendingBookings = await db.booking.count({
-            where: { merchant_id: merchant.id, status: 'PENDING', start_at: { gte: new Date() } }
-        });
-        await sendButtons(to, '⚡ More:', [
-            { id: 'm_services', title: pendingBookings > 0 ? `💼 Services (${pendingBookings})`.substring(0, 20) : '💼 Services' },
-            { id: 'm_stats', title: '📊 Stats' },
-            { id: 'm_settings', title: '🛠️ Settings' }
-        ]);
-        await sendButtons(to, '📣 Reach your customers:', [
-            { id: 'm_broadcast', title: '📣 Broadcast' }
-        ]);
-        await sendButtons(to, '💬 Got feedback?', [
-            { id: 'm_feedback', title: '💬 Send Feedback' }
-        ]);
+
+        const servicesRow = (merchant as any).services_enabled
+            ? await (async () => {
+                const pendingBookings = await db.booking.count({
+                    where: { merchant_id: merchant.id, status: 'PENDING', start_at: { gte: new Date() } }
+                });
+                const title = pendingBookings > 0 ? `💼 Services (${pendingBookings})` : '💼 Services';
+                return { id: 'm_services', title: title.substring(0, 24), description: 'Bookings & services' };
+            })()
+            : { id: 'm_svc_apply', title: '💼 Services — Apply', description: 'Apply to offer bookable services' };
+
+        await sendListMessage(to, '⚡ *More options:*', '⚡ More', [{
+            title: 'Manage',
+            rows: [
+                servicesRow,
+                { id: 'm_stats',     title: '📊 Stats',         description: 'Revenue & analytics' },
+                { id: 'm_broadcast', title: '📣 Broadcast',      description: 'Message your customers' },
+                { id: 'm_settings',  title: '🛠️ Settings',       description: 'Store settings' },
+                { id: 'm_feedback',  title: '💬 Send Feedback',  description: 'Share feedback with Omeru' }
+            ]
+        }]);
 
     } catch (error: any) {
         console.error(`❌ Dashboard Error: ${error.message}`);

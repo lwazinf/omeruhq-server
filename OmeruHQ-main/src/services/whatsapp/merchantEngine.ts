@@ -6,7 +6,7 @@ import { getMerchantStats, showMerchantDashboard } from './merchantDashboard';
 import { handleBroadcastActions } from './merchantBroadcast';
 import { handleServiceActions } from './merchantServices';
 import { handleOnboardingAction, startOnboarding } from './onboardingEngine';
-import { sendButtons, sendTextMessage } from './sender';
+import { sendButtons, sendTextMessage, sendListMessage } from './sender';
 import { formatCurrency } from './messageTemplates';
 import { getPlatformBranding } from './platformBranding';
 import { db } from '../../lib/db';
@@ -44,6 +44,16 @@ const KITCHEN_PREFIXES = ['m_kitchen', 'k_', 'ready_', 'collected_', 'view_kitch
 const SETTINGS_PREFIXES = ['m_settings', 's_', 'h_', 'm_edit_hours', 'ob_hours', 's_browse_toggle', 's_welcome_img', 's_clear_welcome_img', 'mcat_'];
 const BROADCAST_PREFIXES = ['m_broadcast', 'b_'];
 const SERVICE_PREFIXES = ['m_services', 'sv_', 'bk_'];
+const SVC_APP_PREFIXES = ['m_svc_apply', 'sapp_'];
+
+const SVC_CATEGORIES: Record<string, string> = {
+    sapp_appointments: 'Appointments & Bookings',
+    sapp_professional: 'Professional Services',
+    sapp_beauty:       'Beauty & Wellness',
+    sapp_food:         'Food & Catering',
+    sapp_events:       'Events & Entertainment',
+    sapp_other:        'Other / Custom',
+};
 
 export const handleMerchantAction = async (
     from: string, 
@@ -243,7 +253,25 @@ export const handleMerchantAction = async (
             return;
         }
 
+        // Services gate — must be explicitly enabled by platform admin
+        if (matchesPrefix(input, SVC_APP_PREFIXES) || session.active_prod_id === 'SVC_APP_DESC') {
+            await handleServiceApplication(from, input, session, merchant);
+            return;
+        }
+
         if (matchesPrefix(input, SERVICE_PREFIXES) || (session.active_prod_id || '').startsWith('SV_') || (session.active_prod_id || '').startsWith('BK_')) {
+            if (!(merchant as any).services_enabled) {
+                await sendButtons(from,
+                    `💼 *Services not yet enabled*\n\n` +
+                    `Offering bookable services on Omeru requires platform approval. ` +
+                    `Apply now — approvals are reviewed within 24 hours.`,
+                    [
+                        { id: 'm_svc_apply', title: '📋 Apply for Services' },
+                        { id: 'm_dashboard', title: '🏠 Dashboard' }
+                    ]
+                );
+                return;
+            }
             await handleServiceActions(from, input, session, merchant, message);
             return;
         }
@@ -266,6 +294,116 @@ export const handleMerchantAction = async (
         console.error(`❌ Merchant Engine Error: ${error.message}`);
         await sendTextMessage(from, '⚠️ Something went wrong.');
         await showMerchantDashboard(from, merchant);
+    }
+};
+
+const handleServiceApplication = async (
+    from: string,
+    input: string,
+    session: UserSession,
+    merchant: Merchant
+): Promise<void> => {
+    // Entry — show intro and category picker
+    if (input === 'm_svc_apply') {
+        const pending = await db.serviceApplication.findFirst({
+            where: { merchant_id: merchant.id, status: 'PENDING' }
+        });
+        if (pending) {
+            await sendButtons(from,
+                `⏳ *Application already submitted*\n\n` +
+                `Your services application is under review. The platform team will respond within 24 hours.`,
+                [{ id: 'm_dashboard', title: '🏠 Dashboard' }]
+            );
+            return;
+        }
+        await sendListMessage(from,
+            `💼 *Apply for Services*\n\n` +
+            `Services let customers book appointments, consultations, or time slots directly through WhatsApp.\n\n` +
+            `Platform approval is required. Select the category that best describes your services:`,
+            '📂 Select Category',
+            [{
+                title: 'Service Categories',
+                rows: [
+                    { id: 'sapp_appointments', title: '📅 Appointments',         description: 'Haircuts, repairs, consultations' },
+                    { id: 'sapp_professional', title: '👔 Professional Services', description: 'Legal, accounting, coaching' },
+                    { id: 'sapp_beauty',       title: '💄 Beauty & Wellness',     description: 'Salons, spas, therapists' },
+                    { id: 'sapp_food',         title: '🍽️ Food & Catering',      description: 'Meal prep, private chef, events' },
+                    { id: 'sapp_events',       title: '🎉 Events & Entertainment', description: 'Photography, DJs, hosting' },
+                    { id: 'sapp_other',        title: '🔧 Other / Custom',        description: 'Something else' },
+                ]
+            }]
+        );
+        return;
+    }
+
+    // Category selected — ask for description
+    if (input in SVC_CATEGORIES) {
+        const category = SVC_CATEGORIES[input];
+        await db.userSession.update({
+            where: { wa_id: from },
+            data: { active_prod_id: 'SVC_APP_DESC', state: JSON.stringify({ category }) }
+        });
+        await sendTextMessage(from,
+            `✏️ *Describe your services*\n\n` +
+            `Category: *${category}*\n\n` +
+            `In 1–3 sentences, tell us:\n` +
+            `• What specific services you'll offer\n` +
+            `• How often customers typically book\n` +
+            `• Your rough price range\n\n` +
+            `_Type "cancel" to go back._`
+        );
+        return;
+    }
+
+    // Description captured — create application
+    if (session.active_prod_id === 'SVC_APP_DESC') {
+        if (input.toLowerCase() === 'cancel') {
+            await db.userSession.update({ where: { wa_id: from }, data: { active_prod_id: null, state: null } });
+            await showMerchantDashboard(from, merchant);
+            return;
+        }
+        if (input.trim().length < 10) {
+            await sendTextMessage(from, '⚠️ Please describe your services in at least 10 characters.');
+            return;
+        }
+
+        let category = 'Other';
+        try {
+            const stateObj = JSON.parse(session.state as string || '{}');
+            category = stateObj.category || 'Other';
+        } catch { /* ignore parse errors */ }
+
+        await db.serviceApplication.create({
+            data: {
+                merchant_id: merchant.id,
+                svc_category: category,
+                description: input.trim().substring(0, 500),
+                status: 'PENDING',
+            }
+        });
+
+        await db.userSession.update({ where: { wa_id: from }, data: { active_prod_id: null, state: null } });
+
+        // Notify platform admins
+        const adminNumbers = (process.env.PLATFORM_ADMIN_NUMBERS || '').split(',').filter(Boolean);
+        for (const adminWaId of adminNumbers) {
+            await sendButtons(adminWaId,
+                `📋 *New Services Application*\n\n` +
+                `Store: *${merchant.trading_name}* (@${merchant.handle})\n` +
+                `Category: ${category}\n\n` +
+                `"${input.trim().substring(0, 200)}"\n\n` +
+                `_Review from the admin panel._`,
+                [{ id: 'pa_svc_apps', title: '📋 Review Applications' }]
+            );
+        }
+
+        await sendButtons(from,
+            `✅ *Application submitted!*\n\n` +
+            `Your services application is under review. ` +
+            `The platform team will respond within 24 hours. ` +
+            `You'll receive a WhatsApp notification with the outcome.`,
+            [{ id: 'm_dashboard', title: '🏠 Back to Dashboard' }]
+        );
     }
 };
 

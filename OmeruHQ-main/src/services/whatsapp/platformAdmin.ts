@@ -26,24 +26,27 @@ export const handlePlatformAdminActions = async (
     if (input === 'admin' || input === 'pa_menu') {
         await clearState(from);
 
-        const [active, onboarding, pending] = await Promise.all([
+        const [active, onboarding, pendingInvites, pendingSvcApps] = await Promise.all([
             db.merchant.count({ where: { status: MerchantStatus.ACTIVE } }),
             db.merchant.count({ where: { status: MerchantStatus.ONBOARDING } }),
-            db.merchantInvite.count({ where: { status: 'PENDING' } })
+            db.merchantInvite.count({ where: { status: 'PENDING' } }),
+            db.serviceApplication.count({ where: { status: 'PENDING' } })
         ]);
 
+        const svcLabel = pendingSvcApps > 0 ? `📋 Services (${pendingSvcApps})` : '📋 Service Apps';
+
         await sendButtons(from,
-            `🛡️ *Platform Admin*\n\n🟢 Active stores: ${active}\n🟡 Onboarding: ${onboarding}\n📨 Pending invites: ${pending}`,
+            `🛡️ *Platform Admin*\n\n🟢 Active stores: ${active}\n🟡 Onboarding: ${onboarding}\n📨 Pending invites: ${pendingInvites}\n💼 Service applications: ${pendingSvcApps}`,
             [
                 { id: 'pa_invite', title: '➕ Invite Store' },
                 { id: 'pa_stores', title: '🏪 Stores' },
-                { id: 'pa_invite_history', title: '📋 Invite History' }
+                { id: 'pa_svc_apps', title: svcLabel.substring(0, 20) }
             ]
         );
         await sendButtons(from, '⚙️ More:', [
-            { id: 'pa_announce', title: '📣 Announce' },
-            { id: 'pa_feedback', title: '💬 Feedback Inbox' },
-            { id: 'pa_revoke', title: '🗑️ Revoke Access' }
+            { id: 'pa_announce',       title: '📣 Announce' },
+            { id: 'pa_feedback',       title: '💬 Feedback Inbox' },
+            { id: 'pa_invite_history', title: '📋 Invite History' }
         ]);
         return;
     }
@@ -749,6 +752,136 @@ export const handlePlatformAdminActions = async (
         navBtns.push({ id: 'pa_feedback', title: '⬅️ Back' });
 
         await sendButtons(from, msg, navBtns.slice(0, 3));
+        return;
+    }
+
+    // ── Service Applications ─────────────────────────────────────────────────
+
+    if (input === 'pa_svc_apps') {
+        const apps = await db.serviceApplication.findMany({
+            where: { status: 'PENDING' },
+            include: { merchant: { select: { trading_name: true, handle: true } } },
+            orderBy: { createdAt: 'asc' },
+            take: 10,
+        });
+
+        if (apps.length === 0) {
+            await sendButtons(from, '✅ No pending service applications.', [{ id: 'pa_menu', title: '🛡️ Admin Menu' }]);
+            return;
+        }
+
+        let msg = `📋 *Service Applications* (${apps.length} pending)\n━━━━━━━━━━━━━━━━━━━━\n`;
+        for (const app of apps) {
+            const date = app.createdAt.toLocaleDateString('en-ZA', { day: '2-digit', month: 'short' });
+            msg += `\n🏪 *${app.merchant.trading_name}* (@${app.merchant.handle}) — ${date}\n`;
+            msg += `📂 ${app.svc_category}\n`;
+            msg += `"${app.description.substring(0, 100)}${app.description.length > 100 ? '…' : ''}"\n`;
+            msg += `➡️ Review: *pa_svc_app_${app.id.slice(-8)}*\n`;
+        }
+
+        await sendTextMessage(from, msg);
+        await sendButtons(from, 'Tap an application ID above to review, or:', [
+            { id: 'pa_menu', title: '🛡️ Admin Menu' }
+        ]);
+        return;
+    }
+
+    if (input.startsWith('pa_svc_app_')) {
+        const suffix = input.replace('pa_svc_app_', '');
+        const app = await db.serviceApplication.findFirst({
+            where: { id: { endsWith: suffix } },
+            include: { merchant: { select: { trading_name: true, handle: true, wa_id: true } } },
+        });
+        if (!app) { await sendTextMessage(from, '❌ Application not found.'); return; }
+
+        const date = app.createdAt.toLocaleDateString('en-ZA', { day: '2-digit', month: 'short', year: 'numeric' });
+        await sendButtons(from,
+            `📋 *Service Application*\n\n` +
+            `🏪 ${app.merchant.trading_name} (@${app.merchant.handle})\n` +
+            `📂 Category: ${app.svc_category}\n` +
+            `📅 Submitted: ${date}\n\n` +
+            `"${app.description}"`,
+            [
+                { id: `pa_svc_approve_${app.id}`, title: '✅ Approve' },
+                { id: `pa_svc_deny_${app.id}`,    title: '❌ Deny' },
+                { id: 'pa_svc_apps',               title: '⬅️ Back' }
+            ]
+        );
+        return;
+    }
+
+    if (input.startsWith('pa_svc_approve_')) {
+        const appId = input.replace('pa_svc_approve_', '');
+        const app = await db.serviceApplication.findUnique({
+            where: { id: appId },
+            include: { merchant: true },
+        });
+        if (!app) { await sendTextMessage(from, '❌ Application not found.'); return; }
+
+        await db.serviceApplication.update({
+            where: { id: appId },
+            data: { status: 'APPROVED', reviewer_wa_id: from },
+        });
+        await db.merchant.update({
+            where: { id: app.merchant_id },
+            data: { services_enabled: true },
+        });
+
+        // Notify merchant
+        await sendButtons(app.merchant.wa_id,
+            `🎉 *Services Approved!*\n\n` +
+            `Your application to offer bookable services on Omeru has been approved.\n\n` +
+            `You can now create services from your dashboard — customers will be able to book appointments and time slots directly on WhatsApp.`,
+            [
+                { id: 'm_services', title: '💼 Open Services' },
+                { id: 'm_dashboard', title: '🏠 Dashboard' }
+            ]
+        );
+
+        await sendButtons(from,
+            `✅ Approved — *${app.merchant.trading_name}* can now offer services.`,
+            [{ id: 'pa_svc_apps', title: '📋 More Applications' }, { id: 'pa_menu', title: '🛡️ Admin Menu' }]
+        );
+        return;
+    }
+
+    if (input.startsWith('pa_svc_deny_')) {
+        const appId = input.replace('pa_svc_deny_', '');
+        await setState(from, `PA_SVC_DENY_${appId}`, { appId });
+        await sendTextMessage(from,
+            `✏️ *Reason for denial*\n\nType a short reason to send to the merchant. Be constructive.\n\n_Type "cancel" to go back._`
+        );
+        return;
+    }
+
+    if (state.startsWith('PA_SVC_DENY_')) {
+        if (input.toLowerCase() === 'cancel') { await clearState(from); await sendButtons(from, 'Cancelled.', [{ id: 'pa_svc_apps', title: '📋 Back' }]); return; }
+        const appId = state.replace('PA_SVC_DENY_', '');
+        const app = await db.serviceApplication.findUnique({
+            where: { id: appId },
+            include: { merchant: true },
+        });
+        if (!app) { await clearState(from); await sendTextMessage(from, '❌ Application not found.'); return; }
+
+        await db.serviceApplication.update({
+            where: { id: appId },
+            data: { status: 'DENIED', reviewer_wa_id: from, reviewer_note: input.trim().substring(0, 300) },
+        });
+        await clearState(from);
+
+        // Notify merchant
+        await sendButtons(app.merchant.wa_id,
+            `ℹ️ *Services Application Update*\n\n` +
+            `Your application to offer services was not approved at this time.\n\n` +
+            `*Reason:* ${input.trim().substring(0, 200)}\n\n` +
+            `You can apply again once the above is resolved.`,
+            [{ id: 'm_svc_apply', title: '📋 Apply Again' }, { id: 'm_dashboard', title: '🏠 Dashboard' }]
+        );
+
+        await sendButtons(from,
+            `❌ Denied — *${app.merchant.trading_name}* has been notified.`,
+            [{ id: 'pa_svc_apps', title: '📋 More Applications' }, { id: 'pa_menu', title: '🛡️ Admin Menu' }]
+        );
         return;
     }
 };

@@ -19,23 +19,54 @@ export const handleKitchenActions = async (
         const merchantBranding = await db.merchantBranding.findUnique({ where: { merchant_id: merchant.id } });
         // Kitchen Menu
         if (input === 'm_kitchen') {
-            const [newCount, readyCount, reviewCount] = await Promise.all([
-                db.order.count({ where: { merchant_id: merchant.id, status: { in: ['PENDING', 'PAID'] } } }),
+            const [unpaidCount, prepCount, readyCount, reviewCount] = await Promise.all([
+                db.order.count({ where: { merchant_id: merchant.id, status: 'PENDING' } }),
+                db.order.count({ where: { merchant_id: merchant.id, status: 'PAID' } }),
                 db.order.count({ where: { merchant_id: merchant.id, status: 'READY_FOR_PICKUP' } }),
                 db.auditLog.count({ where: { action: 'CUSTOMER_FEEDBACK', metadata_json: { path: ['merchant_id'], equals: merchant.id } } })
             ]);
 
             await sendButtons(from,
-                `🍳 *Kitchen*\n\n📊 New: ${newCount} | Ready: ${readyCount}`,
+                `🍳 *Kitchen*\n\n💳 Unpaid: ${unpaidCount} | 🔥 To Prepare: ${prepCount} | ✅ Ready: ${readyCount}`,
                 [
-                    { id: 'k_new', title: newCount > 0 ? `🔥 New (${newCount})` : '📥 New Orders' },
+                    { id: 'k_new', title: prepCount > 0 ? `🔥 To Prepare (${prepCount})` : '🔥 To Prepare' },
                     { id: 'k_ready', title: readyCount > 0 ? `✅ Ready (${readyCount})` : '✅ Ready' },
                     { id: 'm_dashboard', title: '🏠 Dashboard' }
                 ]
             );
-            await sendButtons(from, '⭐ Customer Reviews:', [
+            await sendButtons(from, '💳 Awaiting Payment:', [
+                { id: 'k_unpaid', title: unpaidCount > 0 ? `💳 Unpaid (${unpaidCount})` : '💳 Unpaid Orders' },
                 { id: 'm_reviews', title: reviewCount > 0 ? `⭐ Reviews (${reviewCount})` : '⭐ Reviews' }
             ]);
+            return;
+        }
+
+        // View Unpaid Orders (PENDING — awaiting customer payment)
+        if (input === 'k_unpaid') {
+            const orders = await db.order.findMany({
+                where: { merchant_id: merchant.id, status: 'PENDING' },
+                orderBy: { createdAt: 'asc' },
+                take: 10,
+                include: { order_items: { include: { product: true } } }
+            });
+
+            if (orders.length === 0) {
+                await sendTextMessage(from, '📭 No unpaid orders.');
+                await handleKitchenActions(from, 'm_kitchen', session, merchant);
+                return;
+            }
+
+            const rows = orders.map(o => {
+                const mins = Math.floor((Date.now() - o.createdAt.getTime()) / 60000);
+                return {
+                    id: `k_view_${o.id}`,
+                    title: `#${o.id.slice(-5)} • ${formatCurrency(o.total, { merchant, merchantBranding, platform: platformBranding })}`,
+                    description: `${mins}m waiting — payment pending`
+                };
+            });
+
+            await sendListMessage(from, `💳 *Awaiting Payment* (${orders.length})`, '📋 View', [{ title: 'Orders', rows }]);
+            await sendButtons(from, 'Nav:', [{ id: 'm_kitchen', title: '⬅️ Back' }]);
             return;
         }
 
@@ -80,10 +111,10 @@ export const handleKitchenActions = async (
             return;
         }
 
-        // View New Orders
+        // View Orders To Prepare (PAID — payment confirmed, needs fulfilment)
         if (input === 'k_new') {
             const orders = await db.order.findMany({
-                where: { merchant_id: merchant.id, status: { in: ['PENDING', 'PAID'] } },
+                where: { merchant_id: merchant.id, status: 'PAID' },
                 orderBy: { createdAt: 'asc' },
                 take: 10,
                 include: { order_items: { include: { product: true } } }
@@ -104,7 +135,7 @@ export const handleKitchenActions = async (
                 };
             });
 
-            await sendListMessage(from, `🔥 *New Orders* (${orders.length})`, '📋 View', [{ title: 'Orders', rows }]);
+            await sendListMessage(from, `🔥 *To Prepare* (${orders.length})`, '📋 View', [{ title: 'Orders', rows }]);
             await sendButtons(from, 'Nav:', [{ id: 'm_kitchen', title: '⬅️ Back' }]);
             return;
         }
