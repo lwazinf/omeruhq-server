@@ -1,0 +1,328 @@
+{
+  "Nav": {
+    "howItWorks": "Indlela esebenza ngayo",
+    "features": "Izici",
+    "stores": "Izitolo",
+    "pricing": "Amanani",
+    "faq": "Imibuzo ejwayelekile",
+    "requestInvite": "Cela isimemo",
+    "merchantHQ": "I-HQ Yabarekisi",
+    "shopOnWA": "Thenga ku-WA",
+    "applyAsMerchant": "Faka isicelo njengomurekisi",
+    "shopOnWhatsApp": "Thenga ku-WhatsApp"
+  },
+  "Hero": {
+    "merchant": {
+      "pill": "Ukuthengisa ku-WhatsApp · Mzansi",
+      "line1": "THENGISA KAKHULU.",
+      "line2": "WHATSAPP",
+      "line3": "USUYIKHONA.",
+      "body": "Ukuthengisa okulula kubarekisi base-Mzansi. Abathengi babuka futhi bathenge bengaphumi ku-WhatsApp.",
+      "sub": "Isekwe i-Stitch · Isimemo kuphela · Kusuka ku-R199/iny",
+      "primary": "Faka isicelo njengomurekisi",
+      "secondary": "Thenga ku-WhatsApp"
+    },
+    "customer": {
+      "pill": "Thenga Kulekhaya · Alidingeki i-App",
+      "line1": "THENGA KULEKHAYA.",
+      "line2": "AYIDINGEKILE.",
+      "line3": "I-WA KUPHELA.",
+      "body": "Thola abarekisi base-Mzansi futhi ubathenga ngqo ku-WhatsApp. Akukho okudinga ukudownloada, akukho akhawunti — cindezela nje uthenga.",
+      "sub": "Ukuphuma okuphephile · Stitch · Isebenza kuwo wonke umakhalekhukhwini",
+      "primary": "Vula i-bot",
+      "secondary": "Ungumurekisi?"
+    },
+    "stats": {
+      "waUsers": "Abasebenzisi be-WhatsApp e-Mzansi",
+      "firstSale": "Kusimemo kuya ekuthengiseni kokuqala",
+      "openRate": "Iphezulu kuneposi lokuvula",
+      "starterFrom": "Ukuqala kusuka ku-/iny"
+    },
+    "merchantView": "Umbono womurekisi",
+    "customerView": "Umbono womthengi"
+  },
+  "HowItWorks": {
+    "pill": "Indlela esebenza ngayo",
+    "heading": "Kusimemo kuya ekuthengiseni kokuqala",
+    "headingAccent": "ngosuku olulodwa.",
+    "subtext": "Ukuqeqeshwa kwakhiwe ukuze abarekisi abangazange bathengise ku-inthanethi bakwazi ukusebenza ngaphambi kwalunche.",
+    "ctaHeading": "Ulungele ukuthengisa ku-WhatsApp?",
+    "ctaSub": "Izindawo ezilinganiselwe zabarekisi ziyatholakala ekwethulweni kwethu kwesimemo.",
+    "ctaButton": "Faka isicelo sokungena okokuqala",
+    "steps": [
+      {
+        "title": "Faka isicelo sesimemo",
+        "body": "I-Omeru inikwa ngesimemo kuphela. Faka isicelo nge-imeyili noma ku-WhatsApp. Sibuyekeza ibhizinisi lakho futhi sikhubaze akhawunti yakho ngaphakathi kwamahora angu-24."
+      },
+      {
+        "title": "Misa isitolo sakho se-WhatsApp",
+        "body": "Engeza imikhiqizo, misa amanani, lungisa i-Stitch ye-EFT esheshayo. Isitolo sakho sihlala ngaphakathi kwe-WhatsApp — akudingeki i-app noma iwebhusayithi."
+      },
+      {
+        "title": "Yabelana ngesixhumanisi sesitolo sakho",
+        "body": "Thumela abathengi isixhumanisi se-WhatsApp. Babuka, babheke futhi bakhokhe bengaphumi engxoxweni. Uthole izaziso zemiyalelo ngokushesha."
+      },
+      {
+        "title": "Tholakala ukukhokhelwa, ukukhula",
+        "body": "I-Stitch ilungisa izinkokhelo ngqo ebhange lakho. Thumela ama-promo, buka ukuhlaziywa, futhi wande phakathi kwezindawo eziningi."
+      }
+    ]
+  },
+  "Features": {
+    "pill": "Izici",
+    "heading": "Konke umurekisi\nakudingayo ngempela.",
+    "subtext": "Akukho okungemfaneleko. Amathuluzi kuphela ashintsha izingxoxo ze-WhatsApp abe imali.",
+    "items": [
+      {
+        "title": "Ulwazi lwe-WhatsApp lwemvelo",
+        "body": "Abathengi abaphumi ku-WhatsApp. Buka, faka ekadineni, khetha — konke ku-app abachithe kuyo amahora nsuku zonke.",
+        "badge": "Wonke amazinga"
+      },
+      {
+        "title": "I-Stitch ye-EFT esheshayo",
+        "body": "I-EFT esheshayo esekwe i-Stitch. Abathengi bakhokha kusuka ku-app yabo yebhange — akudingeki ikhadi. Imali ifika ngqo akhawuntini yakho.",
+        "badge": "Izinkokhelo ze-ZAR"
+      },
+      {
+        "title": "Ukuhlaziywa kwe-isikhathi sangempela",
+        "body": "Landela ukuthengiswa, imikhiqizo ephezulu, nokuphatha kwabathengi. Yazi okuthengwayo ngaphambi kokuba kuphelele.",
+        "badge": "Ukukhula & Pro"
+      },
+      {
+        "title": "Ukusabalalisa kwe-WhatsApp",
+        "body": "Thumela ama-promo nezaziso zokuphinda ugcwalise kubathengi abavumile ukuzwa. Amazinga okubutha aphezulu kuneposi, izindleko ziphansi kuneSMS.",
+        "badge": "Ukukhula & Pro"
+      },
+      {
+        "title": "Ukusekela izindawo eziningi",
+        "body": "Phatha izindawo ezifika kwezi-3 kusuka ku-dashboard eyodwa ye-Pro. Ukubika okuhlanganisiwe phakathi kwazo zonke izitolo zakho.",
+        "badge": "Izinga le-Pro"
+      },
+      {
+        "title": "Izaziso zemiyalelo ngokushesha",
+        "body": "Waziwa ngalo mzuzwana ioda linikelwa. Yamukela, nqaba, noma wazise abathengi — konke kusuka kumakhalekhukhwini wakho, ngesikhathi sangempela.",
+        "badge": "Wonke amazinga"
+      }
+    ]
+  },
+  "Stats": {
+    "pill": "Kungani ukuthengisa kwe-WhatsApp",
+    "heading": "Izinombolo zenza",
+    "headingAccent": "isici.",
+    "items": [
+      {
+        "label": "Abasebenzisi be-WhatsApp e-Mzansi",
+        "sub": "Abathengi bakho sebekhona"
+      },
+      {
+        "label": "Ikhomishini yenhlangano",
+        "sub": "Ikhajwa kuphela ekuthengiseni okuphumelelayo"
+      },
+      {
+        "label": "Kusimemo kuya esitolo esibukhoma",
+        "sub": "Ukuqeqeshwa okusheshayo kakhulu ku-Mzansi"
+      },
+      {
+        "label": "Izinga lokuvula eliphezulu kuneposi",
+        "sub": "Imiyalezo ye-WhatsApp iyafundwa"
+      }
+    ]
+  },
+  "Testimonials": {
+    "pill": "Izindaba zabarekisi",
+    "heading": "Abarekisi bempela.",
+    "headingAccent": "Imali yangempela.",
+    "subtext": "Abarekisi abafaka izicelo zokungena okokuqala futhi baphila ngaphakathi kwamahora angu-24.",
+    "joinButton": "Joyina bona →",
+    "items": [
+      {
+        "quote": "Ngangithengisa ipap nawo chakalaka ngeqembu elilodwa le-WhatsApp — akukho ukulandela imiyalelo, akukho izinkokhelo, inxushunxushu nje. I-Omeru ishintshile konke. Manje abathengi babuka, bakhethe, bakhokhe ngaphandle kokungishayela ucingo. Ngaya ku-R4k kuya ku-R18k ngenyanga ezizonke ku-zinyanga ezimbili.",
+        "metricLabel": "ngemuva kwezinyanga ezimbili"
+      },
+      {
+        "quote": "Inkinga yami enkulu ngaphambi kwe-Omeru kwakungabantu ababeka imiyalelo, bese bengakhokhi. Ukuhlangana kweziinkokhelo kusho ukuthi bathola iqiniso lemiyalelo kuphela uma sebekhokha. Ukugeleza kwemali yami kubusuku nobukhanya uma kuqhathaniswa nangaphambili.",
+        "metricLabel": "imiyalelo ngale nyanga"
+      },
+      {
+        "quote": "Angiyena umuntu wobuchwepheshe. Ngacabanga ukuthi 'isitolo se-inthanethi' kusho ukuthi ngidinga iwebhusayithi nomthuthukisi. I-Omeru yangikhokhelisa ngaphakathi kwamahhora amathathu futhi ngenza ukuthengiswa kwami kokuqala ngalosuku olufanayo. Abathengi bami abadinga ukwenza lutho olusha — sebenayo i-WhatsApp.",
+        "metricLabel": "ukumisa kuya ekuthengiseni kokuqala"
+      },
+      {
+        "quote": "Sithengisela izindlu zokudlela nabapheki basekhaya. Isici sokusabalalisa ku-Growth siyamangalisa — sathumela umlayezo owodwa ngoxhaxha olumva lwe-chilli futhi sanikwa izincwadi ezingama-23 emizuzwini engu-40. Lokho kungcono kunalo naluphi uhlobo lokumaketha engike ngalwenza.",
+        "metricLabel": "kusabalaliso olulodwa"
+      }
+    ]
+  },
+  "Pricing": {
+    "pill": "Amanani",
+    "heading": "Khula ungene kuhlelo",
+    "headingAccent": "olufanele i-GMV yakho.",
+    "subtext": "Amanani wonke ku-ZAR. Ikhomishini kuphela ekuthengiseni okuphumelelayo — i-Omeru iyahluma nawe uma uhluma.",
+    "mostPopular": "Ethandwa kakhulu",
+    "perMonth": "/iny",
+    "perSale": "ngokuthengiswa",
+    "footerNote": "Wonke amaplani afaka ukucwaninga kwe-Stitch ye-EFT esheshayo. Izinkokhelo zabarekisi ziya ngqo akhawuntini yakho ye-SA. Khulisa noma wehlisa noma nini.",
+    "tiers": [
+      {
+        "name": "Ukuqala",
+        "description": "Kubarekisi abasha abaqinisekisa umqondo.",
+        "cta": "Faka isicelo sokuQala",
+        "note": "Umkhawulo wemikhiqizo emi-5 · khulisa uma ulungele",
+        "features": [
+          "Kuze kufike imikhiqizo emi-5",
+          "Ikhomishini engu-5% ngokuthengiswa",
+          "Isitolo se-WhatsApp + konke okuqukethiwe",
+          "Izaziso zemiyalelo ze-isikhathi sangempela",
+          "Ukuhlaziywa kwesingeniso",
+          "Ukusekwa nge-imeyili"
+        ]
+      },
+      {
+        "name": "Ukukhula",
+        "description": "Kubarekisi abalungele ukukhulisa uhlu lwemikhiqizo yabo.",
+        "cta": "Faka isicelo sokuKhula",
+        "note": "Ethandwa kakhulu",
+        "features": [
+          "Kuze kufike imikhiqizo engu-15",
+          "Ikhomishini engu-3.5% ngokuthengiswa",
+          "Konke ku-Ukuqala",
+          "Ukusabalalisa × 2 ngenyanga",
+          "Ama-promo namakhodi okuphungula",
+          "I-dashboard yokucwaninga ephelele"
+        ]
+      },
+      {
+        "name": "Pro",
+        "description": "Kubarekisi abasungulekile abakhula baya ezindaweni eziningi.",
+        "cta": "Faka isicelo se-Pro",
+        "note": "Ukufinyelela kwenhlangano ephelele",
+        "features": [
+          "Imikhiqizo engalinganiswanga",
+          "Ikhomishini engu-2.5% ngokuthengiswa",
+          "Konke ku-Ukukhula",
+          "Ukusabalalisa okungalinganiswanga + isikhathi esimiselwe",
+          "Izindawo eziningi (kuze kube ngu-3)",
+          "Uhlelo lwezinsizakalo",
+          "Ukuhlaziywa kwe-isikhathi sangempela + ukuthekelisa"
+        ]
+      }
+    ]
+  },
+  "FAQ": {
+    "pill": "Imibuzo ejwayelekile",
+    "heading": "Imibuzo emihle ifanele izimpendulo ezithe thi.",
+    "contactPrompt": "Kusenento ekusangaza?",
+    "applyButton": "Faka isicelo sokungena",
+    "items": [
+      {
+        "q": "I-Omeru iyisimemo ngempela?",
+        "a": "Yebo — futhi sikuqonda ngokubuthaka, hhayi njengesithiyo. Sifaka abarekisi muntu ngamunye ukuze sikusize ngempela ukuze umise ngendlela efanele, uphendule imibuzo, futhi uqiniseke ukuthi ukuthengiswa kwakho kokuqala kuhamba kahle. Faka isicelo nge-imeyili noma ku-WhatsApp futhi uzozwa kithi ngaphakathi kwamahora angu-24."
+      },
+      {
+        "q": "Abathengi bami badinga ukudownloada noma yini?",
+        "a": "Akukho lutho. Uma umthengi wakho enayo i-WhatsApp — futhi e-Mzansi, lokho cishe nguwo wonke umuntu — angakwazi ukuthenga esitolweni sakho manje. Akukho akhawunti yokwenza, akukho i-app yokufaka, akukho amagama esigqalo. Bacindezela isixhumanisi sakho futhi bangene. Lokho yiqiniso lonke."
+      },
+      {
+        "q": "Izinkokhelo zisebenza kanjani?",
+        "a": "Sisebenzisa i-Stitch yezinkokhelo ze-EFT ezivikelekile esheshayo. Abathengi bakhokha ngqo ku-app yabo yebhange — akudingeki imininingwane yekhadi. Uma inkokhelo iqinisekisiwe, imali ifika ngqo akhawuntini yakho ye-SA. Sikhipha ikhomishini yethu ngokuzenzakalelayo ukuze ungaze uyibalele."
+      },
+      {
+        "q": "Kwenzekani uma ngifika emkhawulweni wemikhiqizo emi-5 ku-Ukuqala?",
+        "a": "Uzothola i-prompt ye-dashboard ukuze ukhulise. Umkhawulo wokuQala akuyijeziso — uklanywe ukuze ungakhokheli lokho ongakudinganga ngakalokhu. Uma usuneqhaza futhi ufuna ukukhulisa uhlu lwakho, ukukhulisa kuya ku-Ukukhula (imikhiqizo engu-15) noma i-Pro (okungalinganiswanga) kuthatha imizuzwini emibili."
+      },
+      {
+        "q": "Ngingathuma ama-promo kubathengi bami?",
+        "a": "Ngokuqinisekile. Ku-Ukukhula nase-Pro, ungathuma ukusabalalisa kwe-WhatsApp kubathengi abavumile ukuzwa kuwe. I-Ukukhula ikunika ukusabalalisa okungu-2 ngenyanga — kuhle kakhulu ikhespeciala yempelasonto noma isaziso sokuphinda ugcwalise. I-Pro ingalinganiswanga nesikhathi esimiselwe. Amazinga okubutha e-WhatsApp avame ukuba phezulu ngu-3× kuneposi."
+      },
+      {
+        "q": "Yini uhlelo lwezinsizakalo ku-Pro?",
+        "a": "Lwaklanywa kubarekisi abathengisa isikhathi, hhayi izinto nje — cabanga izinto ezifana nezinqumo zokunweba ikhanda, ukuletha ekhaya, izikhumbuzi zokubonisana, ukulungisa. Uhlelo lwezinsizakalo luvumela ukubheka nokukhokhela kwale into ngapha kwezikhiqizo zakho zomzimba, konke ngaphakathi kwesitolo esifanayo se-WhatsApp."
+      },
+      {
+        "q": "Kuchaza ukuthini 'nge-Omeru' kubathengi bami?",
+        "a": "Uma umthengi evula isixhumanisi sesitolo sakho, babona uphawu lwakho — igama lakho, imikhiqizo yakho, amanani akho. Ihlebhulenye 'nge-Omeru' izobazisa nje ukuthi inhlangano isingatha ukuphuma okuphephile. Cabanga ngendlela obucabangela ngayo i-'Powered by Shopify' — yakha ukwethembana, hhayi ukudideka."
+      }
+    ]
+  },
+  "Footer": {
+    "ctaHeading": "Abathengi bakho baku",
+    "ctaHeadingAccent": "WhatsApp manje.",
+    "ctaSub": "Faka isicelo sesimemo futhi uqale ukuthengisa ngeviki.",
+    "applyButton": "Faka isicelo sesimemo →",
+    "talkButton": "Khuluma nathi",
+    "product": "Umkhiqizo",
+    "contact": "Xhumana",
+    "social": "Imidiya yenhlalo",
+    "copyright": "© 2026 Omeru. Wonke amalungelo agodliwe.",
+    "privacyPolicy": "Inqubomgomo Yobumfihlo",
+    "madeIn": "Yenziwe e-Mzansi 🇿🇦",
+    "tagline": "Ukuthengisa kwe-WhatsApp okulula kubarekisi base-Mzansi.",
+    "poweredBy": "Isekwe ngu",
+    "links": {
+      "howItWorks": "Indlela esebenza ngayo",
+      "features": "Izici",
+      "pricing": "Amanani"
+    }
+  },
+  "Storefront": {
+    "allStores": "Zonke izitolo →",
+    "inThisStore": "Kule sitolo",
+    "about": "Mayelana",
+    "catalogue": "Uhlu lempahla",
+    "storeInfo": "Ulwazi lwestolo",
+    "shopOnWhatsApp": "Thenga ku-WhatsApp →",
+    "bookAService": "Bhuka insizakalo",
+    "readyToOrder": "Ulungele ukubheka?",
+    "openWhatsApp": "Vula i-WhatsApp →",
+    "readyToShop": "Ulungele ukuthenga?",
+    "readyToShopSub": "Vula i-WhatsApp futhi uqale ingxoxo no-{name} manje.",
+    "chatWith": "💬 Xoxa no-{name}",
+    "poweredBy": "Isekwe ngu",
+    "poweredByTagline": "ukuthengisa okulula ku-WhatsApp.",
+    "discoverMore": "Thola ezinye izitolo →",
+    "open": "● Kuvuliwe",
+    "closed": "○ Kuvaliwe",
+    "openNow": "● Kuvuliwe manje",
+    "day": "Usuku",
+    "hours": "Amahora",
+    "monFri": "Mso–Lwes",
+    "saturday": "Mgqibelo",
+    "sunday": "Sonto",
+    "dayClosed": "Kuvaliwe",
+    "handle": "Igama",
+    "category": "Isigaba",
+    "status": "Isimo",
+    "payment": "Inkokhelo",
+    "location": "Indawo",
+    "ordersVia": "Imiyalelo nge",
+    "paymentValue": "I-EFT esheshayo nge-Stitch — akudingeki ikhadi",
+    "orderingValue": "I-WhatsApp kuphela — akudingeki ukudownloada i-app",
+    "eftValue": "I-EFT esheshayo nge-Stitch Money",
+    "poweredByValue": "Omeru",
+    "products": "imikhiqizo engu-{count}",
+    "services": "izinsizakalo ezingu-{count}",
+    "settingUp": "{name} ulungisa uhlu lwakho lempahla. Xoxa nabo ku-WhatsApp ngesikhathi esifanayo!",
+    "startChat": "Qala ingxoxo →",
+    "previewMode": "IMODHI YOKUBUTHA — Lokhu kuyimbono evuliwe yesitolo sakho njengoba igcinwe njengamanje. Abathengi babona inguqulo ebucashiwe.",
+    "viewLive": "Bona okuphilayo →"
+  },
+  "Stores": {
+    "heroHeading": "Izitolo zase-Mzansi",
+    "heroHeadingAccent": "ku-WhatsApp.",
+    "heroSub": "Funda nge abarekisi abazimele futhi uthenga ngqo ku-WhatsApp — akukho ukudownloada, akukho akhawunti.",
+    "browseAll": "Phenyisisa zonke izitolo",
+    "applyMerchant": "Faka isicelo njengomurekisi",
+    "openNow": "Kuvuliwe",
+    "products": "imikhiqizo engu-{count}",
+    "services": "izinsizakalo ezingu-{count}",
+    "shopNow": "Thenga manje →",
+    "noStores": "Azikho izitolo ezitiholwa.",
+    "backHome": "← Buyela ekhaya"
+  },
+  "NotFound": {
+    "heading": "Ikhasi alitholakali",
+    "body": "Leli khasi alikhona. Uma ubheka isitolo, zama ukuphenyisisa abarekisi bonke.",
+    "browseStores": "Phenyisisa izitolo →",
+    "goHome": "Ya ekhaya"
+  }
+}

@@ -1,4 +1,4 @@
-# Omeru Merchant Portal — CHANGELOG
+# OmeruHQ Merchant Portal — CHANGELOG
 
 ## About This App
 
@@ -6,7 +6,7 @@
 
 The Omeru Merchant Portal (`hq.omeru.io`) is a **web-first dashboard for merchants** who need a screen-sized control centre — a complement to the existing WhatsApp-native tools. It authenticates via OTP sent to the merchant's registered WhatsApp number, then exposes a full command surface: real-time order Kanban, product catalogue management, revenue dashboards, and store open/close control.
 
-It connects to the same Supabase PostgreSQL database as `OmeruHQ-main` (the backend bot) and `hq.omeru.io-main` (the customer storefront), but is a completely separate Next.js application. No shared code, no API gateway — direct Prisma queries, JWT session in an HTTP-only cookie.
+It connects to the same Supabase PostgreSQL database as `OmeruWA` (the backend bot) and `OmeruIO` (the customer storefront), but is a completely separate Next.js application. No shared code, no API gateway — direct Prisma queries, JWT session in an HTTP-only cookie.
 
 ### Why It Exists
 
@@ -130,7 +130,7 @@ Scores measure how much each module benefits a merchant on a 1–10 scale.
 **Changes:**
 
 **Infrastructure:**
-- `merchant-portal-main/` — New Next.js 16 App Router project
+- `OmeruHQ/` — New Next.js 16 App Router project
 - `package.json` — Dependencies: next, react, react-dom, prisma, @prisma/client, jose, framer-motion, tailwindcss
 - `tsconfig.json` — Standard Next.js TS config with `@/*` path alias
 - `next.config.ts` — Image remote patterns for Supabase CDN domains
@@ -169,7 +169,7 @@ Scores measure how much each module benefits a merchant on a 1–10 scale.
 
 ### Rollback
 
-v0.1.0 is the initial commit. Rolling back removes the entire `merchant-portal-main/` directory.
+v0.1.0 is the initial commit. Rolling back removes the entire `OmeruHQ/` directory.
 
 ---
 

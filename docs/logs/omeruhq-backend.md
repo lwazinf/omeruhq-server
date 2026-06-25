@@ -1,10 +1,10 @@
-# OmeruHQ — WhatsApp Bot Backend CHANGELOG
+# OmeruWA — WhatsApp Bot Backend CHANGELOG
 
 ## About This App
 
-### What OmeruHQ Bot Is
+### What OmeruWA Bot Is
 
-OmeruHQ is the **backend engine of the Omeru WhatsApp commerce platform** — a Node.js/TypeScript server that turns a single WhatsApp number into a full-featured e-commerce system for South African merchants. It processes every incoming WhatsApp message, routes it to the correct business logic, and responds with the appropriate UI (buttons, lists, images, text) — all in real time.
+OmeruWA is the **backend engine of the Omeru WhatsApp commerce platform** — a Node.js/TypeScript server that turns a single WhatsApp number into a full-featured e-commerce system for South African merchants. It processes every incoming WhatsApp message, routes it to the correct business logic, and responds with the appropriate UI (buttons, lists, images, text) — all in real time.
 
 There is no separate customer-facing app, no merchant portal, and no POS terminal. The bot replaces all three. Merchants manage their entire business — inventory, orders, customer broadcasts, bookings, analytics — from their personal WhatsApp. Customers browse, cart, and pay without ever downloading anything.
 
@@ -319,7 +319,7 @@ Omeru is a **zero-friction WhatsApp commerce platform** for South African mercha
 | `prisma/schema.prisma` | 90–93 | No `kyc_token`, `kyc_token_expires_at`, `kyc_draft_json`, `kyc_online_completed` fields |
 | `onboardingEngine.ts` | NEXT_STEP map | `ob_hours_sat: 'ob_kyc_intro'` — no `ob_kyc_method` or `ob_kyc_waiting` |
 
-*New files to delete on rollback:* `hq.omeru.io-main/app/kyc/[token]/page.tsx`, `KycForm.tsx`, `app/api/kyc/[token]/route.ts`
+*New files to delete on rollback:* `OmeruIO/app/kyc/[token]/page.tsx`, `KycForm.tsx`, `app/api/kyc/[token]/route.ts`
 
 ---
 

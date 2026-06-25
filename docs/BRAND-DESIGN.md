@@ -983,7 +983,7 @@ transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
 
 **Progress bars (3 steps):** `height: 3px`, `borderRadius: 2`, background track `rgba(255,255,255,0.12)`, fill `var(--lime)`, animated with `width: 0% → 100%`.
 
-**Step form fields:** Three steps collecting: store info → social reach → contact details. See [InviteModal.tsx](/hq.omeru.io-main/components/InviteModal.tsx).
+**Step form fields:** Three steps collecting: store info → social reach → contact details. See [InviteModal.tsx](/OmeruIO/components/InviteModal.tsx).
 
 **Form step 1 — Your store:** business name, company reg (grid 2-col), sells type, category (+Other field), team size, province (all 9 SA provinces)
 

@@ -1,4 +1,4 @@
-# hq.omeru.io — Web App CHANGELOG
+# OmeruIO — Web App CHANGELOG
 
 > **Rules that govern every entry in this file:**
 > 1. **Surgical changes only.** Touch nothing outside the scope of the stated fix.

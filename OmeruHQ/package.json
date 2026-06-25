@@ -1,0 +1,29 @@
+{
+  "name": "omeru-merchant-portal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "framer-motion": "^12.36.0",
+    "jose": "^5.10.0",
+    "next": "16.1.6",
+    "next-intl": "^4.13.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "prisma": "^6.19.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

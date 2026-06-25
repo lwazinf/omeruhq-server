@@ -1,0 +1,328 @@
+{
+  "Nav": {
+    "howItWorks": "Hoe dit werk",
+    "features": "Kenmerke",
+    "stores": "Winkels",
+    "pricing": "Pryse",
+    "faq": "Gereelde vrae",
+    "requestInvite": "Versoek uitnodiging",
+    "merchantHQ": "Handelaar HK",
+    "shopOnWA": "Koop op WA",
+    "applyAsMerchant": "Registreer as handelaar",
+    "shopOnWhatsApp": "Koop op WhatsApp"
+  },
+  "Hero": {
+    "merchant": {
+      "pill": "WhatsApp-handel · Suid-Afrika",
+      "line1": "VERKOOP MEER.",
+      "line2": "WHATSAPP",
+      "line3": "AL KLAAR.",
+      "body": "Sonder-wye handel vir Suid-Afrikaanse handelaars. Kliënte blaai en koop sonder om ooit WhatsApp te verlaat.",
+      "sub": "Aangedryf deur Stitch · Uitnodiging benodig · Vanaf R199/md",
+      "primary": "Registreer as handelaar",
+      "secondary": "Koop op WhatsApp"
+    },
+    "customer": {
+      "pill": "Koop Plaaslik · Geen App Nodig",
+      "line1": "KOOP PLAASLIK.",
+      "line2": "GEEN APP.",
+      "line3": "NET WA.",
+      "body": "Ontdek Suid-Afrikaanse handelaars en koop direk op WhatsApp. Geen aflaaie, geen rekeninge — net tik en koop.",
+      "sub": "Veilige uitverkoping · Stitch · Werk op enige foon",
+      "primary": "Maak die bot oop",
+      "secondary": "Is jy 'n handelaar?"
+    },
+    "stats": {
+      "waUsers": "WhatsApp-gebruikers in SA",
+      "firstSale": "Uitnodiging tot eerste verkoop",
+      "openRate": "Hoër oopmaakkoers as e-pos",
+      "starterFrom": "Begin-plan vanaf /md"
+    },
+    "merchantView": "Handelaarsiening",
+    "customerView": "Kliëntsiening"
+  },
+  "HowItWorks": {
+    "pill": "Hoe dit werk",
+    "heading": "Uitnodiging tot eerste verkoop",
+    "headingAccent": "in 'n enkele dag.",
+    "subtext": "Inskrywing is so gebou dat handelaars wat nog nooit aanlyn verkoop het nie, voor middagete aan die gang kan wees.",
+    "ctaHeading": "Gereed om op WhatsApp te verkoop?",
+    "ctaSub": "Beperkte handelaarplekke beskikbaar op ons uitnodiging-slegs bekendstelling.",
+    "ctaButton": "Dien aan vir vroeë toegang",
+    "steps": [
+      {
+        "title": "Dien aan vir 'n uitnodiging",
+        "body": "Omeru is uitnodiging-slegs. Dien in per e-pos of WhatsApp. Ons hersien jou besigheid en aktiveer jou rekening binne 24 uur."
+      },
+      {
+        "title": "Stel jou WhatsApp-winkel op",
+        "body": "Voeg produkte by, stel pryse vas, konfigureer Stitch onmiddellike EFT. Jou winkel leef binne WhatsApp — geen app, geen webwerf nodig nie."
+      },
+      {
+        "title": "Deel jou winkelkoppeling",
+        "body": "Stuur kliënte 'n WhatsApp-skakel. Hulle blaai, bestel en betaal sonder om die klets te verlaat. Jy ontvang onmiddellike bestellingswaarskuwings."
+      },
+      {
+        "title": "Word betaal, groei",
+        "body": "Stitch verwerk betalings direk na jou bank. Saai promosies uit, bekyk ontledings en skaal oor verskeie liggings."
+      }
+    ]
+  },
+  "Features": {
+    "pill": "Kenmerke",
+    "heading": "Alles wat 'n handelaar\nwerklik nodig het.",
+    "subtext": "Geen oortolligheid. Net die gereedskap wat WhatsApp-gesprekke in inkomste omskep.",
+    "items": [
+      {
+        "title": "Inheemse WhatsApp-ervaring",
+        "body": "Kliënte verlaat WhatsApp nooit. Blaai, voeg by mandjie, koop af — alles in die app waar hulle reeds ure deurbring.",
+        "badge": "Alle vlakke"
+      },
+      {
+        "title": "Stitch onmiddellike EFT",
+        "body": "Onmiddellike EFT aangedryf deur Stitch. Kliënte betaal vanuit hul banktoepassing — geen kaart nodig nie. Fondse word direk na jou rekening gestort.",
+        "badge": "ZAR-betalings"
+      },
+      {
+        "title": "Intydse ontledings",
+        "body": "Volg verkope, topprodukte en kliëntegedrag. Weet wat verkoop voor dit uit voorraad is.",
+        "badge": "Groei & Pro"
+      },
+      {
+        "title": "WhatsApp-uitsendings",
+        "body": "Stuur promosies en hervoorraadwaarskuwings aan ingeskryfde kliënte. Hoër oopmaakkoerse as e-pos, laer koste as SMS.",
+        "badge": "Groei & Pro"
+      },
+      {
+        "title": "Ondersteuning vir verskeie liggings",
+        "body": "Bestuur tot 3 liggings vanaf 'n enkele Pro-paneel. Gekonsolideerde verslagdoening oor al jou winkels.",
+        "badge": "Pro-vlak"
+      },
+      {
+        "title": "Onmiddellike bestellingswaarskuwings",
+        "body": "Ontvang 'n kennisgewing die oomblik 'n bestelling geplaas word. Aanvaar, weier of dateer kliënte op — alles vanaf jou foon, intyds.",
+        "badge": "Alle vlakke"
+      }
+    ]
+  },
+  "Stats": {
+    "pill": "Waarom WhatsApp-handel",
+    "heading": "Die syfers bewys",
+    "headingAccent": "die punt.",
+    "items": [
+      {
+        "label": "WhatsApp-gebruikers in Suid-Afrika",
+        "sub": "Jou kliënte is al daar"
+      },
+      {
+        "label": "Platformkommissie",
+        "sub": "Slegs gehef op suksesvolle verkope"
+      },
+      {
+        "label": "Van uitnodiging tot lewendige winkel",
+        "sub": "Vinnigste inskrywing in SA-handel"
+      },
+      {
+        "label": "Hoër oopmaakkoers as e-pos",
+        "sub": "WhatsApp-boodskappe word gelees"
+      }
+    ]
+  },
+  "Testimonials": {
+    "pill": "Handelaarsverhale",
+    "heading": "Regte handelaars.",
+    "headingAccent": "Regte inkomste.",
+    "subtext": "Handelaars wat aansoek gedoen het vir vroeë toegang en binne 24 uur lewend gegaan het.",
+    "joinButton": "Sluit by hulle aan →",
+    "items": [
+      {
+        "quote": "Ek het pap en chakalaka deur 'n eenvoudige WhatsApp-groep verkoop — geen bestellingopsporing, geen betalings, net chaos. Omeru het alles verander. Nou blaai kliënte, kies en betaal sonder om my te bel. Ek het van R4k na R18k per maand gegaan in twee maande.",
+        "metricLabel": "na 2 maande"
+      },
+      {
+        "quote": "My grootste probleem voor Omeru was mense wat bestel het en dan nie betaal nie. Die betalingsintegrasie beteken hulle kry die bestellingsbevestiging eers nadat hulle betaal het. My kontantvloei is dag en nag vergeleke met voorheen.",
+        "metricLabel": "bestellings hierdie maand"
+      },
+      {
+        "quote": "Ek is nie 'n tegnologie-persoon nie. Ek het gedink 'aanlyn winkel' beteken ek benodig 'n webwerf en 'n ontwikkelaar. Omeru het my binne drie uur aan die gang gehad en ek het my eerste verkoop dieselfde dag gemaak. My kliënte hoef niks nuuts te doen nie — hulle het al WhatsApp.",
+        "metricLabel": "opstelling tot eerste verkoop"
+      },
+      {
+        "quote": "Ons verkoop aan restaurante en huiskokers. Die uitsendkenmerk op Groei is ongelooflik — ons het een boodskap gestuur oor 'n nuwe chili-mengsel en 23 bestellings ontvang in 40 minute. Dit is beter as enige bemarking wat ek gedoen het.",
+        "metricLabel": "van een uitsending"
+      }
+    ]
+  },
+  "Pricing": {
+    "pill": "Pryse",
+    "heading": "Groei in die plan",
+    "headingAccent": "wat jou GMV pas.",
+    "subtext": "Alle pryse in ZAR. Kommissie slegs op suksesvolle verkope — Omeru wen as jy wen.",
+    "mostPopular": "Gewildste keuse",
+    "perMonth": "/md",
+    "perSale": "per verkoop",
+    "footerNote": "Alle planne sluit Stitch onmiddellike EFT-verwerking in. Handelaarsuitbetalings gaan direk na jou SA-bankrekening. Gradeer op of af enige tyd.",
+    "tiers": [
+      {
+        "name": "Begin",
+        "description": "Vir nuwe handelaars wat die konsep bewys.",
+        "cta": "Dien aan vir Begin",
+        "note": "5-produk-beperking · gradeer op wanneer gereed",
+        "features": [
+          "Tot 5 produkte",
+          "5% kommissie per verkoop",
+          "WhatsApp-winkel + alles ingesluit",
+          "Intydse bestellingswaarskuwings",
+          "Basiese ontledings",
+          "E-posondersteuning"
+        ]
+      },
+      {
+        "name": "Groei",
+        "description": "Vir handelaars gereed om hul katalogus te skaal.",
+        "cta": "Dien aan vir Groei",
+        "note": "Gewildste keuse",
+        "features": [
+          "Tot 15 produkte",
+          "3.5% kommissie per verkoop",
+          "Alles in Begin",
+          "Uitsendings × 2 per maand",
+          "Promosies & afslagkodes",
+          "Volledige ontledingspaneel"
+        ]
+      },
+      {
+        "name": "Pro",
+        "description": "Vir gevestigde handelaars wat na verskeie liggings skaal.",
+        "cta": "Dien aan vir Pro",
+        "note": "Volledige platformtoegang",
+        "features": [
+          "Onbeperkte produkte",
+          "2.5% kommissie per verkoop",
+          "Alles in Groei",
+          "Onbeperkte uitsendings + skedulering",
+          "Verskeie liggings (tot 3)",
+          "Dienstemodule",
+          "Intydse ontledings + uitvoer"
+        ]
+      }
+    ]
+  },
+  "FAQ": {
+    "pill": "Gereelde vrae",
+    "heading": "Goeie vrae verdien reguit antwoorde.",
+    "contactPrompt": "Nog iets wat jou pla?",
+    "applyButton": "Dien aan vir toegang",
+    "items": [
+      {
+        "q": "Is Omeru regtig uitnodiging-slegs?",
+        "a": "Ja — en ons meen dit vriendelik, nie as 'n hindernis nie. Ons skryf handelaars een op 'n slag in sodat ons jou behoorlik kan help opstel, vrae kan beantwoord en seker maak dat jou eerste verkoop vlot gaan. Dien in per e-pos of WhatsApp en jy sal binne 24 uur van ons hoor."
+      },
+      {
+        "q": "Moet my kliënte iets aflaai?",
+        "a": "Glad nie. As jou kliënt WhatsApp het — en in Suid-Afrika is dit byna almal — kan hulle nou in jou winkel koop. Geen rekening om te skep nie, geen app om te installeer nie, geen wagwoorde nie. Hulle tik op jou skakel en hulle is in. Dit is die hele punt."
+      },
+      {
+        "q": "Hoe werk betalings?",
+        "a": "Ons gebruik Stitch vir veilige onmiddellike EFT-betalings. Kliënte betaal direk vanuit hul banktoepassing — geen kaartbesonderhede nodig nie. Sodra 'n betaling bevestig word, word die geld direk na jou SA-bankrekening oorgeplaas. Ons trek outomaties ons kommissie af sodat jy dit nooit self hoef te bereken nie."
+      },
+      {
+        "q": "Wat gebeur as ek die 5-produk-beperking op Begin bereik?",
+        "a": "Jy sal 'n paneelprompt kry om op te gradeer. Die Begin-beperking is nie 'n straf nie — dit is ontwerp sodat jy nie betaal vir wat jy nog nie nodig het nie. Sodra jy sukses het en jou katalogus wil uitbrei, neem dit net twee minute om op te gradeer na Groei (15 produkte) of Pro (onbeperk)."
+      },
+      {
+        "q": "Kan ek promosies na my kliënte stuur?",
+        "a": "Absoluut. Op Groei en Pro kan jy WhatsApp-uitsendings stuur na kliënte wat ingestem het om van jou te hoor. Groei gee jou 2 uitsendings per maand — perfek vir 'n naweekspesiale of hervoorraadkennisgewing. Pro is onbeperk met skedulering. WhatsApp-oopmaakkoerse is tipies 3× hoër as e-pos."
+      },
+      {
+        "q": "Wat is die Dienstemodule op Pro?",
+        "a": "Dit is vir handelaars wat tyd verkoop, nie net goed nie — dink haarafsprake, tuisbesorging, konsultasiesessies, herstelwerk. Die Dienstemodule laat jou toe om bespreking en betaling hiervoor saam met jou fisiese produkte te neem, alles binne dieselfde WhatsApp-winkel."
+      },
+      {
+        "q": "Wat beteken \"via Omeru\" vir my kliënte?",
+        "a": "Wanneer 'n kliënt jou winkelkoppeling oopmaak, sien hulle jou handelsmerk — jou naam, jou produkte, jou pryse. Die \"via Omeru\"-etiket laat hulle net weet die platform hanteer die veilige uitverkoping. Dink daaraan soos jy aan \"Aangedryf deur Shopify\" sou dink — dit bou vertroue, nie verwarring nie."
+      }
+    ]
+  },
+  "Footer": {
+    "ctaHeading": "Jou kliënte is op",
+    "ctaHeadingAccent": "WhatsApp nou al.",
+    "ctaSub": "Dien aan vir 'n uitnodiging en begin hierdie week verkoop.",
+    "applyButton": "Dien aan vir uitnodiging →",
+    "talkButton": "Praat met ons",
+    "product": "Produk",
+    "contact": "Kontak",
+    "social": "Sosiale media",
+    "copyright": "© 2026 Omeru. Alle regte voorbehou.",
+    "privacyPolicy": "Privaatheidsbeleid",
+    "madeIn": "Gemaak in Suid-Afrika 🇿🇦",
+    "tagline": "Sonder-wye WhatsApp-handel vir Suid-Afrikaanse handelaars.",
+    "poweredBy": "Aangedryf deur",
+    "links": {
+      "howItWorks": "Hoe dit werk",
+      "features": "Kenmerke",
+      "pricing": "Pryse"
+    }
+  },
+  "Storefront": {
+    "allStores": "Alle winkels →",
+    "inThisStore": "In hierdie winkel",
+    "about": "Oor",
+    "catalogue": "Katalogus",
+    "storeInfo": "Winkelinligting",
+    "shopOnWhatsApp": "Koop op WhatsApp →",
+    "bookAService": "Bespreek 'n diens",
+    "readyToOrder": "Gereed om te bestel?",
+    "openWhatsApp": "Maak WhatsApp oop →",
+    "readyToShop": "Gereed om te koop?",
+    "readyToShopSub": "Maak WhatsApp oop en begin 'n gesprek met {name} nou.",
+    "chatWith": "💬 Gesels met {name}",
+    "poweredBy": "Aangedryf deur",
+    "poweredByTagline": "handel sonder gedoente op WhatsApp.",
+    "discoverMore": "Ontdek meer winkels →",
+    "open": "● Oop",
+    "closed": "○ Gesluit",
+    "openNow": "● Nou oop",
+    "day": "Dag",
+    "hours": "Ure",
+    "monFri": "Maan–Vry",
+    "saturday": "Saterdag",
+    "sunday": "Sondag",
+    "dayClosed": "Gesluit",
+    "handle": "Gebruikernaam",
+    "category": "Kategorie",
+    "status": "Status",
+    "payment": "Betaling",
+    "location": "Ligging",
+    "ordersVia": "Bestellings via",
+    "paymentValue": "Onmiddellike EFT via Stitch — geen kaart nodig nie",
+    "orderingValue": "Slegs WhatsApp — geen app-aflaai nodig nie",
+    "eftValue": "Onmiddellike EFT via Stitch Money",
+    "poweredByValue": "Omeru",
+    "products": "{count} produkte",
+    "services": "{count} dienste",
+    "settingUp": "{name} stel tans hul katalogus op. Gesels intussen met hulle op WhatsApp!",
+    "startChat": "Begin 'n gesprek →",
+    "previewMode": "VOORSKOUOMODUS — Dit is 'n lewendige weergawe van jou winkel soos dit tans gestoor is. Kliënte sien die gekoude weergawe.",
+    "viewLive": "Sien lewendig →"
+  },
+  "Stores": {
+    "heroHeading": "Suid-Afrikaanse winkels",
+    "heroHeadingAccent": "op WhatsApp.",
+    "heroSub": "Blaai deur onafhanklike handelaars en koop direk in WhatsApp — geen aflaaie, geen rekeninge nie.",
+    "browseAll": "Blaai alle winkels",
+    "applyMerchant": "Registreer as handelaar",
+    "openNow": "Oop",
+    "products": "{count} produkte",
+    "services": "{count} dienste",
+    "shopNow": "Koop nou →",
+    "noStores": "Geen winkels gevind nie.",
+    "backHome": "← Terug na tuis"
+  },
+  "NotFound": {
+    "heading": "Bladsy nie gevind nie",
+    "body": "Hierdie bladsy bestaan nie. As jy na 'n winkel gesoek het, probeer om alle handelaars te blaai.",
+    "browseStores": "Blaai winkels →",
+    "goHome": "Gaan tuis toe"
+  }
+}
