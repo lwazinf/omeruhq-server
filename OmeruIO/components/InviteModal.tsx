@@ -506,6 +506,10 @@ export default function InviteModal() {
                 <>
                   {/* ── Header ── */}
                   <div style={{ background: 'var(--black)', padding: '24px 28px 22px', position: 'relative', flexShrink: 0 }}>
+                    {/* Mobile-only close button inside header */}
+                    <button onClick={close} className="modal-header-close" style={{ display: 'none', position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.08)', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10 }}>
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="white" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                    </button>
                     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: "url('/bg-tile.jpg')", backgroundSize: '500px 333px', backgroundRepeat: 'repeat', mixBlendMode: 'screen', filter: 'invert(1)', opacity: 0.06 }} />
 
                     {/* Progress bars */}
@@ -562,7 +566,7 @@ export default function InviteModal() {
                   </div>
 
                   {/* ── Footer ── */}
-                  <div style={{ padding: '16px 28px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                  <div className="modal-footer-bar" style={{ padding: '16px 28px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
                     {step > 0 ? (
                       <button onClick={back} style={{ fontSize: 13, color: 'var(--mid-gray)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500, padding: '8px 0' }}>
                         ← Back
@@ -589,40 +593,49 @@ export default function InviteModal() {
 
           <style>{`
             @media (max-width: 600px) {
+              /*
+               * iOS Safari cannot scroll overflow-y:auto divs inside position:fixed.
+               * Fix: make the shell itself the scroll container, card fills naturally.
+               */
               .modal-shell {
-                align-items: flex-end !important;
+                align-items: flex-start !important;
                 padding: 0 !important;
-                padding-top: 52px !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch !important;
               }
               .modal-wrapper {
                 max-width: 100% !important;
+                min-height: 100% !important;
               }
               .modal-card {
-                border-radius: 22px 22px 0 0 !important;
-                max-height: calc(100dvh - 52px) !important;
-                max-height: calc(100vh - 52px) !important;
+                border-radius: 0 !important;
+                max-height: none !important;
+                min-height: 100svh !important;
+                min-height: 100vh !important;
               }
-              .modal-close-float {
-                top: -40px !important;
-                right: 12px !important;
-              }
-              .step1-name-grid {
-                grid-template-columns: 1fr !important;
-              }
+              /* inner scroll body becomes plain flow — shell handles scroll */
               .modal-scroll-body {
+                overflow-y: visible !important;
+                flex: 1 0 auto !important;
                 padding: 20px 20px 8px !important;
               }
-            }
-            @media (max-width: 600px) {
-              /* Larger touch targets for pill buttons inside modal */
-              .modal-card button[type="button"] {
-                min-height: 40px;
-                font-size: 14px !important;
-              }
-              /* Prevent iOS input zoom */
+              /* hide floating close (no space above), show inline one */
+              .modal-close-float { display: none !important; }
+              .modal-header-close { display: flex !important; }
+              /* 1-col layout for name/reg fields */
+              .step1-name-grid { grid-template-columns: 1fr !important; }
+              /* prevent iOS auto-zoom on input focus */
               .modal-card input,
-              .modal-card textarea {
-                font-size: 16px !important;
+              .modal-card textarea { font-size: 16px !important; }
+              /* bigger pill buttons for touch */
+              .modal-card button[type="button"] { min-height: 44px; font-size: 14px !important; }
+              /* sticky footer so actions always visible */
+              .modal-footer-bar {
+                position: sticky !important;
+                bottom: 0 !important;
+                background: var(--off-white) !important;
+                border-top: 1px solid rgba(0,0,0,0.06) !important;
+                padding: 14px 20px env(safe-area-inset-bottom, 16px) !important;
               }
             }
           `}</style>
