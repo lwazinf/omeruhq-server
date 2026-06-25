@@ -113,6 +113,24 @@ export default function Nav({ darkHero = false }: { darkHero?: boolean }) {
             Request invite
           </button>
           <a
+            href="https://hq.omeru.io"
+            className="btn-outline"
+            style={{
+              padding: '8px 16px', fontSize: 13,
+              color: dark ? 'rgba(255,255,255,0.8)' : undefined,
+              borderColor: dark ? 'rgba(255,255,255,0.25)' : undefined,
+              transition: 'color 0.35s, border-color 0.35s',
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
+              <rect x="1" y="4" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
+              <path d="M4 4V3a3 3 0 016 0v1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+              <circle cx="7" cy="8.5" r="1.2" fill="currentColor"/>
+            </svg>
+            Merchant HQ
+          </a>
+          <a
             href="https://wa.me/27750656348?text=Hi"
             target="_blank"
             rel="noopener noreferrer"
@@ -207,6 +225,13 @@ export default function Nav({ darkHero = false }: { darkHero?: boolean }) {
               <button onClick={() => { setMenuOpen(false); setTimeout(() => window.dispatchEvent(new CustomEvent('omeru:invite')), 320); }} className="btn-lime" style={{ justifyContent: 'center', padding: '15px 24px' }}>
                 Apply as a merchant
               </button>
+              <a
+                href="https://hq.omeru.io"
+                className="btn-outline"
+                style={{ justifyContent: 'center', padding: '15px 24px' }}
+              >
+                Merchant HQ
+              </a>
               <a
                 href="https://wa.me/27750656348?text=Hi"
                 target="_blank"

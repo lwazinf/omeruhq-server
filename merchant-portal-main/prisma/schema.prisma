@@ -1,0 +1,409 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  READY_FOR_PICKUP
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum MerchantStatus {
+  ONBOARDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum MerchantOwnerRole {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REVOKED
+}
+
+model UserSession {
+  id                  String   @id @default(cuid())
+  wa_id               String   @unique
+  mode                String   @default("CUSTOMER")
+  state               String?
+  active_prod_id      String?
+  last_merchant_id    String?
+  active_merchant_id  String?
+  cart_json           String?
+  has_seen_onboarding Boolean  @default(false)
+  delivery_address    String?
+  message_count       Int      @default(0)
+  session_started_at  DateTime @default(now())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Merchant {
+  id                String         @id @default(cuid())
+  wa_id             String         @unique
+  handle            String         @unique
+  admin_handle      String?        @unique
+  trading_name      String
+  legal_entity_name String?
+  id_number         String?
+  description       String?
+  address           String?
+  province          String?
+  acquisition_source String?
+  image_url         String?
+  brand_name        String?
+  currency          String?
+  locale            String?
+  support_number    String?
+  welcome_message   String?
+  bank_name         String?
+  bank_acc_no       String?
+  bank_type         String?
+  open_time         String         @default("08:00")
+  close_time        String         @default("18:00")
+  sat_open_time     String         @default("10:00")
+  sat_close_time    String         @default("15:00")
+  sun_open          Boolean        @default(false)
+  manual_closed     Boolean        @default(false)
+  accepted_terms    Boolean        @default(false)
+  show_in_browse    Boolean        @default(true)
+  welcome_image_url String?
+  store_category    String?
+  location_visible  Boolean        @default(false)
+  services_enabled     Boolean   @default(false)
+  onboarding_step      String?
+  kyc_token            String?   @unique
+  kyc_token_expires_at DateTime?
+  kyc_draft_json       Json?
+  kyc_online_completed Boolean   @default(false)
+  kyc_id_doc_url       String?
+  kyc_bank_proof_url   String?
+  kyc_submitted_at     DateTime?
+  status            MerchantStatus @default(ACTIVE)
+  categories        Category[]
+  products          Product[]
+  orders            Order[]
+  owners            MerchantOwner[]
+  invites           MerchantInvite[]
+  customers         MerchantCustomer[]
+  branding          MerchantBranding?
+  services          Service[]
+  bookings          Booking[]
+  serviceApplications ServiceApplication[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model ServiceApplication {
+  id             String           @id @default(cuid())
+  merchant_id    String
+  merchant       Merchant         @relation(fields: [merchant_id], references: [id])
+  svc_category   String
+  description    String
+  status         ServiceAppStatus @default(PENDING)
+  reviewer_wa_id String?
+  reviewer_note  String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+enum ServiceAppStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+model MerchantOwner {
+  id         String            @id @default(cuid())
+  merchant_id String
+  merchant   Merchant          @relation(fields: [merchant_id], references: [id])
+  wa_id      String
+  role       MerchantOwnerRole @default(OWNER)
+  is_active  Boolean           @default(true)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@unique([merchant_id, wa_id])
+}
+
+model MerchantInvite {
+  id              String            @id @default(cuid())
+  merchant_id     String
+  merchant        Merchant          @relation(fields: [merchant_id], references: [id])
+  invited_wa_id   String
+  invited_by_wa_id String
+  role            MerchantOwnerRole @default(ADMIN)
+  status          InviteStatus      @default(PENDING)
+  short_code      String?           @unique
+  accepted_at     DateTime?
+  revoked_at      DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([merchant_id, invited_wa_id])
+}
+
+model MerchantCustomer {
+  id                  String   @id @default(cuid())
+  merchant_id         String
+  merchant            Merchant @relation(fields: [merchant_id], references: [id])
+  wa_id               String
+  display_name        String?
+  last_interaction_at DateTime @default(now())
+  opt_out             Boolean  @default(false)
+  has_seen_welcome    Boolean  @default(false)
+  is_bookmarked       Boolean  @default(false)
+  province            String?
+  total_spend         Float    @default(0)
+  order_count         Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([merchant_id, wa_id])
+}
+
+model MerchantBranding {
+  id             String   @id @default(cuid())
+  merchant_id    String   @unique
+  merchant       Merchant @relation(fields: [merchant_id], references: [id])
+  locale         String?
+  currency       String?
+  logo_url       String?
+  primary_color  String?
+  message_footer String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model PlatformBranding {
+  id               String   @id @default(cuid())
+  name             String   @default("Omeru")
+  logo_url         String?
+  support_number   String?
+  default_locale   String?
+  default_currency String?
+  message_footer   String?
+  switch_code      String?
+  platform_fee     Float?
+  payout_day       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  merchant_id String
+  merchant    Merchant  @relation(fields: [merchant_id], references: [id])
+  name        String
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  merchant_id String
+  merchant    Merchant    @relation(fields: [merchant_id], references: [id])
+  category_id String?
+  category    Category?   @relation(fields: [category_id], references: [id])
+  name        String
+  description String?
+  price       Float
+  image_url   String?
+  is_in_stock Boolean     @default(true)
+  status      String      @default("ACTIVE")
+  order_items OrderItem[]
+  variants    ProductVariant[]
+  wishlist    Wishlist[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([merchant_id, status])
+}
+
+model ProductVariant {
+  id          String   @id @default(cuid())
+  product_id  String
+  product     Product  @relation(fields: [product_id], references: [id])
+  size        String?
+  color       String?
+  sku         String?
+  price       Float
+  is_in_stock Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  customer_id   String
+  merchant_id   String
+  merchant      Merchant    @relation(fields: [merchant_id], references: [id])
+  total         Float
+  items_summary String?
+  status        OrderStatus @default(PENDING)
+  alert_count          Int       @default(0)
+  customer_alerted_at  DateTime?
+  payment_ref          String?
+  payment_url          String?
+  cancellation_reason  String?
+  order_items   OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([merchant_id, status])
+  @@index([customer_id, createdAt])
+  @@index([payment_ref])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  order_id   String
+  order      Order   @relation(fields: [order_id], references: [id])
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+  quantity   Int
+  price      Float
+}
+
+model Wishlist {
+  id         String   @id @default(cuid())
+  wa_id      String
+  product_id String
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([wa_id, product_id])
+}
+
+model ShortLink {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  url             String
+  click_count     Int       @default(0)
+  last_clicked_at DateTime?
+  utm_source      String?
+  utm_medium      String?
+  utm_campaign    String?
+  createdAt       DateTime  @default(now())
+}
+
+model SearchQuery {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  wa_id              String?
+  merchant_handle    String?
+  query              String
+  results_count      Int      @default(0)
+  clicked_product_id String?
+
+  @@index([query])
+  @@index([results_count])
+  @@index([wa_id, createdAt])
+}
+
+model OrderStatusHistory {
+  id               String   @id @default(cuid())
+  order_id         String
+  from_status      String?
+  to_status        String
+  changed_at       DateTime @default(now())
+  changed_by_wa_id String?
+  reason           String?
+
+  @@index([order_id, changed_at])
+  @@index([to_status, changed_at])
+}
+
+// Append-only behavioural event log — never update rows
+model PlatformEvent {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  event_type      String   // product_view | search | cart_add | cart_remove | menu_browse | wa_share | checkout_start
+  session_wa_id   String?
+  merchant_handle String?
+  product_id      String?
+  search_query    String?
+  metadata        Json?
+
+  @@index([event_type, createdAt])
+  @@index([merchant_handle, createdAt])
+  @@index([product_id])
+  @@index([session_wa_id, createdAt])
+}
+
+model AuditLog {
+  id            String   @id @default(cuid())
+  actor_wa_id   String
+  action        String
+  entity_type   String
+  entity_id     String?
+  metadata_json Json?
+  createdAt     DateTime @default(now())
+}
+
+// ── Services & Bookings (hair stylists, barbers, tutors, repairs, …) ─────────
+
+model Service {
+  id           String    @id @default(cuid())
+  merchant_id  String
+  merchant     Merchant  @relation(fields: [merchant_id], references: [id])
+  name         String
+  description  String?
+  price        Float
+  duration_min Int       @default(60)
+  image_url    String?
+  is_active    Boolean   @default(true)
+  bookings     Booking[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([merchant_id, is_active])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  merchant_id     String
+  merchant        Merchant      @relation(fields: [merchant_id], references: [id])
+  service_id      String
+  service         Service       @relation(fields: [service_id], references: [id])
+  customer_wa_id  String
+  customer_name   String?
+  start_at        DateTime
+  end_at          DateTime
+  status          BookingStatus @default(PENDING)
+  note            String?
+  decline_reason  String?
+  payment_ref     String?
+  payment_url     String?
+  paid            Boolean       @default(false)
+  reminded_at     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([merchant_id, start_at])
+  @@index([customer_wa_id, start_at])
+  @@index([status, start_at])
+}

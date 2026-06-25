@@ -1763,12 +1763,12 @@
     </div>
   </div>
 
-  <h2>Phase 1 — Core Loop (Ship First)</h2>
+  <h2>Phase 1 — Core Loop <span style="font-size:12px; font-weight:600; background:var(--lime); color:var(--black); padding:3px 12px; border-radius:100px; vertical-align:middle; font-family:'DM Sans',sans-serif; letter-spacing:0.05em;">✓ SHIPPED v0.1.0</span></h2>
   <div class="priority-grid">
-    <div class="priority-item"><div class="priority-rank">01</div><div><strong>Login (OTP via WA)</strong><br/>Without auth nothing else works</div></div>
-    <div class="priority-item"><div class="priority-rank">02</div><div><strong>Dashboard Home</strong><br/>KPIs + open/close toggle</div></div>
-    <div class="priority-item"><div class="priority-rank">03</div><div><strong>Orders / Kitchen</strong><br/>Kanban board — highest daily use</div></div>
-    <div class="priority-item"><div class="priority-rank">04</div><div><strong>Products grid + add/edit</strong><br/>Merchants need to manage stock</div></div>
+    <div class="priority-item" style="opacity:0.6;"><div class="priority-rank" style="background:var(--lime);color:var(--black);">✓</div><div><strong>Login (OTP via WA)</strong><br/>Without auth nothing else works</div></div>
+    <div class="priority-item" style="opacity:0.6;"><div class="priority-rank" style="background:var(--lime);color:var(--black);">✓</div><div><strong>Dashboard Home</strong><br/>KPIs + open/close toggle</div></div>
+    <div class="priority-item" style="opacity:0.6;"><div class="priority-rank" style="background:var(--lime);color:var(--black);">✓</div><div><strong>Orders / Kitchen</strong><br/>Kanban board — highest daily use</div></div>
+    <div class="priority-item" style="opacity:0.6;"><div class="priority-rank" style="background:var(--lime);color:var(--black);">✓</div><div><strong>Products grid + add/edit</strong><br/>Merchants need to manage stock</div></div>
   </div>
 
   <h2>Phase 2 — Operations</h2>
@@ -1788,7 +1788,7 @@
   </div>
 
   <div class="callout-lime" style="margin-top:40px;">
-    <p><strong>Recommended Tech Stack:</strong> Next.js 15 App Router · TypeScript · Tailwind (same globals.css tokens) · Prisma (shared schema — same DB) · Recharts for analytics · next-auth or custom JWT for OTP session · SSE for real-time order stream. The merchant portal talks directly to the existing Supabase database — no new backend needed, only a thin API layer for auth and SSE.</p>
+    <p><strong>Tech Stack (as built):</strong> Next.js 16 App Router · TypeScript · Custom CSS design system (same tokens as storefront) · Prisma 6 (shared Supabase schema — same DB) · Custom HS256 JWT via <code>jose</code> (HTTP-only cookie, 7d expiry) · OTP delivered via Meta Cloud API WhatsApp · Server Actions for mutations · Recharts for analytics (Phase 3). No separate backend needed — direct Prisma queries from each page.</p>
   </div>
 
   <div class="divider"></div>
