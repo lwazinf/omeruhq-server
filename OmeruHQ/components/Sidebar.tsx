@@ -28,6 +28,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
     { label: t('analytics'), href: '/analytics', icon: ChartIcon,  phase: 3 },
     { label: t('customers'), href: '/customers', icon: UsersIcon,  phase: 3 },
     { label: t('broadcast'), href: '/broadcast', icon: MegaIcon,   phase: 2 },
+    { label: t('team'),      href: '/team',      icon: UsersIcon,  phase: 2 },
     { label: t('reviews'),   href: '/reviews',   icon: StarIcon,   phase: 3 },
     { label: t('settings'),  href: '/settings',  icon: GearIcon,   phase: 2 },
   ];
@@ -226,7 +227,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
       <nav style={{ flex: 1, padding: '12px 0', overflowY: 'auto' }}>
         {NAV.map(({ label, href, icon: Icon, phase }) => {
           const active = pathname === href || pathname.startsWith(href + '/');
-          const disabled = phase > 1;
+          const disabled = phase > 2;
           const badge = href === '/orders' && pendingOrders > 0 ? pendingOrders : null;
 
           return (
