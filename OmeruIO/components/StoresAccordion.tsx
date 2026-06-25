@@ -145,6 +145,7 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.42, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                    className={isActive ? 'accordion-card-active' : 'accordion-card-inactive'}
                     onClick={() => setActiveIndex(i)}
                     onMouseEnter={() => !isActive && setHoveredCard(store.handle)}
                     onMouseLeave={() => setHoveredCard(null)}
@@ -323,9 +324,12 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
         }
         .accordion-scroll-outer::-webkit-scrollbar { display: none; }
         @media (max-width: 768px) {
-          .accordion-scroll-outer > div > div {
-            overflow: visible !important;
-          }
+          /* fix: the flex container had overflow:hidden, blocking horizontal scroll */
+          .accordion-scroll-outer > div { overflow: visible !important; }
+          /* active card: fills most of viewport so it feels like a focused card */
+          .accordion-card-active { width: calc(82vw - 16px) !important; min-width: 220px !important; }
+          /* inactive cards: slim peek strips */
+          .accordion-card-inactive { width: 48px !important; min-width: 48px !important; }
         }
       `}</style>
     </div>

@@ -151,17 +151,18 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
         </nav>
 
         <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(32px,5vh,56px)' }}>
-          <div style={{ display: 'flex', gap: 'clamp(24px,4vw,48px)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div className="store-hero-row" style={{ display: 'flex', gap: 'clamp(16px,4vw,48px)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
             {heroImage && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={heroImage}
                 alt={merchant.trading_name}
+                className="store-hero-img"
                 style={{ width: 'clamp(80px,12vw,120px)', height: 'clamp(80px,12vw,120px)', borderRadius: 24, objectFit: 'cover', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', flexShrink: 0 }}
               />
             )}
 
-            <div style={{ flex: 1, minWidth: 260 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
                 {merchant.store_category && (
                   <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 100, fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'rgba(200,241,53,0.12)', color: 'var(--lime)', border: '1px solid rgba(200,241,53,0.2)' }}>
@@ -370,6 +371,10 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
         @media (max-width: 860px) {
           .store-layout { grid-template-columns: 1fr; }
           aside { display: none; }
+        }
+        @media (max-width: 600px) {
+          .store-hero-row { align-items: center !important; }
+          .store-hero-img { width: 64px !important; height: 64px !important; border-radius: 16px !important; }
         }
         .toc-link {
           display: block;

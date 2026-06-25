@@ -405,8 +405,8 @@ function DataTable({ headers, rows, linkCol, linkPrefix }: {
   linkPrefix?: string;
 }) {
   return (
-    <div className="card" style={{ padding: 0, marginBottom: 16, overflow: 'hidden', borderRadius: 16 }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+    <div className="card" style={{ padding: 0, marginBottom: 16, borderRadius: 16, overflowX: 'auto', overflowY: 'hidden' }}>
+      <table style={{ width: '100%', minWidth: 480, borderCollapse: 'collapse', fontSize: 13 }}>
         <thead>
           <tr style={{ background: 'rgba(0,0,0,0.03)' }}>
             {headers.map(h => (
@@ -447,8 +447,8 @@ function CookieTable() {
     Advertising: { bg: 'rgba(200,241,53,0.18)',    color: 'var(--lime-dark)' },
   };
   return (
-    <div className="card" style={{ padding: 0, marginBottom: 16, overflow: 'hidden', borderRadius: 16 }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+    <div className="card" style={{ padding: 0, marginBottom: 16, borderRadius: 16, overflowX: 'auto', overflowY: 'hidden' }}>
+      <table style={{ width: '100%', minWidth: 540, borderCollapse: 'collapse', fontSize: 12 }}>
         <thead>
           <tr style={{ background: 'rgba(0,0,0,0.03)' }}>
             {['Cookie', 'Provider', 'Purpose', 'Duration', 'Type'].map(h => (

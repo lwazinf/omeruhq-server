@@ -334,17 +334,26 @@ export default function InviteModal() {
 
   useEffect(() => {
     if (open) {
+      const scrollY = window.scrollY;
       document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       getLenis()?.stop();
     } else {
+      const top = Math.abs(parseInt(document.body.style.top || '0', 10));
       document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (top) window.scrollTo(0, top);
       getLenis()?.start();
     }
     return () => {
       document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
       getLenis()?.start();
     };
   }, [open]);
@@ -436,15 +445,15 @@ export default function InviteModal() {
             style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', zIndex: 1000 }}
           />
 
-          {/* Centering shell */}
-          <div className="modal-shell" style={{
+          {/* Centering shell — on mobile: bottom sheet anchor; pointer-events overridden to auto via CSS so touch scroll works */}
+          <div className="modal-shell" onClick={close} style={{
             position: 'fixed', inset: 0, zIndex: 1001,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: 'clamp(48px, 6vw, 60px) clamp(16px, 4vw, 40px) clamp(16px, 4vw, 40px)',
             pointerEvents: 'none',
           }}>
-            {/* Relative wrapper so the close button can sit above the card */}
-            <div className="modal-wrapper" style={{ position: 'relative', width: '100%', maxWidth: 540, pointerEvents: 'auto' }}>
+            {/* Relative wrapper — stopPropagation prevents shell's close-on-click firing inside the card */}
+            <div className="modal-wrapper" onClick={(e) => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 540, pointerEvents: 'auto' }}>
 
               {/* ── Close button — floats above the card ── */}
               <button
@@ -594,42 +603,44 @@ export default function InviteModal() {
           <style>{`
             @media (max-width: 600px) {
               /*
-               * iOS Safari cannot scroll overflow-y:auto divs inside position:fixed.
-               * Fix: make the shell itself the scroll container, card fills naturally.
+               * Bottom-sheet pattern on mobile.
+               * pointer-events: auto (overrides inline none) so touch events reach the shell
+               * and tap-outside-sheet fires the shell's onClick(close).
+               * The card's overflow-y: auto scroll works because its flex parent
+               * (modal-wrapper) has pointer-events and the card has a constrained max-height.
                */
               .modal-shell {
-                align-items: flex-start !important;
+                align-items: flex-end !important;
+                justify-content: flex-start !important;
                 padding: 0 !important;
-                overflow-y: auto !important;
-                -webkit-overflow-scrolling: touch !important;
+                overflow: hidden !important;
+                pointer-events: auto !important;
               }
               .modal-wrapper {
                 max-width: 100% !important;
-                min-height: 100% !important;
+                width: 100% !important;
               }
               .modal-card {
-                border-radius: 0 !important;
-                max-height: none !important;
-                min-height: 100svh !important;
-                min-height: 100vh !important;
+                border-radius: 20px 20px 0 0 !important;
+                max-height: 92svh !important;
+                max-height: 92vh !important;
+                min-height: 0 !important;
               }
-              /* inner scroll body becomes plain flow — shell handles scroll */
+              /* card handles scroll — flex child needs min-height:0 to shrink */
               .modal-scroll-body {
-                overflow-y: visible !important;
-                flex: 1 0 auto !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                flex: 1 !important;
+                min-height: 0 !important;
                 padding: 20px 20px 8px !important;
               }
-              /* hide floating close (no space above), show inline one */
               .modal-close-float { display: none !important; }
               .modal-header-close { display: flex !important; }
-              /* 1-col layout for name/reg fields */
               .step1-name-grid { grid-template-columns: 1fr !important; }
-              /* prevent iOS auto-zoom on input focus */
+              /* prevent iOS auto-zoom on focus */
               .modal-card input,
               .modal-card textarea { font-size: 16px !important; }
-              /* bigger pill buttons for touch */
               .modal-card button[type="button"] { min-height: 44px; font-size: 14px !important; }
-              /* sticky footer so actions always visible */
               .modal-footer-bar {
                 position: sticky !important;
                 bottom: 0 !important;
