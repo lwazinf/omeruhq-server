@@ -171,7 +171,7 @@ function Step1({ data, set }: { data: FormData; set: (k: keyof FormData, v: stri
   return (
     <>
       {/* Business name + Reg number side by side */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 22 }}>
+      <div className="step1-name-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 22 }}>
         <div>
           <Label required>Business / brand name</Label>
           <Input placeholder="e.g. Kasi Eats" value={data.business_name} onChange={e => set('business_name', e.target.value)} />
@@ -437,18 +437,19 @@ export default function InviteModal() {
           />
 
           {/* Centering shell */}
-          <div style={{
+          <div className="modal-shell" style={{
             position: 'fixed', inset: 0, zIndex: 1001,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: 'clamp(48px, 6vw, 60px) clamp(16px, 4vw, 40px) clamp(16px, 4vw, 40px)',
             pointerEvents: 'none',
           }}>
             {/* Relative wrapper so the close button can sit above the card */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: 540, pointerEvents: 'auto' }}>
+            <div className="modal-wrapper" style={{ position: 'relative', width: '100%', maxWidth: 540, pointerEvents: 'auto' }}>
 
               {/* ── Close button — floats above the card ── */}
               <button
                 onClick={close}
+                className="modal-close-float"
                 style={{
                   position: 'absolute', top: -44, right: 0,
                   width: 36, height: 36, borderRadius: '50%',
@@ -466,6 +467,7 @@ export default function InviteModal() {
 
             <motion.div
               key="modal"
+              className="modal-card"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -531,7 +533,7 @@ export default function InviteModal() {
                   </div>
 
                   {/* ── Scrollable body ── */}
-                  <div style={{ overflowY: 'auto', flex: 1, padding: '24px 28px 4px' }}>
+                  <div className="modal-scroll-body" style={{ overflowY: 'auto', flex: 1, padding: '24px 28px 4px', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
                     <AnimatePresence mode="wait" custom={dir} initial={false}>
                       <motion.div
                         key={step}
@@ -584,6 +586,46 @@ export default function InviteModal() {
             </motion.div>
             </div>{/* end relative wrapper */}
           </div>{/* end centering shell */}
+
+          <style>{`
+            @media (max-width: 600px) {
+              .modal-shell {
+                align-items: flex-end !important;
+                padding: 0 !important;
+                padding-top: 52px !important;
+              }
+              .modal-wrapper {
+                max-width: 100% !important;
+              }
+              .modal-card {
+                border-radius: 22px 22px 0 0 !important;
+                max-height: calc(100dvh - 52px) !important;
+                max-height: calc(100vh - 52px) !important;
+              }
+              .modal-close-float {
+                top: -40px !important;
+                right: 12px !important;
+              }
+              .step1-name-grid {
+                grid-template-columns: 1fr !important;
+              }
+              .modal-scroll-body {
+                padding: 20px 20px 8px !important;
+              }
+            }
+            @media (max-width: 600px) {
+              /* Larger touch targets for pill buttons inside modal */
+              .modal-card button[type="button"] {
+                min-height: 40px;
+                font-size: 14px !important;
+              }
+              /* Prevent iOS input zoom */
+              .modal-card input,
+              .modal-card textarea {
+                font-size: 16px !important;
+              }
+            }
+          `}</style>
         </>
       )}
     </AnimatePresence>

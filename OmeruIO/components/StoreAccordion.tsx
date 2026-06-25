@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { waProductLink, waServiceLink } from '@/lib/storefront';
 import { trackEvent } from '@/lib/gtag';
@@ -67,6 +67,7 @@ export default function StoreAccordion({
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const touchStartX = useRef(0);
 
   const filtered = activeFilter === 'all'
     ? allItems
@@ -138,6 +139,16 @@ export default function StoreAccordion({
       ) : (
         <>
           {/* ── Accordion track — AnimatePresence for filter changes ── */}
+          <div
+            className="accordion-scroll-outer"
+            onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+            onTouchEnd={e => {
+              const delta = touchStartX.current - e.changedTouches[0].clientX;
+              if (Math.abs(delta) < 50) return;
+              if (delta > 0) setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
+              else setActiveIndex(i => Math.max(i - 1, 0));
+            }}
+          >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={activeFilter}
@@ -295,6 +306,7 @@ export default function StoreAccordion({
               })}
             </motion.div>
           </AnimatePresence>
+          </div>{/* end accordion-scroll-outer */}
 
           {/* ── Pagination ── */}
           <motion.div
@@ -332,6 +344,22 @@ export default function StoreAccordion({
           </motion.div>
         </>
       )}
+      <style>{`
+        .accordion-scroll-outer {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          /* hide scrollbar visually but keep it functional */
+          scrollbar-width: none;
+          padding-bottom: 4px;
+        }
+        .accordion-scroll-outer::-webkit-scrollbar { display: none; }
+        /* on mobile: remove inner overflow hidden so cards aren't clipped during expand */
+        @media (max-width: 768px) {
+          .accordion-scroll-outer > div > div {
+            overflow: visible !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
