@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Omeru Merchant Portal — Product Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --lime: #C8F135;
+      --lime-dark: #a8d420;
+      --lime-muted: #e8f9a8;
+      --black: #0a0a0a;
+      --off-white: #f5f4ef;
+      --warm-gray: #e8e6de;
+      --mid-gray: #9b9990;
+      --dark-gray: #1a1a18;
+      --card-bg: #f0ede5;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-display);
+      background: var(--off-white);
+      color: var(--black);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Cover page ── */
+    .cover {
+      min-height: 100vh;
+      background: var(--dark-gray);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 64px 72px;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .cover-logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lime);
+    }
+
+    .cover-body { position: relative; }
+
+    .cover-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      border: 1px solid rgba(200,241,53,0.3);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 32px;
+    }
+
+    .cover h1 {
+      font-family: var(--font-display);
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .cover h1 span { color: var(--lime); }
+
+    .cover-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      max-width: 540px;
+      line-height: 1.5;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 48px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+
+    .cover-meta strong { display: block; color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 2px; }
+
+    .cover-accent {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,241,53,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Page chrome ── */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 72px;
+    }
+
+    .page-break { page-break-before: always; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--black);
+    }
+
+    .section-number {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      padding-top: 8px;
+      min-width: 32px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1;
+    }
+
+    .section-title span { color: var(--lime-dark); }
+
+    /* ── Feature tables ── */
+    .feature-module { margin-bottom: 48px; }
+
+    .module-label {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      margin-bottom: 12px;
+    }
+
+    .module-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+    }
+
+    thead th {
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    tbody td {
+      padding: 11px 14px;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    tbody tr:hover td { background: rgba(0,0,0,0.02); }
+
+    .impact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .impact-10 { background: var(--lime); color: var(--black); }
+    .impact-9  { background: #d4f55a; color: var(--black); }
+    .impact-8  { background: #e0f883; color: var(--black); }
+    .impact-7  { background: var(--lime-muted); color: #5a6a10; }
+    .impact-6  { background: #eef6bb; color: #6b7830; }
+    .impact-5  { background: var(--warm-gray); color: var(--mid-gray); }
+    .impact-4  { background: var(--warm-gray); color: var(--mid-gray); }
+
+    .note-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(200,241,53,0.15);
+      color: #5a6a10;
+      font-weight: 500;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Page structure section ── */
+    .page-card {
+      background: white;
+      border-radius: 24px;
+      border: 1px solid rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .page-card-header {
+      background: var(--dark-gray);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-card-header .page-route {
+      font-family: 'DM Sans', monospace;
+      font-size: 13px;
+      color: var(--lime);
+      letter-spacing: 0.05em;
+    }
+
+    .page-card-header .page-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .page-card-body { padding: 32px; }
+
+    .page-card-body p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 20px;
+      line-height: 1.65;
+    }
+
+    .page-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+    .page-section-block {
+      background: var(--off-white);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .page-section-block h4 {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      margin-bottom: 10px;
+    }
+
+    .page-section-block ul {
+      list-style: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--black);
+    }
+
+    .page-section-block ul li {
+      padding: 4px 0;
+      padding-left: 14px;
+      position: relative;
+      color: #333;
+    }
+
+    .page-section-block ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--mid-gray);
+    }
+
+    /* ── Wireframe mockup ── */
+    .wireframe {
+      background: var(--off-white);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 20px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .wf-bar {
+      background: var(--dark-gray);
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+    }
+
+    .wf-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .wf-dot-r { background: #ff5f57; }
+    .wf-dot-y { background: #febc2e; }
+    .wf-dot-g { background: var(--lime); }
+
+    .wf-body { display: flex; min-height: 280px; }
+
+    .wf-sidebar {
+      width: 180px;
+      background: var(--dark-gray);
+      padding: 20px 0;
+      flex-shrink: 0;
+    }
+
+    .wf-nav-item {
+      padding: 10px 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wf-nav-item.active { color: white; }
+    .wf-nav-item.active::before { content: ''; display: block; width: 3px; height: 18px; background: var(--lime); border-radius: 2px; position: absolute; left: 0; }
+    .wf-nav-item { position: relative; }
+
+    .wf-nav-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+    .wf-nav-dot.active { background: var(--lime); }
+
+    .wf-content { flex: 1; padding: 20px; }
+
+    .wf-kpi-row { display: flex; gap: 10px; margin-bottom: 16px; }
+
+    .wf-kpi {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .wf-kpi-num {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--black);
+    }
+
+    .wf-kpi-label { font-size: 10px; color: var(--mid-gray); margin-top: 2px; }
+
+    .wf-kpi.highlight { background: var(--dark-gray); }
+    .wf-kpi.highlight .wf-kpi-num { color: var(--lime); }
+    .wf-kpi.highlight .wf-kpi-label { color: rgba(255,255,255,0.4); }
+
+    .wf-chart {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+    }
+
+    .wf-bar-chart { flex: 1; background: var(--lime-muted); border-radius: 3px 3px 0 0; }
+
+    .wf-row { display: flex; gap: 10px; }
+
+    .wf-table {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+      flex: 1;
+    }
+
+    .wf-table-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 11px;
+      color: #555;
+    }
+
+    .wf-table-row:last-child { border-bottom: none; }
+
+    .wf-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .wf-pill-lime { background: var(--lime); color: var(--black); }
+    .wf-pill-gray { background: var(--warm-gray); color: var(--mid-gray); }
+    .wf-pill-dark { background: var(--dark-gray); color: white; }
+
+    /* ── Kanban wireframe ── */
+    .wf-kanban { display: flex; gap: 10px; margin-top: 8px; }
+    .wf-col { flex: 1; }
+    .wf-col-head {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      padding: 6px 0;
+      margin-bottom: 6px;
+      border-bottom: 2px solid var(--warm-gray);
+    }
+    .wf-col-head.active { border-color: var(--lime); color: var(--black); }
+    .wf-order-card {
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 6px;
+      border: 1px solid rgba(0,0,0,0.07);
+      font-size: 11px;
+    }
+    .wf-order-id { font-weight: 700; color: var(--black); }
+    .wf-order-amt { color: var(--mid-gray); }
+
+    /* ── Calendar wireframe ── */
+    .wf-calendar { background: white; border-radius: 12px; padding: 14px; border: 1px solid rgba(0,0,0,0.06); }
+    .wf-cal-header { display: flex; gap: 4px; margin-bottom: 8px; }
+    .wf-cal-day { flex: 1; text-align: center; font-size: 10px; font-weight: 700; color: var(--mid-gray); }
+    .wf-cal-slots { display: flex; gap: 4px; }
+    .wf-cal-col { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+    .wf-cal-slot { height: 18px; border-radius: 4px; background: rgba(0,0,0,0.04); }
+    .wf-cal-slot.booked { background: var(--lime); }
+    .wf-cal-slot.pending { background: var(--lime-muted); border: 1px dashed #a8d420; }
+
+    /* ── Design tokens section ── */
+    .token-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 20px 0; }
+    .token-swatch { text-align: center; }
+    .swatch-box { height: 64px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(0,0,0,0.08); }
+    .swatch-name { font-family: 'DM Sans', monospace; font-size: 11px; color: var(--mid-gray); }
+    .swatch-hex { font-family: 'DM Sans', monospace; font-size: 10px; color: var(--mid-gray); }
+
+    /* ── Call-out box ── */
+    .callout {
+      background: var(--dark-gray);
+      color: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 24px 0;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .callout strong { color: var(--lime); }
+    .callout p { font-size: 13px; line-height: 1.65; opacity: 0.8; }
+
+    .callout-lime {
+      background: var(--lime);
+      color: var(--black);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 24px 0;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .callout-lime p { font-size: 13px; line-height: 1.65; }
+
+    /* ── Priority grid ── */
+    .priority-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .priority-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(0,0,0,0.06);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+    }
+    .priority-rank {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--mid-gray);
+      min-width: 28px;
+    }
+
+    /* ── Full-width layout diagram ── */
+    .layout-diagram {
+      border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 20px 0;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .layout-titlebar {
+      background: var(--dark-gray);
+      color: white;
+      padding: 10px 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .layout-body { display: flex; min-height: 340px; }
+
+    .layout-sidebar {
+      width: 200px;
+      background: #111110;
+      padding: 24px 0;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ls-logo {
+      padding: 0 20px 24px;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--lime);
+      letter-spacing: 0.08em;
+    }
+
+    .ls-nav { flex: 1; }
+
+    .ls-item {
+      padding: 9px 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .ls-item.active {
+      color: white;
+      background: rgba(255,255,255,0.05);
+      border-left: 2px solid var(--lime);
+    }
+
+    .ls-item-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    .ls-badge {
+      margin-left: auto;
+      background: var(--lime);
+      color: var(--black);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 100px;
+    }
+
+    .ls-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .ls-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .ls-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 6px var(--lime);
+    }
+
+    .layout-main { flex: 1; background: var(--off-white); padding: 24px; }
+
+    .layout-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .layout-store-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .layout-kpi-row { display: flex; gap: 12px; margin-bottom: 16px; }
+
+    .layout-kpi {
+      flex: 1;
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .layout-kpi-val {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .layout-kpi-key { font-size: 11px; color: var(--mid-gray); margin-top: 2px; }
+
+    .layout-kpi.featured { background: var(--dark-gray); }
+    .layout-kpi.featured .layout-kpi-val { color: var(--lime); }
+    .layout-kpi.featured .layout-kpi-key { color: rgba(255,255,255,0.4); }
+
+    .layout-chart {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+      height: 100px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .lc-bar { flex: 1; border-radius: 3px 3px 0 0; background: var(--lime-muted); }
+    .lc-bar.peak { background: var(--lime); }
+
+    .layout-table-section { display: flex; gap: 12px; }
+
+    .layout-table {
+      flex: 1;
+      background: white;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 16px;
+    }
+
+    .lt-head {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .lt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      color: #444;
+    }
+
+    .lt-row:last-child { border-bottom: none; }
+
+    /* ── Page number footer ── */
+    @media print {
+      .cover { min-height: 100vh; }
+      .page { padding: 60px 72px; }
+      .page-break { page-break-before: always; }
+      .page-card { break-inside: avoid; }
+    }
+
+    h2 { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 16px; margin-top: 40px; }
+    h3 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 10px; margin-top: 28px; }
+    p { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.65; margin-bottom: 14px; color: #333; }
+
+    .divider { height: 1px; background: rgba(0,0,0,0.08); margin: 40px 0; }
+
+    .tag {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--warm-gray);
+      color: var(--mid-gray);
+      margin-right: 6px;
+    }
+
+    .tag.new { background: var(--lime-muted); color: #5a6a10; }
+    .tag.port { background: rgba(0,0,0,0.07); color: var(--mid-gray); }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     COVER
+══════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">Omeru</div>
+  <div class="cover-body">
+    <div class="cover-accent"></div>
+    <div class="cover-pill">Product Plan — Merchant Portal</div>
+    <h1>Merchant<br /><span>Dashboard</span></h1>
+    <p class="cover-sub">Feature inventory, impact scoring, page-by-page UI structure, and visual design spec for the Omeru merchant web portal.</p>
+  </div>
+  <div class="cover-meta">
+    <div><strong>Version</strong>v1.0 Draft</div>
+    <div><strong>Date</strong>June 2026</div>
+    <div><strong>Status</strong>Planning</div>
+    <div><strong>Target</strong>merchant.omeru.io</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PART 1 — FEATURE INVENTORY
+══════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <div>
+      <div class="section-title">Feature <span>Inventory</span></div>
+      <p style="margin:8px 0 0; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--mid-gray);">All possible functionality derived from the WhatsApp bot codebase, Prisma schema, and PlatformEvent/SearchQuery tables. Scored 1–10 by direct merchant impact.</p>
+    </div>
+  </div>
+
+  <div class="feature-module">
+    <div class="module-label">Module 01</div>
+    <div class="module-title">Dashboard Home</div>
+    <table>
+      <thead><tr><th style="width:55%">Feature</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Live KPI strip (today revenue, orders, pending)</td><td>Already computed in getMerchantStats</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Shop open / close toggle</td><td>manual_closed flag — most time-critical daily action</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Pending orders alert badge (real-time)</td><td>WhatsApp navigation buries this 3 taps deep</td><td style="text-align:center"><span class="impact impact-9">9</span></td></tr>
+        <tr><td>Real-time order stream via SSE</td><td>WhatsApp notifies per message; web should push without refresh</td><td style="text-align:center"><span class="impact impact-9">9</span></td></tr>
+        <tr><td>Revenue sparkline (7d vs 30d trend)</td><td>Data in sales7d / sales30d — no chart on WhatsApp at all</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Upcoming bookings callout</td><td>Only reachable via text diary on WhatsApp</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Top 3 products widget</td><td>Already queried in getMerchantStats</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Quick-add product shortcut</td><td>Reduces a 4-step WhatsApp flow to one click</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="feature-module">
+    <div class="module-label">Module 02</div>
+    <div class="module-title">Order Management (Kitchen)</div>
+    <table>
+      <thead><tr><th style="width:55%">Feature</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Kanban board: Pending → Paid → Ready → Done</td><td>Currently text lists; visual board eliminates status errors</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Order detail panel (items, total, customer, time)</td><td>WhatsApp shows one message per order with no summary</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Mark ready / complete / cancel — single click</td><td>Replaces 3-button WhatsApp tap sequence</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Customer notification on status change</td><td>Already in bot — must mirror in web API</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Order history with status timeline</td><td>OrderStatusHistory table exists, never surfaced on WhatsApp</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Filter orders by date, status, amount</td><td>Impossible on WhatsApp</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Cancellation reason text field</td><td>Hardcoded as "merchant_action" on WhatsApp</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Export orders to CSV</td><td>Not in WhatsApp at all</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Bulk cancel / bulk complete</td><td>Impossible on WhatsApp</td><td style="text-align:center"><span class="impact impact-5">5</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="feature-module">
+    <div class="module-label">Module 03</div>
+    <div class="module-title">Products &amp; Inventory</div>
+    <table>
+      <thead><tr><th style="width:55%">Feature</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Product grid with inline stock toggle</td><td>WhatsApp requires 4+ taps to toggle one item</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Add product form (name, price, category, image, desc)</td><td>Replaces clunky 4-step WhatsApp conversation flow</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Image upload via file picker / dropzone</td><td>WhatsApp forces camera or gallery; web allows any file</td><td style="text-align:center"><span class="impact impact-9">9</span></td></tr>
+        <tr><td>Category CRUD (create, rename, delete)</td><td>Tedious multi-step flow on WhatsApp</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Product variant management (size/color/SKU/price)</td><td>Buried 4 levels deep in WhatsApp menus</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Bulk stock toggle (e.g. mark all sold-out)</td><td>Impossible on WhatsApp</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Archive / restore / permanently delete products</td><td>Same functionality, significantly better UX</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Bulk price update (percentage increase)</td><td>Completely absent from WhatsApp</td><td style="text-align:center"><span class="impact impact-5">5</span></td></tr>
+        <tr><td>CSV import for products</td><td>Absent from entire system</td><td style="text-align:center"><span class="impact impact-4">4</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="page page-break">
+  <div class="feature-module">
+    <div class="module-label">Module 04</div>
+    <div class="module-title">Services &amp; Bookings</div>
+    <table>
+      <thead><tr><th style="width:55%">Feature</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Calendar view (week / month) for confirmed bookings</td><td>bk_diary on WhatsApp is a plain text block</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Booking inbox (accept / decline with reason)</td><td>Direct port of bk_inbox — critical for service merchants</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Service CRUD (name, price, duration, image)</td><td>Direct port — significantly better UX on web</td><td style="text-align:center"><span class="impact impact-9">9</span></td></tr>
+        <tr><td>Clash detection on accept</td><td>Already in bot code — must keep in web API</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Decline with custom reason or preset pick</td><td>Port of bk_decline with preset reasons UI</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Mark booking complete / cancel</td><td>Port of bk_done_ / bk_cancel_</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Service toggle (visible / hidden)</td><td>Port of sv_toggle_</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Booking history per customer</td><td>Not in WhatsApp flow — derivable from Booking table</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="feature-module">
+    <div class="module-label">Module 05</div>
+    <div class="module-title">Analytics</div>
+    <table>
+      <thead><tr><th style="width:55%">Feature</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Revenue chart (daily, 7d / 30d / 90d range picker)</td><td>Data in Order table — no chart anywhere in ecosystem</td><td style="text-align:center"><span class="impact impact-9">9</span></td></tr>
+        <tr><td>Order volume over time</td><td>Same data source as revenue chart</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Top products by units sold (30d)</td><td>Already in getMerchantStats — just needs a chart</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Customer growth over time</td><td>MerchantCustomer.createdAt — derivable</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Storefront page events (views, WA taps, shares)</td><td>PlatformEvent table: completely untapped — zero merchant UI</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Search query analytics</td><td>SearchQuery table: what customers type — zero merchant visibility</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Conversion rate (storefront view → WA click)</td><td>PlatformEvent derivable — useful for product decisions</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Booking utilisation (slots filled vs available)</td><td>Derivable from Booking + trading hours</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Platform fee breakdown per period</td><td>Fee calculated at Order completion — in AuditLog</td><td style="text-align:center"><span class="impact impact-5">5</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="feature-module">
+    <div class="module-label">Module 06</div>
+    <div class="module-title">Customers</div>
+    <table>
+      <thead><tr><th style="width:55%">Feature</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Customer list (name, total spend, order count, last seen)</td><td>MerchantCustomer — only surfaced as broadcast recipients on WA</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Customer detail (orders, bookings, opt-out)</td><td>Completely absent from merchant WhatsApp tools</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Bookmark customers</td><td>is_bookmarked column exists — no UI anywhere</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Opt-out management view</td><td>opt_out column — only implicit via broadcast filter on WA</td><td style="text-align:center"><span class="impact impact-5">5</span></td></tr>
+        <tr><td>Province breakdown</td><td>province on MerchantCustomer — no UI</td><td style="text-align:center"><span class="impact impact-4">4</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="feature-module">
+    <div class="module-label">Modules 07–10</div>
+    <div class="module-title">Broadcast, Settings, Reviews, Auth</div>
+    <table>
+      <thead><tr><th style="width:40%">Feature</th><th style="width:12%">Module</th><th>Notes</th><th style="width:60px; text-align:center">Impact</th></tr></thead>
+      <tbody>
+        <tr><td>OTP login via WhatsApp number</td><td>Auth</td><td>Merchants already trust WA identity — natural entry</td><td style="text-align:center"><span class="impact impact-10">10</span></td></tr>
+        <tr><td>Compose and send broadcast</td><td>Broadcast</td><td>Rich editor instead of raw WA text input</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Store profile form (bio, logo, welcome image, address)</td><td>Settings</td><td>Replaces multi-screen WhatsApp settings navigation</td><td style="text-align:center"><span class="impact impact-9">9</span></td></tr>
+        <tr><td>Team owner management (invite, roles, remove)</td><td>Settings</td><td>Table view vastly clearer than WA text list</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Trading hours editor</td><td>Settings</td><td>Time pickers vs "HH:MM - HH:MM" text on WhatsApp</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Role-based views (OWNER / ADMIN / STAFF)</td><td>Auth</td><td>MerchantOwnerRole enum exists — only enforced in WA bot</td><td style="text-align:center"><span class="impact impact-8">8</span></td></tr>
+        <tr><td>Customer review feed with star ratings</td><td>Reviews</td><td>Read from AuditLog where action = CUSTOMER_FEEDBACK</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+        <tr><td>Broadcast history</td><td>Broadcast</td><td>No history visible on WhatsApp after send</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Multi-store switching</td><td>Auth</td><td>One wa_id can own multiple merchants via MerchantOwner</td><td style="text-align:center"><span class="impact impact-6">6</span></td></tr>
+        <tr><td>Recipient count preview before broadcast</td><td>Broadcast</td><td>WhatsApp shows count only after attempted send</td><td style="text-align:center"><span class="impact impact-7">7</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>Dark spots in the data: </strong>The <code>PlatformEvent</code> and <code>SearchQuery</code> tables are completely invisible to merchants today. These tables record every product view, WA tap, search query, and cart event. The analytics module surfaces this data for the first time. The <code>OrderStatusHistory</code> table is also written to on every status change but never displayed anywhere.</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PART 2 — DESIGN SYSTEM
+══════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <div>
+      <div class="section-title">Design <span>System</span></div>
+      <p style="margin:8px 0 0; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--mid-gray);">Inherited directly from hq.omeru.io-main. Same tokens, same fonts, same component language — extended for a dashboard context.</p>
+    </div>
+  </div>
+
+  <h2>Colour Palette</h2>
+  <div class="token-grid">
+    <div class="token-swatch"><div class="swatch-box" style="background:#C8F135"></div><div class="swatch-name">--lime</div><div class="swatch-hex">#C8F135</div></div>
+    <div class="token-swatch"><div class="swatch-box" style="background:#0a0a0a"></div><div class="swatch-name">--black</div><div class="swatch-hex">#0a0a0a</div></div>
+    <div class="token-swatch"><div class="swatch-box" style="background:#1a1a18"></div><div class="swatch-name">--dark-gray</div><div class="swatch-hex">#1a1a18</div></div>
+    <div class="token-swatch"><div class="swatch-box" style="background:#f5f4ef"></div><div class="swatch-name">--off-white</div><div class="swatch-hex">#f5f4ef</div></div>
+    <div class="token-swatch"><div class="swatch-box" style="background:#e8e6de"></div><div class="swatch-name">--warm-gray</div><div class="swatch-hex">#e8e6de</div></div>
+  </div>
+
+  <h2>Typography</h2>
+  <table>
+    <thead><tr><th>Role</th><th>Font</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td>Display / Headings</td><td>Syne 700–800</td><td>Page titles, KPI numbers, section labels, nav brand</td></tr>
+      <tr><td>Body / UI text</td><td>DM Sans 300–500</td><td>Descriptions, table content, form labels, buttons</td></tr>
+      <tr><td>Code / Handles</td><td>DM Sans monospace</td><td>Routes, WA numbers, product IDs, handles</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Component Extensions for Dashboard</h2>
+  <table>
+    <thead><tr><th>Component</th><th>Description</th><th>Inherits From</th></tr></thead>
+    <tbody>
+      <tr><td>KPI Card</td><td>White card, Syne number, DM Sans label. Highlight variant uses --dark-gray bg with --lime number.</td><td>.card + .stat-number</td></tr>
+      <tr><td>Status Pill</td><td>Coloured pill for order/booking status. Lime = complete, warm-gray = pending, dark = cancelled.</td><td>.pill</td></tr>
+      <tr><td>Sidebar Nav Item</td><td>Left-border accent in --lime on active, rgba(255,255,255,0.05) bg. Badge for counts.</td><td>new — dark bg context</td></tr>
+      <tr><td>Kanban Card</td><td>White card, 14px radius, 1px border. Drag handle dot on left. Time elapsed badge.</td><td>.card — smaller variant</td></tr>
+      <tr><td>Data Table Row</td><td>1px border-bottom divider. Hover: rgba(0,0,0,0.02) bg. Click → slide-in panel.</td><td>table (existing)</td></tr>
+      <tr><td>Toggle Switch</td><td>Lime thumb, dark-gray track when on. Off: warm-gray. Used for stock, service visibility, browse toggle.</td><td>new</td></tr>
+      <tr><td>Slide-in Panel</td><td>Right-side detail panel (400px), off-white bg, dark overlay. Used for orders, customers, products.</td><td>new</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Layout Architecture</h2>
+  <p>The app uses a fixed dark sidebar (240px) + scrollable content area. The sidebar does not collapse on desktop. Mobile collapses to a bottom tab bar (Orders, Products, Settings, Dashboard).</p>
+
+  <div class="layout-diagram">
+    <div class="layout-titlebar">
+      <div class="wf-dot wf-dot-r"></div>
+      <div class="wf-dot wf-dot-y"></div>
+      <div class="wf-dot wf-dot-g"></div>
+      <span style="margin-left:8px; font-size:11px; opacity:0.5;">merchant.omeru.io/dashboard</span>
+    </div>
+    <div class="layout-body">
+      <div class="layout-sidebar">
+        <div>
+          <div class="ls-logo">OMERU</div>
+          <div class="ls-nav">
+            <div class="ls-item active"><div class="ls-item-dot"></div>Dashboard</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Orders<span class="ls-badge">3</span></div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Products</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Services</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Analytics</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Customers</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Broadcast</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Reviews</div>
+            <div class="ls-item"><div class="ls-item-dot"></div>Settings</div>
+          </div>
+        </div>
+        <div class="ls-footer">
+          <div class="ls-status"><div class="ls-status-dot"></div><span>Store Open</span></div>
+        </div>
+      </div>
+      <div class="layout-main">
+        <div class="layout-topbar">
+          <div class="layout-store-name">Kasi Kitchen</div>
+          <div style="display:flex; gap:8px;">
+            <div style="width:32px; height:32px; border-radius:50%; background:var(--warm-gray);"></div>
+            <div style="width:32px; height:32px; border-radius:50%; background:var(--dark-gray);"></div>
+          </div>
+        </div>
+        <div class="layout-kpi-row">
+          <div class="layout-kpi"><div class="layout-kpi-val">R2 840</div><div class="layout-kpi-key">Today Revenue</div></div>
+          <div class="layout-kpi"><div class="layout-kpi-val">14</div><div class="layout-kpi-key">Today Orders</div></div>
+          <div class="layout-kpi featured"><div class="layout-kpi-val">3</div><div class="layout-kpi-key">Pending Now</div></div>
+          <div class="layout-kpi"><div class="layout-kpi-val">5</div><div class="layout-kpi-key">Bookings</div></div>
+        </div>
+        <div class="layout-chart">
+          <div class="lc-bar" style="height:35%"></div>
+          <div class="lc-bar" style="height:55%"></div>
+          <div class="lc-bar" style="height:40%"></div>
+          <div class="lc-bar" style="height:70%"></div>
+          <div class="lc-bar" style="height:60%"></div>
+          <div class="lc-bar" style="height:90%"></div>
+          <div class="lc-bar peak" style="height:100%"></div>
+        </div>
+        <div class="layout-table-section">
+          <div class="layout-table">
+            <div class="lt-head">Recent Orders</div>
+            <div class="lt-row"><span>#a4f12</span><span>R180</span><span><span class="wf-pill wf-pill-lime">Paid</span></span></div>
+            <div class="lt-row"><span>#9e3cc</span><span>R240</span><span><span class="wf-pill wf-pill-gray">Pending</span></span></div>
+            <div class="lt-row"><span>#7b1aa</span><span>R95</span><span><span class="wf-pill wf-pill-dark">Ready</span></span></div>
+          </div>
+          <div class="layout-table">
+            <div class="lt-head">Top Products</div>
+            <div class="lt-row"><span>Pap &amp; Wors</span><span>42 sold</span></div>
+            <div class="lt-row"><span>Chakalaka Bowl</span><span>28 sold</span></div>
+            <div class="lt-row"><span>Chicken Bunny</span><span>19 sold</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PART 3 — PAGE STRUCTURE
+══════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <div>
+      <div class="section-title">Page <span>Structure</span></div>
+      <p style="margin:8px 0 0; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--mid-gray);">13 pages. Each page has a defined purpose, layout, and visual spec. All inherit the sidebar + off-white content area layout unless noted.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 1: LOGIN -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Login</div>
+        <div class="page-route">/login</div>
+      </div>
+      <span class="tag new">New</span>
+    </div>
+    <div class="page-card-body">
+      <p>Standalone auth page — no sidebar. Merchants enter their WhatsApp number, receive a 6-digit OTP via WhatsApp message from the Omeru bot, then enter it to authenticate. JWT is issued on success. Full-screen split layout: dark left panel (Omeru branding, feature callouts) + off-white right panel (form).</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Left Panel (dark, --dark-gray)</h4>
+          <ul>
+            <li>Omeru wordmark in lime</li>
+            <li>Display headline: "Your store. Your control."</li>
+            <li>3 benefit bullets with lime check marks</li>
+            <li>Noise texture overlay</li>
+            <li>Floating WA bubble mockup (animated)</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Right Panel (--off-white)</h4>
+          <ul>
+            <li>"+27" country prefix + phone input</li>
+            <li>"Send OTP via WhatsApp" btn-lime</li>
+            <li>OTP 6-digit input (auto-focus each digit)</li>
+            <li>Resend countdown (30s)</li>
+            <li>Terms link (small, mid-gray)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: DASHBOARD -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Dashboard Home</div>
+        <div class="page-route">/dashboard</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>The merchant's home screen. Loads in under 1s with today's KPIs, a 7-day revenue sparkline, the last 5 orders, and top products. The shop open/close toggle lives permanently in the top-right — the single most important action a merchant takes daily.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Top Section</h4>
+          <ul>
+            <li>Store name (Syne 700, 24px)</li>
+            <li>Open/Close toggle (lime dot + label)</li>
+            <li>Today's date + notification bell</li>
+            <li>Pending orders badge (lime if &gt; 0)</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>KPI Strip (4 cards)</h4>
+          <ul>
+            <li>Today Revenue (Syne 800, lime-on-dark)</li>
+            <li>Today Orders</li>
+            <li>Pending Orders (featured/highlighted)</li>
+            <li>Upcoming Bookings</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Revenue Chart</h4>
+          <ul>
+            <li>Area/bar chart, 7 days</li>
+            <li>Lime bars, off-white bg card</li>
+            <li>Hover tooltip with day + amount</li>
+            <li>7d vs 30d tab toggle</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Bottom Row (2 tables)</h4>
+          <ul>
+            <li>Recent Orders: ID, total, status pill, action</li>
+            <li>Top Products: name, units sold this month</li>
+            <li>Quick actions: Add Product, View Kitchen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page page-break">
+
+  <!-- PAGE 3: ORDERS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Orders — Kitchen</div>
+        <div class="page-route">/orders</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>The operational core. Merchants manage the full order lifecycle here. Default view is a 4-column Kanban board. A list/table toggle is available. Clicking any order opens a right-side detail panel. Status transitions send WhatsApp notifications to the customer automatically — same as the bot.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Toolbar</h4>
+          <ul>
+            <li>Status tab filter (All / Pending / Paid / Ready / Done)</li>
+            <li>Date range filter</li>
+            <li>List vs Kanban toggle</li>
+            <li>Export CSV button</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Kanban Board (4 columns)</h4>
+          <ul>
+            <li>Pending — awaiting payment</li>
+            <li>To Prepare — paid, needs fulfillment</li>
+            <li>Ready for Pickup — awaiting collection</li>
+            <li>Done / Cancelled — archive</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Order Card</h4>
+          <ul>
+            <li>Order ID (last 5 chars, monospace)</li>
+            <li>Total (Syne, bold)</li>
+            <li>Item count + time elapsed badge</li>
+            <li>One-click status advance button</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Detail Panel (slide-in right)</h4>
+          <ul>
+            <li>Full item list with quantities and prices</li>
+            <li>Order total</li>
+            <li>Status timeline (OrderStatusHistory)</li>
+            <li>Mark Ready / Complete / Cancel buttons</li>
+            <li>Cancellation reason input field</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Kanban wireframe -->
+      <div class="wireframe">
+        <div class="wf-bar"><div class="wf-dot wf-dot-r"></div><div class="wf-dot wf-dot-y"></div><div class="wf-dot wf-dot-g"></div></div>
+        <div style="padding: 16px;">
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <span class="wf-pill wf-pill-dark">All</span>
+            <span class="wf-pill wf-pill-gray">Pending</span>
+            <span class="wf-pill wf-pill-lime">Paid</span>
+            <span class="wf-pill wf-pill-gray">Ready</span>
+            <span class="wf-pill wf-pill-gray">Done</span>
+          </div>
+          <div class="wf-kanban">
+            <div class="wf-col">
+              <div class="wf-col-head">Pending (2)</div>
+              <div class="wf-order-card"><div class="wf-order-id">#a4f12</div><div class="wf-order-amt">R180 · 12m ago</div></div>
+              <div class="wf-order-card"><div class="wf-order-id">#9e3cc</div><div class="wf-order-amt">R240 · 5m ago</div></div>
+            </div>
+            <div class="wf-col">
+              <div class="wf-col-head active">To Prepare (3)</div>
+              <div class="wf-order-card"><div class="wf-order-id">#7b1aa</div><div class="wf-order-amt">R95 · 8m ago</div></div>
+              <div class="wf-order-card"><div class="wf-order-id">#cc2f0</div><div class="wf-order-amt">R320 · 3m ago</div></div>
+              <div class="wf-order-card"><div class="wf-order-id">#d9e77</div><div class="wf-order-amt">R150 · 1m ago</div></div>
+            </div>
+            <div class="wf-col">
+              <div class="wf-col-head">Ready (1)</div>
+              <div class="wf-order-card"><div class="wf-order-id">#aa933</div><div class="wf-order-amt">R210 · 22m ago</div></div>
+            </div>
+            <div class="wf-col">
+              <div class="wf-col-head">Done (8)</div>
+              <div class="wf-order-card" style="opacity:0.5"><div class="wf-order-id">#88f02</div><div class="wf-order-amt">R460</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: PRODUCTS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Products</div>
+        <div class="page-route">/products</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>Full product catalog management. Products display in a 3-column card grid with their image, name, price, category badge, and an inline stock toggle switch. Clicking a product opens an edit panel. Category management lives in a left mini-column.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Toolbar</h4>
+          <ul>
+            <li>Search input (filter by name in real-time)</li>
+            <li>Category dropdown filter</li>
+            <li>Stock filter (All / In Stock / Out / Archived)</li>
+            <li>"Add Product" btn-lime (top right)</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Product Card</h4>
+          <ul>
+            <li>Product image (square, 1:1 aspect, rounded)</li>
+            <li>Name (Syne 600, 15px)</li>
+            <li>Price (DM Sans, mid-gray)</li>
+            <li>Category pill (warm-gray bg)</li>
+            <li>Stock toggle switch (lime when in-stock)</li>
+            <li>⋯ menu: Edit, Archive, Delete</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Left Column — Categories</h4>
+          <ul>
+            <li>Category list with product count</li>
+            <li>Click to filter grid</li>
+            <li>"+ Add Category" link</li>
+            <li>Edit / delete on hover</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Bulk Actions (select mode)</h4>
+          <ul>
+            <li>Checkbox select on cards</li>
+            <li>Bulk toggle stock</li>
+            <li>Bulk archive</li>
+            <li>Bulk category assign</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page page-break">
+
+  <!-- PAGE 5: ADD/EDIT PRODUCT -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Add / Edit Product</div>
+        <div class="page-route">/products/new &nbsp;·&nbsp; /products/[id]</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>Full-page form replacing the 4-step WhatsApp conversation. Two-column layout: left column has the image dropzone and preview; right column has all text fields. Variants are managed in a simple table beneath the main fields. No pagination — everything on one scrollable page.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Left — Image</h4>
+          <ul>
+            <li>Large drag-and-drop dropzone</li>
+            <li>Click to open file picker</li>
+            <li>Image preview on upload</li>
+            <li>Remove image link</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Right — Fields</h4>
+          <ul>
+            <li>Name (text, 2–50 chars)</li>
+            <li>Price (number, currency prefix)</li>
+            <li>Category (select + create new inline)</li>
+            <li>Description (textarea, 500 char limit)</li>
+            <li>In-stock toggle</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Variants Section</h4>
+          <ul>
+            <li>Expandable table (hidden by default)</li>
+            <li>Columns: Size, Color, SKU, Price, In-stock, Delete</li>
+            <li>"+ Add Variant" row</li>
+            <li>Inline editing in cells</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Action Bar (sticky bottom)</h4>
+          <ul>
+            <li>"Save Draft" btn-outline</li>
+            <li>"Publish" btn-lime</li>
+            <li>"Archive" (if editing existing)</li>
+            <li>Back link (top left)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: SERVICES -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Services</div>
+        <div class="page-route">/services</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>Service catalog for merchants with services_enabled = true. Shows all services as cards with active/hidden toggle. Pending booking requests appear as an alert strip at the top. Non-enabled merchants see a locked state with an "Apply to offer services" CTA.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Service Card</h4>
+          <ul>
+            <li>Service image (or placeholder icon)</li>
+            <li>Name + duration badge (e.g. "60 min")</li>
+            <li>Price</li>
+            <li>Upcoming confirmed bookings count</li>
+            <li>Visible / Hidden toggle</li>
+            <li>Edit / Delete actions</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Pending Requests Alert</h4>
+          <ul>
+            <li>Lime banner: "3 booking requests need your response"</li>
+            <li>Quick-view inline or link to /bookings</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Add Service Flow (modal)</h4>
+          <ul>
+            <li>Step 1: Name</li>
+            <li>Step 2: Price</li>
+            <li>Step 3: Duration (preset buttons)</li>
+            <li>Step 4: Image upload</li>
+            <li>Publish to activate</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Locked State</h4>
+          <ul>
+            <li>Blurred card placeholders</li>
+            <li>"Services not enabled" overlay</li>
+            <li>"Apply to offer services" btn-lime</li>
+            <li>Application form: category + description</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 7: BOOKINGS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Bookings</div>
+        <div class="page-route">/bookings</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>The merchant's calendar view — the most significant upgrade from the WhatsApp text diary. Week view shows confirmed bookings as lime blocks on a time grid. Pending requests appear in a side panel. Accept/decline actions send WhatsApp notifications to the customer automatically.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Calendar Header</h4>
+          <ul>
+            <li>Week nav (prev / next / today)</li>
+            <li>Day headers (Mon–Sun)</li>
+            <li>Current day highlighted</li>
+            <li>Toggle: Week / List view</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Time Grid</h4>
+          <ul>
+            <li>08:00–20:00 time slots (30-min rows)</li>
+            <li>Confirmed bookings: lime blocks</li>
+            <li>Pending: lime-muted / dashed border</li>
+            <li>Clash warning: red border</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Right Panel — Requests</h4>
+          <ul>
+            <li>Pending requests list (oldest first)</li>
+            <li>Customer name, service, date/time</li>
+            <li>Note if provided</li>
+            <li>Accept btn-lime / Decline btn-outline</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Decline Modal</h4>
+          <ul>
+            <li>Quick pick: "Fully booked" / "Not available"</li>
+            <li>Custom reason text input</li>
+            <li>Customer notified via WhatsApp on confirm</li>
+          </ul>
+        </div>
+      </div>
+      <div class="wireframe">
+        <div class="wf-bar"><div class="wf-dot wf-dot-r"></div><div class="wf-dot wf-dot-y"></div><div class="wf-dot wf-dot-g"></div></div>
+        <div style="padding:16px;">
+          <div class="wf-calendar">
+            <div class="wf-cal-header">
+              <div class="wf-cal-day">MON</div>
+              <div class="wf-cal-day">TUE</div>
+              <div class="wf-cal-day" style="color:var(--black); font-weight:700;">WED</div>
+              <div class="wf-cal-day">THU</div>
+              <div class="wf-cal-day">FRI</div>
+              <div class="wf-cal-day">SAT</div>
+            </div>
+            <div class="wf-cal-slots">
+              <div class="wf-cal-col"><div class="wf-cal-slot"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot"></div><div class="wf-cal-slot"></div></div>
+              <div class="wf-cal-col"><div class="wf-cal-slot booked"></div><div class="wf-cal-slot"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot"></div></div>
+              <div class="wf-cal-col"><div class="wf-cal-slot"></div><div class="wf-cal-slot pending"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot"></div></div>
+              <div class="wf-cal-col"><div class="wf-cal-slot booked"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot"></div><div class="wf-cal-slot"></div></div>
+              <div class="wf-cal-col"><div class="wf-cal-slot"></div><div class="wf-cal-slot"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot pending"></div></div>
+              <div class="wf-cal-col"><div class="wf-cal-slot booked"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot booked"></div><div class="wf-cal-slot"></div></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--mid-gray)"><span style="width:14px;height:14px;border-radius:3px;background:var(--lime);display:inline-block"></span>Confirmed</span>
+            <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--mid-gray)"><span style="width:14px;height:14px;border-radius:3px;background:var(--lime-muted);border:1px dashed #a8d420;display:inline-block"></span>Pending</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page page-break">
+
+  <!-- PAGE 8: ANALYTICS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Analytics</div>
+        <div class="page-route">/analytics</div>
+      </div>
+      <span class="tag new">New — Untapped Data</span>
+    </div>
+    <div class="page-card-body">
+      <p>The most data-rich page in the portal. Surfaces PlatformEvent and SearchQuery data for the first time — merchants have never seen storefront view counts, WA tap rates, or what customers search for. Date range picker (7d / 30d / 90d / all-time) applies globally to all charts.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Summary KPIs (top strip)</h4>
+          <ul>
+            <li>Total Revenue (selected period)</li>
+            <li>Total Orders</li>
+            <li>Avg Order Value</li>
+            <li>Total Customers</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Revenue Chart (full width)</h4>
+          <ul>
+            <li>Area chart, daily data points</li>
+            <li>Lime fill, dark-gray axis labels</li>
+            <li>Period tab: 7d / 30d / 90d / All</li>
+            <li>Hover tooltip: date + revenue</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Top Products (bar chart)</h4>
+          <ul>
+            <li>Horizontal bars, sorted by units sold</li>
+            <li>Product name + image thumbnail</li>
+            <li>Units sold + revenue per product</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Storefront Events (PlatformEvent)</h4>
+          <ul>
+            <li>Product views per item</li>
+            <li>WA click-through rate</li>
+            <li>Cart add events</li>
+            <li>First time ever surfaced to merchants</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Search Queries (SearchQuery table)</h4>
+          <ul>
+            <li>What customers type into storefront search</li>
+            <li>Query, count, results returned</li>
+            <li>Zero-result queries (inventory gaps)</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Order Status Breakdown</h4>
+          <ul>
+            <li>Donut chart: completed vs cancelled</li>
+            <li>Completion rate % highlight</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 9: CUSTOMERS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Customers</div>
+        <div class="page-route">/customers</div>
+      </div>
+      <span class="tag new">New</span>
+    </div>
+    <div class="page-card-body">
+      <p>Full customer roster derived from MerchantCustomer. Merchants have never had visibility into individual customer data — this is the first time they can see who their regulars are, total spend, and last interaction. Clicking a row opens a detail panel with order history.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Toolbar</h4>
+          <ul>
+            <li>Search by name or number</li>
+            <li>Filter: All / Bookmarked / Opted Out</li>
+            <li>Sort: Spend ↓, Last Seen ↓, Orders ↓</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Customer Table</h4>
+          <ul>
+            <li>WA number (masked: +27 *** *** 4567)</li>
+            <li>Display name (if set)</li>
+            <li>Province</li>
+            <li>Order count</li>
+            <li>Total spend (formatted currency)</li>
+            <li>Last seen (relative time)</li>
+            <li>Bookmark star icon</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Detail Panel</h4>
+          <ul>
+            <li>Full WA number</li>
+            <li>Order history list (last 10)</li>
+            <li>Booking history (if applicable)</li>
+            <li>Opt-out status indicator</li>
+            <li>Bookmark toggle</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 10: BROADCAST -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Broadcast</div>
+        <div class="page-route">/broadcast</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>Compose and send a WhatsApp message to all opted-in customers. Replaces the raw text-in-WhatsApp approach with a proper rich-text composer, live recipient count, message preview with opt-out footer, and confirmation step before send.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Composer</h4>
+          <ul>
+            <li>Large textarea (400px min-height)</li>
+            <li>Character count (1024 max)</li>
+            <li>Opt-out footer preview (auto-appended)</li>
+            <li>Recipient count: "Sending to X customers"</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Preview Panel (right)</h4>
+          <ul>
+            <li>WA bubble mockup (wa-bubble class)</li>
+            <li>Live preview as you type</li>
+            <li>Opt-out footer shown in muted text</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Confirm & Send</h4>
+          <ul>
+            <li>"Send to X customers" btn-lime</li>
+            <li>Confirmation modal with final count</li>
+            <li>Progress indicator during send</li>
+            <li>Success: "Sent to X / Y" result</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>History Section (below)</h4>
+          <ul>
+            <li>Past broadcasts from AuditLog</li>
+            <li>Date, message preview, sent count</li>
+            <li>Pagination (5 per page)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page page-break">
+
+  <!-- PAGE 11: SETTINGS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Settings</div>
+        <div class="page-route">/settings</div>
+      </div>
+      <span class="tag port">Port + Extend</span>
+    </div>
+    <div class="page-card-body">
+      <p>Tab-based settings page covering all merchant configuration currently spread across 6+ WhatsApp menus. Four tabs: Profile, Hours, Team, and Store. Each tab is a clean form — no conversation-style flow, just fields, toggles, and file pickers.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Tab: Profile</h4>
+          <ul>
+            <li>Trading name</li>
+            <li>Description / bio (textarea)</li>
+            <li>Logo upload (dropzone)</li>
+            <li>Welcome image upload</li>
+            <li>Address (text + optional map pin)</li>
+            <li>Support number (E.164 input)</li>
+            <li>Welcome message (textarea)</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Tab: Hours</h4>
+          <ul>
+            <li>Mon–Fri: open/close time pickers</li>
+            <li>Saturday: open/close time pickers</li>
+            <li>Sunday: toggle only</li>
+            <li>"Restore standard hours" button</li>
+            <li>Live preview of hours schedule</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Tab: Team</h4>
+          <ul>
+            <li>Current owners table (WA, role, joined date)</li>
+            <li>Pending invites list</li>
+            <li>"Invite by WA number" btn-lime</li>
+            <li>Remove owner (OWNER role only)</li>
+            <li>Role badge: OWNER / ADMIN / STAFF</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Tab: Store</h4>
+          <ul>
+            <li>Handle + admin handle (edit with confirmation)</li>
+            <li>Store category picker (grid of icons)</li>
+            <li>Currency dropdown (ISO codes)</li>
+            <li>Locale dropdown (en-ZA, etc.)</li>
+            <li>Browse visibility toggle</li>
+            <li>Brand name field</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 12: REVIEWS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Reviews</div>
+        <div class="page-route">/reviews</div>
+      </div>
+      <span class="tag port">Port</span>
+    </div>
+    <div class="page-card-body">
+      <p>Customer feedback collected after every completed order (via WhatsApp rating prompt). Read from AuditLog where action = CUSTOMER_FEEDBACK. The WhatsApp bot shows paginated text; the web portal shows a proper review feed with star distribution and average rating.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Rating Overview (top)</h4>
+          <ul>
+            <li>Average stars (Syne 800, large)</li>
+            <li>Star distribution bars (5★ → 1★)</li>
+            <li>Total review count</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Review Feed</h4>
+          <ul>
+            <li>Star rating (⭐ icons)</li>
+            <li>Comment text (if provided)</li>
+            <li>Date (relative + absolute)</li>
+            <li>Paginated, newest first</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 13: ONBOARDING / KYC STATUS -->
+  <div class="page-card">
+    <div class="page-card-header">
+      <div>
+        <div class="page-name">Onboarding / KYC Status</div>
+        <div class="page-route">/onboarding</div>
+      </div>
+      <span class="tag new">New</span>
+    </div>
+    <div class="page-card-body">
+      <p>Shown to merchants with status = ONBOARDING. A guided checklist of steps to get the store live: add products, complete KYC, set trading hours. Pulls from the kyc_online_completed and kyc_submitted_at fields. Disappears once status = ACTIVE.</p>
+      <div class="page-sections">
+        <div class="page-section-block">
+          <h4>Progress Strip</h4>
+          <ul>
+            <li>Horizontal stepper (3–5 steps)</li>
+            <li>Completed: lime checkmark</li>
+            <li>Current: lime border, pulsing dot</li>
+            <li>Remaining: mid-gray</li>
+          </ul>
+        </div>
+        <div class="page-section-block">
+          <h4>Steps</h4>
+          <ul>
+            <li>1. Add your first product</li>
+            <li>2. Set your trading hours</li>
+            <li>3. Complete KYC verification</li>
+            <li>4. Go live</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PART 4 — BUILD PRIORITY
+══════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <div>
+      <div class="section-title">Build <span>Priority</span></div>
+      <p style="margin:8px 0 0; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--mid-gray);">Recommended build sequence for v1. Sequence by operational necessity — what blocks a merchant from using the portal on day one.</p>
+    </div>
+  </div>
+
+  <h2>Phase 1 — Core Loop (Ship First)</h2>
+  <div class="priority-grid">
+    <div class="priority-item"><div class="priority-rank">01</div><div><strong>Login (OTP via WA)</strong><br/>Without auth nothing else works</div></div>
+    <div class="priority-item"><div class="priority-rank">02</div><div><strong>Dashboard Home</strong><br/>KPIs + open/close toggle</div></div>
+    <div class="priority-item"><div class="priority-rank">03</div><div><strong>Orders / Kitchen</strong><br/>Kanban board — highest daily use</div></div>
+    <div class="priority-item"><div class="priority-rank">04</div><div><strong>Products grid + add/edit</strong><br/>Merchants need to manage stock</div></div>
+  </div>
+
+  <h2>Phase 2 — Operations</h2>
+  <div class="priority-grid">
+    <div class="priority-item"><div class="priority-rank">05</div><div><strong>Settings (Profile + Hours)</strong><br/>Store info must be correct</div></div>
+    <div class="priority-item"><div class="priority-rank">06</div><div><strong>Services + Bookings Calendar</strong><br/>Critical for service merchants</div></div>
+    <div class="priority-item"><div class="priority-rank">07</div><div><strong>Broadcast</strong><br/>Re-engagement for all merchants</div></div>
+    <div class="priority-item"><div class="priority-rank">08</div><div><strong>Settings (Team)</strong><br/>Multi-staff stores need roles</div></div>
+  </div>
+
+  <h2>Phase 3 — Insight</h2>
+  <div class="priority-grid">
+    <div class="priority-item"><div class="priority-rank">09</div><div><strong>Analytics</strong><br/>Revenue charts + untapped data</div></div>
+    <div class="priority-item"><div class="priority-rank">10</div><div><strong>Customers</strong><br/>Customer profiles + spend data</div></div>
+    <div class="priority-item"><div class="priority-rank">11</div><div><strong>Reviews</strong><br/>Star ratings from AuditLog</div></div>
+    <div class="priority-item"><div class="priority-rank">12</div><div><strong>Onboarding checklist</strong><br/>New merchant guided flow</div></div>
+  </div>
+
+  <div class="callout-lime" style="margin-top:40px;">
+    <p><strong>Recommended Tech Stack:</strong> Next.js 15 App Router · TypeScript · Tailwind (same globals.css tokens) · Prisma (shared schema — same DB) · Recharts for analytics · next-auth or custom JWT for OTP session · SSE for real-time order stream. The merchant portal talks directly to the existing Supabase database — no new backend needed, only a thin API layer for auth and SSE.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div style="text-align:center; padding:40px 0; font-family:'DM Sans',sans-serif;">
+    <div style="font-family:var(--font-display); font-size:28px; font-weight:800; letter-spacing:-0.02em; margin-bottom:8px;">Omeru Merchant Portal</div>
+    <div style="font-size:13px; color:var(--mid-gray);">Product Plan v1.0 · June 2026 · Internal</div>
+    <div style="margin-top:24px; display:inline-block; padding:6px 20px; border-radius:100px; background:var(--lime); font-size:12px; font-weight:600; letter-spacing:0.05em; font-family:var(--font-display);">13 PAGES · 60+ FEATURES · 3 BUILD PHASES</div>
+  </div>
+</div>
+
+</body>
+</html>
