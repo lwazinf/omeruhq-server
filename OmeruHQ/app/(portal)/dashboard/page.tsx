@@ -54,9 +54,9 @@ export default async function DashboardPage() {
   const isOpen = !merchant?.manual_closed;
 
   return (
-    <div style={{ padding: '32px 36px', maxWidth: 1100 }}>
+    <div className="portal-page" style={{ padding: 'clamp(20px, 3vw, 36px) clamp(16px, 3vw, 36px)', maxWidth: 1100 }}>
       {/* ── Top bar ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 700, letterSpacing: '-0.015em' }}>
             {merchant?.trading_name}
@@ -81,7 +81,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── KPI strip ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
+      <div className="kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
         <KpiCard label="Today Revenue" value={formatZAR(todayRev)} />
         <KpiCard label="Today Orders" value={String(todayOrders)} />
         <KpiCard label="Pending Now" value={String(pendingCount)} featured={pendingCount > 0} />
@@ -89,7 +89,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Revenue summary ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
+      <div className="revenue-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
         <div className="card" style={{ padding: '20px 24px' }}>
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--mid-gray)', marginBottom: 16 }}>Revenue</div>
           <div style={{ display: 'flex', gap: 28 }}>

@@ -16,8 +16,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { overflow-x: hidden; scroll-behavior: auto; }
+html { overflow-x: hidden; scroll-behavior: auto; -webkit-text-size-adjust: 100%; }
 body { font-family: var(--font-body); background: var(--off-white); color: var(--black); overflow-x: hidden; }
+button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
 .display-xl { font-family: var(--font-display); font-size: clamp(52px, 7vw, 108px); font-weight: 800; line-height: 0.92; letter-spacing: -0.03em; }
 .display-lg { font-family: var(--font-display); font-size: clamp(36px, 4.5vw, 72px); font-weight: 700; line-height: 1.0; letter-spacing: -0.025em; }
@@ -150,4 +151,28 @@ section, footer { width: 100%; }
   .testimonials-grid { grid-template-columns: 1fr !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
   .faq-layout { grid-template-columns: 1fr !important; }
+}
+
+/* ── Section header alignment on mobile ── */
+@media (max-width: 700px) {
+  .section-header-split {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+  .section-header-split .section-sub {
+    text-align: left !important;
+    align-items: flex-start !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ── Storefront ── */
+@media (max-width: 860px) {
+  .store-sticky-cta { display: flex !important; }
+}
+
+/* ── Smooth momentum scroll on iOS ── */
+@supports (-webkit-overflow-scrolling: touch) {
+  .kanban-outer, .sidebar { -webkit-overflow-scrolling: touch; }
 }

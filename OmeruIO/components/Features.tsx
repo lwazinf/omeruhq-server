@@ -63,7 +63,7 @@ export default function Features() {
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: "url('/bg-tile.jpg')", backgroundSize: '500px 333px', backgroundRepeat: 'repeat', mixBlendMode: 'multiply', opacity: 0.08 }} />
       <GenieReveal>
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div ref={titleRef} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'clamp(36px, 5vw, 56px)', flexWrap: 'wrap', gap: 24 }}>
+        <div ref={titleRef} className="section-header-split" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'clamp(36px, 5vw, 56px)', flexWrap: 'wrap', gap: 24 }}>
           <div>
             <motion.div initial={{ opacity: 0, y: 14 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ marginBottom: 16 }}>
               <span className="pill">{t('pill')}</span>
@@ -74,6 +74,7 @@ export default function Features() {
           </div>
           <motion.p
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.16 }}
+            className="section-sub"
             style={{ fontSize: 15, color: 'var(--mid-gray)', maxWidth: 320, lineHeight: 1.7, fontWeight: 300 }}
           >
             {t('subtext')}

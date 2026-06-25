@@ -52,19 +52,19 @@
     "steps": [
       {
         "title": "Apply for an invite",
-        "body": "Omeru is invite-only. Apply via email or WhatsApp. We review your business and activate your account within 24 hours."
+        "body": "Omeru is invite-only. Click 'Apply as a merchant' on the site. We review your business and activate your account within 24 hours."
       },
       {
-        "title": "Set up your WhatsApp store",
-        "body": "Add products, set prices, configure Stitch instant EFT. Your store lives inside WhatsApp — no app, no website required."
+        "title": "Set up your Omeru HQ store",
+        "body": "Add products, set prices, and connect Stitch instant EFT — all from your Omeru HQ dashboard. Manage your entire store from any browser, on any device."
       },
       {
         "title": "Share your store link",
-        "body": "Send customers a WhatsApp link. They browse, order, and pay without leaving the chat. You get instant order alerts."
+        "body": "Send customers a WhatsApp link. They browse, order, and pay without leaving the chat. You get instant alerts for every new order."
       },
       {
         "title": "Get paid, grow",
-        "body": "Stitch processes payments directly to your bank. Broadcast promotions, view analytics, and scale across multiple locations."
+        "body": "Stitch settles payments directly to your bank. Manage orders and analytics on Omeru HQ. Receive WhatsApp alerts for every order and payment — then scale to multiple locations."
       }
     ]
   },
@@ -100,7 +100,7 @@
       },
       {
         "title": "Instant order alerts",
-        "body": "Notified the moment an order is placed. Accept, reject, or update customers — all from your phone, in real time.",
+        "body": "Notified the moment an order is placed — via WhatsApp and your Omeru HQ dashboard. Accept, reject, or update customers from your phone or computer, in real time.",
         "badge": "All tiers"
       }
     ]
@@ -171,7 +171,7 @@
         "features": [
           "Up to 5 products",
           "5% commission per sale",
-          "WhatsApp store + kitchen sink",
+          "Omeru HQ merchant dashboard",
           "Real-time order alerts",
           "Basic analytics",
           "Email support"
@@ -216,7 +216,7 @@
     "items": [
       {
         "q": "Is Omeru really invite-only?",
-        "a": "Yes — and we mean it warmly, not as a barrier. We onboard merchants one at a time so we can actually help you get set up properly, answer questions, and make sure your first sale goes smoothly. Apply via email or WhatsApp and you'll hear back from us within 24 hours."
+        "a": "Yes — and we mean it warmly, not as a barrier. We onboard merchants one at a time so we can actually help you get set up properly, answer questions, and make sure your first sale goes smoothly. Click 'Apply as a merchant' on this site and you'll hear back from us within 24 hours."
       },
       {
         "q": "Do my customers need to download anything?",
@@ -236,7 +236,7 @@
       },
       {
         "q": "What is the Services module on Pro?",
-        "a": "It's for merchants who sell time, not just things — think hair appointments, home deliveries, consulting sessions, repairs. The Services module lets you take bookings and payments for these alongside your physical products, all inside the same WhatsApp store."
+        "a": "It's for merchants who sell time, not just things — think hair appointments, home deliveries, consulting sessions, repairs. The Services module lets you take bookings and payments for these alongside your physical products, all managed from your Omeru HQ dashboard."
       },
       {
         "q": "What does \"via Omeru\" mean to my customers?",

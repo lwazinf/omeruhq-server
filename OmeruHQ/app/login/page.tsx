@@ -107,7 +107,7 @@ export default function LoginPage() {
       </div>
 
       {/* ── Right: form panel ── */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 52px', position: 'relative' }}>
+      <div className="login-form-panel" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(32px, 6vw, 52px) clamp(20px, 6vw, 52px)', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 24, right: 28 }}>
           <LanguageSwitcher />
         </div>
@@ -177,7 +177,10 @@ export default function LoginPage() {
       </div>
 
       <style>{`
-        @media (max-width: 768px) { .login-left { display: none !important; } }
+        @media (max-width: 768px) {
+          .login-left { display: none !important; }
+          .login-form-panel { padding: 32px 24px !important; align-items: flex-start !important; padding-top: 60px !important; }
+        }
       `}</style>
     </div>
   );

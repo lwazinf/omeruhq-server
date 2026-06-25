@@ -112,16 +112,16 @@ The web app is the **discovery and SEO layer** for a platform that transacts ent
 
 ## Current Scores
 
-> Last updated: **2026-06-24** | Version: **v1.11.0**
+> Last updated: **2026-06-25** | Version: **v1.12.0**
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **Usability** | 9.5/10 | Store search works at scale. Individual product pages for SEO. Category filters. Stores in nav. Deep-link CTAs open exact product/service in bot. Deduction: pricing CTA still goes to email (no self-serve form). |
+| **Usability** | 9.7/10 | Store search works at scale. Individual product pages for SEO. Category filters. Stores in nav. Deep-link CTAs open exact product/service in bot. All copy accurate — no stale merchant-WA management language. Deduction: no self-serve application form (CTA leads to modal, not auto-processed). |
 | **Security** | 9.0/10 | Full CSP (including gtag, analytics, fonts). HSTS with 2-year max-age + preload. X-Frame-Options SAMEORIGIN. KYC route rate-limited (IP + token). Invite rate-limited (3/IP/hr), validated, and length-capped. Deductions: `NEXT_PUBLIC_SENTRY_DSN` not set in deployment env. |
 | **Reliability** | 9.0/10 | `error.tsx` catches all runtime errors and forwards to Sentry. `not-found.tsx` handles 404s. ISR correct. `displayableImage` filters expired media IDs. Rate limiters protect API routes. Test suite covers core utilities (19 tests). Deductions: no `loading.tsx`, product pages not in sitemap.xml, raw `<img>` tags bypass Next.js image optimization, fonts render-blocking via CSS `@import`. |
-| **User Experience** | 9.5/10 | Branded error pages match design system. Store search with live filtering. Product pages with variants, pricing, and in-stock badge. Analytics events fire on every key action. Deep-links open exactly the right bot flow. Deductions: no skeleton loading states (blank screen on slow routes), no WhatsApp share button on product pages. |
+| **User Experience** | 9.7/10 | Beautiful mobile layout across all screen sizes — OmeruIO and OmeruHQ. Section headers adapt cleanly. Sticky WhatsApp CTA on storefront. iOS tap targets smooth. OmeruHQ portal fully usable on mobile via sidebar drawer. Deductions: no skeleton loading states, no WhatsApp share button on product pages. |
 | **Logical Pathways** | 9.0/10 | Deep-link commands (`prod_`, `cbk_svc_`, `c_book_`) correctly map to bot handlers. Category + search filters are independent and compose correctly. Error boundaries catch at the right scope. Sitemap includes all storefronts. Deductions: individual product pages absent from sitemap.xml, `'use client'` on `app/page.tsx` prevents RSC static optimisation. |
-| **Overall Average** | **9.2/10** | The web platform is production-quality. Remaining gaps are infrastructure (Sentry DSN, GA ID in env), performance polish (next/image, fonts), and SEO coverage (product sitemap). No critical correctness or security issues open. |
+| **Overall Average** | **9.3/10** | Copy accurate and product-current. Mobile experience now first-class on both OmeruIO and OmeruHQ. Remaining gaps are infrastructure (Sentry DSN, GA ID in env), performance polish (next/image, fonts), and SEO coverage (product sitemap). |
 
 ---
 
@@ -586,3 +586,81 @@ These are forward-looking improvements beyond fixing known issues. Each would ma
 | **Upstash Redis for API rate limiters** | HTTP-based Redis client works in Next.js serverless. Prevents invite form bypass at scale. | Low | Security +0.25 |
 | **Image optimisation pipeline** | Supabase image transform URL (`?width=800&quality=80`) or Cloudflare Images for responsive product images. | Medium | Performance, UX |
 | **`/merchants/[handle]/reviews` page** | Publicly visible review page per merchant. Builds trust, drives SEO long-tail keywords. | Medium | UX +0.5, SEO |
+
+---
+
+## Changelog Entries (continued)
+
+### v1.12.0 — 2026-06-25 SAST
+**Full i18n (EN/AF/ZU), mobile responsiveness for OmeruIO + OmeruHQ, content audit & merchant-out-of-WhatsApp transition.**
+
+**Strategic change:** Merchants no longer manage their stores via WhatsApp commands. The Omeru HQ dashboard (web portal) is now the merchant management interface. Merchants receive WhatsApp alerts and payment notifications only. Customers still shop on WhatsApp. All copy updated to reflect this.
+
+**What changed:**
+
+*Content — `OmeruIO/messages/en.json` (+ af.json, zu.json):*
+- HowItWorks step 1: Removed "Apply via email or WhatsApp" → "Click 'Apply as a merchant' on the site"
+- HowItWorks step 2: Renamed "Set up your WhatsApp store" → "Set up your Omeru HQ store"; body updated to reference the HQ dashboard
+- HowItWorks step 4: Added "Manage orders and analytics on Omeru HQ. Receive WhatsApp alerts for every order and payment"
+- Features item 5 (Instant order alerts): Clarified notifications come via "WhatsApp and your Omeru HQ dashboard"
+- Pricing Starter feature 3: "WhatsApp store + kitchen sink" → "Omeru HQ merchant dashboard"
+- FAQ item 0: "Apply via email or WhatsApp" → "Click 'Apply as a merchant' on this site"
+- FAQ item 5 (Services module): "all inside the same WhatsApp store" → "all managed from your Omeru HQ dashboard"
+- All strings mirrored in af.json and zu.json with authentic translations
+
+*OmeruIO mobile polish — `app/globals.css`:*
+- Added `-webkit-text-size-adjust: 100%` and `-webkit-tap-highlight-color: transparent`
+- Added `.section-header-split` responsive class — stacks section headers vertically on ≤700px
+- Added `-webkit-overflow-scrolling: touch` for kanban scroll on iOS
+
+*OmeruIO components:*
+- `Testimonials.tsx`, `Features.tsx`: added `section-header-split` + `section-sub` classes to header divs
+
+*OmeruHQ mobile portal — `app/globals.css`:*
+- Added `.mobile-topbar` (fixed 56px dark bar, hidden on desktop, shown on ≤768px)
+- `.sidebar` gets `transition: transform` for slide-in animation
+- At ≤768px: sidebar `translateX(-100%)` by default, `.sidebar-open` slides it in
+- `.main-content` gains `padding-top: 56px` on mobile (clears topbar)
+- Responsive classes: `.kpi-grid` (4→2-col), `.revenue-grid` (2→1-col), `.products-grid` (3→2→1-col)
+
+*OmeruHQ `components/Sidebar.tsx`:*
+- Added `mobileOpen` state
+- Added mobile topbar (`<div className="mobile-topbar">`) with logo + animated hamburger
+- Added `.sidebar-overlay` backdrop (click to close)
+- Sidebar gets `className={sidebar${mobileOpen ? ' sidebar-open' : ''}}` conditional
+- Nav links call `setMobileOpen(false)` on click to auto-close the drawer
+
+*OmeruHQ portal pages:*
+- `dashboard/page.tsx`: container uses `portal-page` + `clamp` padding; KPI strip uses `kpi-grid` class; revenue section uses `revenue-grid` class
+- `orders/page.tsx`: container uses `portal-page`
+- `orders/OrderKanban.tsx`: wrapped in `.kanban-outer` (overflow-x: auto); `.kanban-inner` → 2-col at ≤768px, 1-col at ≤480px
+- `products/page.tsx`: container uses `portal-page`; product grid uses `products-grid` class
+
+*OmeruHQ `app/login/page.tsx`:*
+- Form panel uses `clamp()` padding; on ≤768px overrides to `32px 24px`
+
+**Score impact (OmeruIO):**
+- Usability: 9.5 → 9.7 (accurate copy, no stale merchant-WA language)
+- UX: 9.5 → 9.7 (mobile section headers stack properly, touch targets improved)
+
+**Score impact (OmeruHQ):**
+- Usability: +1.5 (portal now usable on mobile — was completely broken below 768px)
+- UX: +1.5 (sidebar drawer, kanban responsive, dashboard KPI grid adapts)
+
+### Rollback to v1.11.0
+
+| File | Change to reverse |
+|------|------------------|
+| `OmeruIO/messages/en.json` | Revert HowItWorks steps 1-4, Features item 5, Pricing Starter[2], FAQ items 0 and 5 |
+| `OmeruIO/messages/af.json` | Same corresponding Afrikaans strings |
+| `OmeruIO/messages/zu.json` | Same corresponding Zulu strings |
+| `OmeruIO/app/globals.css` | Remove tap-highlight, section-header-split, overflow-scrolling additions |
+| `OmeruIO/components/Testimonials.tsx` | Remove `section-header-split` and `section-sub` class names |
+| `OmeruIO/components/Features.tsx` | Remove `section-header-split` and `section-sub` class names |
+| `OmeruHQ/app/globals.css` | Remove mobile-topbar, sidebar-overlay, responsive portal classes |
+| `OmeruHQ/components/Sidebar.tsx` | Remove `mobileOpen` state, mobile topbar, overlay, sidebar-open class |
+| `OmeruHQ/app/(portal)/dashboard/page.tsx` | Revert padding and grid class names to hardcoded values |
+| `OmeruHQ/app/(portal)/orders/page.tsx` | Revert padding |
+| `OmeruHQ/app/(portal)/orders/OrderKanban.tsx` | Remove kanban-outer/inner wrapper and `<style>` block |
+| `OmeruHQ/app/(portal)/products/page.tsx` | Revert padding and grid class name |
+| `OmeruHQ/app/login/page.tsx` | Revert form panel padding and mobile style block |

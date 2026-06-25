@@ -36,7 +36,8 @@ export default function OrderKanban({ orders }: { orders: Order[] }) {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, alignItems: 'start' }}>
+    <div className="kanban-outer">
+      <div className="kanban-inner" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, alignItems: 'start' }}>
       {COLS.map(col => {
         const colOrders = orders.filter(o => o.status === col.key);
         return (
@@ -102,6 +103,17 @@ export default function OrderKanban({ orders }: { orders: Order[] }) {
           </div>
         );
       })}
+      </div>
+      <style>{`
+        .kanban-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .kanban-inner { min-width: 600px; }
+        @media (max-width: 768px) {
+          .kanban-inner { grid-template-columns: repeat(2, 1fr) !important; min-width: 0; }
+        }
+        @media (max-width: 480px) {
+          .kanban-inner { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

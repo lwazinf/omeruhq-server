@@ -52,19 +52,19 @@
     "steps": [
       {
         "title": "Faka isicelo sesimemo",
-        "body": "I-Omeru inikwa ngesimemo kuphela. Faka isicelo nge-imeyili noma ku-WhatsApp. Sibuyekeza ibhizinisi lakho futhi sikhubaze akhawunti yakho ngaphakathi kwamahora angu-24."
+        "body": "I-Omeru inikwa ngesimemo kuphela. Cindezela 'Faka isicelo njengomurekisi' kuwebhusayithi. Sibuyekeza ibhizinisi lakho futhi sivule akhawunti yakho ngaphakathi kwamahora angu-24."
       },
       {
-        "title": "Misa isitolo sakho se-WhatsApp",
-        "body": "Engeza imikhiqizo, misa amanani, lungisa i-Stitch ye-EFT esheshayo. Isitolo sakho sihlala ngaphakathi kwe-WhatsApp — akudingeki i-app noma iwebhusayithi."
+        "title": "Misa isitolo sakho ku-Omeru HQ",
+        "body": "Engeza imikhiqizo, misa amanani, nxhuma i-Stitch ye-EFT esheshayo — konke kusuka ku-dashboard yakho ye-Omeru HQ. Phatha isitolo sakho sonke kusuka kunoma iyiphi iblauza, kunoma iyiphi idivayisi."
       },
       {
         "title": "Yabelana ngesixhumanisi sesitolo sakho",
-        "body": "Thumela abathengi isixhumanisi se-WhatsApp. Babuka, babheke futhi bakhokhe bengaphumi engxoxweni. Uthole izaziso zemiyalelo ngokushesha."
+        "body": "Thumela abathengi isixhumanisi se-WhatsApp. Babuka, babheke futhi bakhokhe bengaphumi engxoxweni. Uthole izaziso ngokushesha kumayoda amasha."
       },
       {
         "title": "Tholakala ukukhokhelwa, ukukhula",
-        "body": "I-Stitch ilungisa izinkokhelo ngqo ebhange lakho. Thumela ama-promo, buka ukuhlaziywa, futhi wande phakathi kwezindawo eziningi."
+        "body": "I-Stitch ilungisa izinkokhelo ngqo ebhange lakho. Phatha imiyalelo nokucwaninga ku-Omeru HQ. Thola izaziso ze-WhatsApp kumayoda nazo zonke izinkokhelo — bese anda ezindaweni eziningi."
       }
     ]
   },
@@ -100,7 +100,7 @@
       },
       {
         "title": "Izaziso zemiyalelo ngokushesha",
-        "body": "Waziwa ngalo mzuzwana ioda linikelwa. Yamukela, nqaba, noma wazise abathengi — konke kusuka kumakhalekhukhwini wakho, ngesikhathi sangempela.",
+        "body": "Waziwa ngalo mzuzwana ioda linikelwa — nge-WhatsApp nakku-dashboard yakho ye-Omeru HQ. Yamukela, nqaba, noma wazise abathengi kusuka kumakhalekhukhwini wakho noma kumkhompyutha, ngesikhathi sangempela.",
         "badge": "Wonke amazinga"
       }
     ]
@@ -171,7 +171,7 @@
         "features": [
           "Kuze kufike imikhiqizo emi-5",
           "Ikhomishini engu-5% ngokuthengiswa",
-          "Isitolo se-WhatsApp + konke okuqukethiwe",
+          "I-dashboard ye-Omeru HQ yabarekisi",
           "Izaziso zemiyalelo ze-isikhathi sangempela",
           "Ukuhlaziywa kwesingeniso",
           "Ukusekwa nge-imeyili"
@@ -216,7 +216,7 @@
     "items": [
       {
         "q": "I-Omeru iyisimemo ngempela?",
-        "a": "Yebo — futhi sikuqonda ngokubuthaka, hhayi njengesithiyo. Sifaka abarekisi muntu ngamunye ukuze sikusize ngempela ukuze umise ngendlela efanele, uphendule imibuzo, futhi uqiniseke ukuthi ukuthengiswa kwakho kokuqala kuhamba kahle. Faka isicelo nge-imeyili noma ku-WhatsApp futhi uzozwa kithi ngaphakathi kwamahora angu-24."
+        "a": "Yebo — futhi sikuqonda ngokubuthaka, hhayi njengesithiyo. Sifaka abarekisi muntu ngamunye ukuze sikusize ngempela ukuze umise ngendlela efanele, uphendule imibuzo, futhi uqiniseke ukuthi ukuthengiswa kwakho kokuqala kuhamba kahle. Cindezela 'Faka isicelo njengomurekisi' kuwebhusayithi futhi uzozwa kithi ngaphakathi kwamahora angu-24."
       },
       {
         "q": "Abathengi bami badinga ukudownloada noma yini?",
@@ -236,7 +236,7 @@
       },
       {
         "q": "Yini uhlelo lwezinsizakalo ku-Pro?",
-        "a": "Lwaklanywa kubarekisi abathengisa isikhathi, hhayi izinto nje — cabanga izinto ezifana nezinqumo zokunweba ikhanda, ukuletha ekhaya, izikhumbuzi zokubonisana, ukulungisa. Uhlelo lwezinsizakalo luvumela ukubheka nokukhokhela kwale into ngapha kwezikhiqizo zakho zomzimba, konke ngaphakathi kwesitolo esifanayo se-WhatsApp."
+        "a": "Lwaklanywa kubarekisi abathengisa isikhathi, hhayi izinto nje — cabanga izinto ezifana nezinqumo zokunweba ikhanda, ukuletha ekhaya, izikhumbuzi zokubonisana, ukulungisa. Uhlelo lwezinsizakalo luvumela ukubheka nokukhokhela kwale into ngapha kwezikhiqizo zakho zomzimba, konke kuphathwa kusuka ku-dashboard yakho ye-Omeru HQ."
       },
       {
         "q": "Kuchaza ukuthini 'nge-Omeru' kubathengi bami?",

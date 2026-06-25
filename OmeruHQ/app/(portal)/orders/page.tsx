@@ -15,7 +15,7 @@ export default async function OrdersPage() {
   });
 
   return (
-    <div style={{ padding: '32px 36px' }}>
+    <div className="portal-page" style={{ padding: 'clamp(20px, 3vw, 36px) clamp(16px, 3vw, 36px)' }}>
       <div style={{ marginBottom: 28 }}>
         <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 700, letterSpacing: '-0.015em' }}>Orders</div>
         <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--mid-gray)', marginTop: 2 }}>

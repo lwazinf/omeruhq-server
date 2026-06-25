@@ -49,7 +49,7 @@ export default function Testimonials() {
   return (
     <section id="merchants" style={{ padding: 'clamp(80px, 10vw, 120px) 0', background: 'var(--off-white)' }}>
       <div className="container">
-        <div ref={titleRef} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'clamp(36px, 5vw, 56px)', flexWrap: 'wrap', gap: 24 }}>
+        <div ref={titleRef} className="section-header-split" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'clamp(36px, 5vw, 56px)', flexWrap: 'wrap', gap: 24 }}>
           <div>
             <motion.div initial={{ opacity: 0, y: 14 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ marginBottom: 16 }}>
               <span className="pill">{t('pill')}</span>
@@ -61,6 +61,7 @@ export default function Testimonials() {
           </div>
           <motion.div
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
+            className="section-sub"
             style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-end' }}
           >
             <p style={{ fontSize: 15, color: 'var(--mid-gray)', maxWidth: 300, lineHeight: 1.65, fontWeight: 300, textAlign: 'right' }}>

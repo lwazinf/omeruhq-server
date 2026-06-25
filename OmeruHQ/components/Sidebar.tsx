@@ -18,6 +18,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
   const pathname = usePathname();
   const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const NAV = [
     { label: t('dashboard'), href: '/dashboard', icon: HomeIcon,   phase: 1 },
@@ -31,11 +32,11 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
     { label: t('settings'),  href: '/settings',  icon: GearIcon,   phase: 2 },
   ];
 
-  // Lock body scroll when modal is open
+  // Lock body scroll when modal or mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = previewOpen ? 'hidden' : '';
+    document.body.style.overflow = (previewOpen || mobileOpen) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [previewOpen]);
+  }, [previewOpen, mobileOpen]);
 
   async function logout() {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -45,8 +46,43 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
   const previewUrl = `https://hq.omeru.io/@${merchantHandle}?preview=1`;
   const liveUrl = `https://omeru.io/@${merchantHandle}`;
 
+  function closeMobileMenu() { setMobileOpen(false); }
+
   return (
     <>
+    {/* ── Mobile top bar ── */}
+    <div className="mobile-topbar">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ width: 26, height: 26, background: 'rgba(200,241,53,0.12)', border: '1px solid rgba(200,241,53,0.2)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="12" height="12" viewBox="0 0 18 18" fill="none">
+            <path d="M3 9C3 5.686 5.686 3 9 3s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="var(--lime)"/>
+            <path d="M9 6v6M6 9h6" stroke="rgba(0,0,0,0.5)" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+        </div>
+        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'white', letterSpacing: '-0.01em' }}>Omeru HQ</span>
+      </div>
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        aria-label="Toggle menu"
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'flex-end' }}
+      >
+        {[0, 1, 2].map(i => (
+          <span key={i} style={{
+            height: 1.5, borderRadius: 2, background: 'rgba(255,255,255,0.7)', display: 'block',
+            width: i === 1 ? 16 : 22,
+            transform: mobileOpen ? (i === 0 ? 'rotate(45deg) translate(4.5px, 4.5px)' : i === 2 ? 'rotate(-45deg) translate(4.5px, -4.5px)' : 'scaleX(0)') : 'none',
+            opacity: mobileOpen && i === 1 ? 0 : 1,
+            transition: 'transform 0.22s ease, opacity 0.15s ease',
+          }} />
+        ))}
+      </button>
+    </div>
+
+    {/* ── Mobile overlay backdrop ── */}
+    {mobileOpen && (
+      <div className="sidebar-overlay" onClick={closeMobileMenu} style={{ cursor: 'default' }} />
+    )}
+
     {/* ── Preview modal ── */}
     {previewOpen && (
       <div
@@ -125,7 +161,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
       </div>
     )}
 
-    <aside className="sidebar">
+    <aside className={`sidebar${mobileOpen ? ' sidebar-open' : ''}`}>
       {/* Logo */}
       <div style={{ padding: '28px 20px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
@@ -197,7 +233,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
             <Link
               key={href}
               href={disabled ? '#' : href}
-              onClick={disabled ? e => e.preventDefault() : undefined}
+              onClick={disabled ? e => e.preventDefault() : () => setMobileOpen(false)}
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '9px 20px', margin: '1px 8px', borderRadius: 10,

@@ -98,12 +98,65 @@ body { font-family: var(--font-body); background: var(--off-white); color: var(-
   display: flex; flex-direction: column;
   position: fixed; top: 0; left: 0; bottom: 0;
   z-index: 100; overflow-y: auto;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .main-content {
   margin-left: var(--sidebar-width);
   flex: 1; min-height: 100vh;
   background: var(--off-white);
+}
+
+/* ── Mobile topbar ── */
+.mobile-topbar {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 101;
+  height: 56px; background: var(--dark-gray);
+  align-items: center; justify-content: space-between;
+  padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+/* ── Sidebar overlay (mobile) ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 99;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+/* ── Mobile portal responsive ── */
+@media (max-width: 768px) {
+  .mobile-topbar { display: flex; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    top: 0;
+  }
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+    box-shadow: 20px 0 60px rgba(0,0,0,0.4);
+  }
+
+  .sidebar-overlay { display: block; }
+
+  .main-content {
+    margin-left: 0;
+    padding-top: 56px;
+  }
+
+  /* Portal pages responsive */
+  .portal-page { padding: 20px 16px !important; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .revenue-grid { grid-template-columns: 1fr !important; }
+  .products-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .kanban-grid { grid-template-columns: 1fr !important; overflow-x: auto; }
+  .kanban-scroll { display: flex; gap: 14px; min-width: 0; overflow-x: auto; padding-bottom: 8px; }
+}
+
+@media (max-width: 480px) {
+  .products-grid { grid-template-columns: 1fr !important; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
 /* ── Noise texture ── */
