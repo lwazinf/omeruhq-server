@@ -4,6 +4,8 @@ import { db } from '@/lib/db';
 import { isRateLimited, clientIp } from '@/lib/rateLimit';
 
 const BUCKET = process.env.SUPABASE_BUCKET || 'omeru-media';
+const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
+const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
 
 const getSupabase = () => {
   const url = process.env.SUPABASE_URL;
@@ -111,6 +113,12 @@ export async function POST(
 
     if (!file || !field)
       return NextResponse.json({ error: 'missing_file_or_field' }, { status: 400 });
+
+    if (file.size > MAX_FILE_BYTES)
+      return NextResponse.json({ error: 'file_too_large' }, { status: 413 });
+
+    if (!ALLOWED_MIME.has(file.type))
+      return NextResponse.json({ error: 'invalid_file_type' }, { status: 415 });
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);

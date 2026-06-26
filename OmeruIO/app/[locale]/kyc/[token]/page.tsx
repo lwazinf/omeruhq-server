@@ -11,7 +11,7 @@ interface Props {
 export default async function KycPage({ params }: Props) {
   const { token } = await params;
 
-  const merchant = await (db as any).merchant.findUnique({
+  const merchant = await db.merchant.findUnique({
     where: { kyc_token: token },
     select: {
       id: true,

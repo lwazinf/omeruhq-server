@@ -3,8 +3,8 @@ import { db } from '@/lib/db';
 import { signSession, setSessionCookie } from '@/lib/auth';
 
 // Shared with send-otp — same module in same Next.js process
-declare global { var __otpStore: Map<string, { code: string; expires: number }> | undefined }
-const otpStore: Map<string, { code: string; expires: number }> =
+declare global { var __otpStore: Map<string, { code: string; expires: number; attempts: number }> | undefined }
+const otpStore: Map<string, { code: string; expires: number; attempts: number }> =
   global.__otpStore ?? (global.__otpStore = new Map());
 
 export async function POST(req: NextRequest) {
@@ -18,6 +18,11 @@ export async function POST(req: NextRequest) {
     const entry = otpStore.get(wa_id);
     if (!entry || entry.expires < Date.now()) {
       return NextResponse.json({ error: 'Code expired. Request a new one.' }, { status: 401 });
+    }
+    entry.attempts = (entry.attempts ?? 0) + 1;
+    if (entry.attempts > 5) {
+      otpStore.delete(wa_id);
+      return NextResponse.json({ error: 'Too many attempts. Request a new code.' }, { status: 429 });
     }
     if (entry.code !== code) {
       return NextResponse.json({ error: 'Incorrect code. Try again.' }, { status: 401 });

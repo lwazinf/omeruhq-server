@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { db } from '@/lib/db';
 
 // In-memory IP rate limiter: max 3 submissions per IP per hour
@@ -55,27 +56,27 @@ export async function POST(req: NextRequest) {
     }
 
     // Length-cap every field before it touches the DB
-    await db.$executeRawUnsafe(
-      `INSERT INTO invite_applications
+    await db.$executeRaw(Prisma.sql`
+      INSERT INTO invite_applications
         (business_name, registration_number, sells_type, category, employees, province,
          social_platforms, social_following, monthly_orders, heard_from,
          name, email, whatsapp, notes)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
-      cap(business_name,        200),
-      cap(registration_number,   50),
-      cap(sells_type,           100),
-      cap(category,             100),
-      cap(employees,             50),
-      cap(province,             100),
-      cap(social_platforms,     200),
-      cap(social_following,      50),
-      cap(monthly_orders,        50),
-      cap(heard_from,           200),
-      cap(name,                 150),
-      cap(email,                254),
-      cap(whatsapp,              30),
-      cap(notes,               2000),
-    );
+       VALUES (
+         ${cap(business_name,        200)},
+         ${cap(registration_number,   50)},
+         ${cap(sells_type,           100)},
+         ${cap(category,             100)},
+         ${cap(employees,             50)},
+         ${cap(province,             100)},
+         ${cap(social_platforms,     200)},
+         ${cap(social_following,      50)},
+         ${cap(monthly_orders,        50)},
+         ${cap(heard_from,           200)},
+         ${cap(name,                 150)},
+         ${cap(email,                254)},
+         ${cap(whatsapp,              30)},
+         ${cap(notes,               2000)}
+       )`);
 
     return NextResponse.json({ ok: true });
   } catch (err) {

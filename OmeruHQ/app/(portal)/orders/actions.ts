@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { OrderStatus } from '@prisma/client';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
 import { sendWhatsAppText } from '@/lib/whatsapp';
@@ -21,7 +22,7 @@ export async function advanceOrderAction(formData: FormData) {
   const order = await db.order.findUnique({ where: { id: order_id } });
   if (!order || order.merchant_id !== merchant.id) return;
 
-  await db.order.update({ where: { id: order_id }, data: { status: next_status as any } });
+  await db.order.update({ where: { id: order_id }, data: { status: next_status as OrderStatus } });
 
   // Notify customer
   if (next_status === 'READY_FOR_PICKUP') {

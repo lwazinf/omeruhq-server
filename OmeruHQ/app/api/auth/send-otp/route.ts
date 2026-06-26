@@ -3,34 +3,42 @@ import { db } from '@/lib/db';
 import { signSession, setSessionCookie } from '@/lib/auth';
 import { sendWhatsAppText } from '@/lib/whatsapp';
 
-declare const global: { __otpStore?: Map<string, { code: string; expires: number }> };
+declare const global: {
+  __otpStore?: Map<string, { code: string; expires: number; attempts: number }>;
+  __otpRateLimit?: Map<string, { count: number; resetAt: number }>;
+};
 if (!global.__otpStore) global.__otpStore = new Map();
+if (!global.__otpRateLimit) global.__otpRateLimit = new Map();
 const otpStore = global.__otpStore;
+const otpRateLimit = global.__otpRateLimit;
+
+// Max 3 OTP requests per number per 10 minutes
+function isOtpRateLimited(wa_id: string): boolean {
+  const now = Date.now();
+  const entry = otpRateLimit.get(wa_id);
+  if (!entry || entry.resetAt <= now) {
+    otpRateLimit.set(wa_id, { count: 1, resetAt: now + 10 * 60 * 1000 });
+    return false;
+  }
+  if (entry.count >= 3) return true;
+  entry.count++;
+  return false;
+}
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-const DEV_KEYWORD = 'stitchmoney';
-
 export async function POST(req: NextRequest) {
   try {
     const { wa_id } = await req.json() as { wa_id: string };
 
-    // Dev bypass: type "stitchmoney" to skip OTP and log in as the StitchMoney merchant
-    if (wa_id?.toLowerCase().replace(/^\+/, '') === DEV_KEYWORD) {
-      const merchant = await db.merchant.findFirst({
-        where: { OR: [{ handle: { contains: 'stitch', mode: 'insensitive' } }, { trading_name: { contains: 'stitch', mode: 'insensitive' } }] },
-        select: { id: true, trading_name: true, wa_id: true },
-      });
-      if (!merchant) return NextResponse.json({ error: 'StitchMoney merchant not found in DB' }, { status: 404 });
-      const token = await signSession({ wa_id: merchant.wa_id, merchant_id: merchant.id, merchant_name: merchant.trading_name, role: 'OWNER' });
-      await setSessionCookie(token);
-      return NextResponse.json({ dev_bypass: true });
-    }
-
     if (!wa_id || !/^\+[1-9]\d{7,14}$/.test(wa_id)) {
       return NextResponse.json({ error: 'Enter a valid WhatsApp number (e.g. +27820000000)' }, { status: 400 });
+    }
+
+    if (isOtpRateLimited(wa_id)) {
+      return NextResponse.json({ error: 'Too many requests. Please wait before requesting another code.' }, { status: 429 });
     }
 
     // Verify this is an active merchant
@@ -44,7 +52,7 @@ export async function POST(req: NextRequest) {
     }
 
     const code = generateOtp();
-    otpStore.set(wa_id, { code, expires: Date.now() + 10 * 60 * 1000 });
+    otpStore.set(wa_id, { code, expires: Date.now() + 10 * 60 * 1000, attempts: 0 });
 
     const sent = await sendWhatsAppText(
       wa_id,
