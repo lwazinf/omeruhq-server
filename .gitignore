@@ -1,0 +1,26 @@
+# Dependencies
+**/node_modules/
+**/package-lock.json
+
+# Next.js build output
+**/.next/
+**/out/
+
+# Env files
+**/.env.local
+**/.env.*.local
+.env
+
+# Supabase local state
+supabase/.temp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
