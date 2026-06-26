@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { unstable_noStore } from 'next/cache';
@@ -154,12 +155,14 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
         <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(32px,5vh,56px)' }}>
           <div className="store-hero-row" style={{ display: 'flex', gap: 'clamp(16px,4vw,48px)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
             {heroImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={heroImage}
                 alt={merchant.trading_name}
+                width={120}
+                height={120}
                 className="store-hero-img"
-                style={{ width: 'clamp(80px,12vw,120px)', height: 'clamp(80px,12vw,120px)', borderRadius: 24, objectFit: 'cover', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', flexShrink: 0 }}
+                style={{ borderRadius: 24, objectFit: 'cover', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', flexShrink: 0, width: 'clamp(80px,12vw,120px)', height: 'clamp(80px,12vw,120px)' }}
+                priority
               />
             )}
 

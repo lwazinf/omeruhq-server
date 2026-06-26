@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
@@ -120,11 +121,13 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Product image */}
             {image && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={image}
                 alt={product.name}
-                style={{ width: 'clamp(100px,16vw,160px)', height: 'clamp(100px,16vw,160px)', borderRadius: 20, objectFit: 'cover', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', flexShrink: 0 }}
+                width={160}
+                height={160}
+                style={{ borderRadius: 20, objectFit: 'cover', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', flexShrink: 0, width: 'clamp(100px,16vw,160px)', height: 'clamp(100px,16vw,160px)' }}
+                priority
               />
             )}
 

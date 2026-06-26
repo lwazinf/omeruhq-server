@@ -41,6 +41,25 @@ export async function updateTradingHoursAction(fd: FormData) {
   revalidatePath('/settings');
 }
 
+export async function updateBankDetailsAction(fd: FormData) {
+  const session = await getSession();
+  if (!session) throw new Error('Unauthorized');
+
+  const bank_name = (fd.get('bank_name') as string).trim() || null;
+  const bank_acc_no = (fd.get('bank_acc_no') as string).trim() || null;
+  const bank_type = (fd.get('bank_type') as string).trim() || null;
+  const location_visible = fd.get('location_visible') === 'on';
+  const address = (fd.get('address') as string).trim() || null;
+  const store_category = (fd.get('store_category') as string).trim() || null;
+
+  await db.merchant.update({
+    where: { id: session.merchant_id },
+    data: { bank_name, bank_acc_no, bank_type, location_visible, address, store_category },
+  });
+
+  revalidatePath('/settings');
+}
+
 export async function toggleStoreOpenAction(_fd: FormData) {
   const session = await getSession();
   if (!session) throw new Error('Unauthorized');

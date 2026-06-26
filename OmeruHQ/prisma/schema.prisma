@@ -76,6 +76,7 @@ model Merchant {
   products             Product[]
   services             Service[]
   serviceApplications  ServiceApplication[]
+  reviews              Review[]
 }
 
 model ServiceApplication {
@@ -227,6 +228,7 @@ model Order {
   merchant            Merchant    @relation(fields: [merchant_id], references: [id])
   payout              Payout?     @relation(fields: [payout_id], references: [id])
   order_items         OrderItem[]
+  review              Review?
 
   @@index([merchant_id, status])
   @@index([customer_id, createdAt])
@@ -335,6 +337,23 @@ model Booking {
   @@index([merchant_id, start_at])
   @@index([customer_wa_id, start_at])
   @@index([status, start_at])
+}
+
+model Review {
+  id             String   @id @default(cuid())
+  merchant_id    String
+  customer_wa_id String
+  order_id       String?  @unique
+  rating         Int
+  comment        String?
+  is_visible     Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  merchant       Merchant @relation(fields: [merchant_id], references: [id])
+  order          Order?   @relation(fields: [order_id], references: [id])
+
+  @@unique([merchant_id, customer_wa_id])
+  @@index([merchant_id, is_visible, createdAt])
 }
 
 model invite_applications {

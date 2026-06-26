@@ -50,6 +50,12 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
   },
   alternates: { canonical: SITE_URL },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Omeru',
+  },
 };
 
 const organizationSchema = {

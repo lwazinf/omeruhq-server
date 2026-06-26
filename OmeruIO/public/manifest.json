@@ -1,0 +1,27 @@
+{
+  "name": "Omeru — WhatsApp Commerce",
+  "short_name": "Omeru",
+  "description": "Sell on WhatsApp. Browse SA merchants. No app downloads needed.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#C8F135",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/omeru-hero.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/omeru-hero.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "business"],
+  "lang": "en-ZA",
+  "dir": "ltr"
+}

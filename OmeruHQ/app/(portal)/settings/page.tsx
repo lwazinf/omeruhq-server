@@ -5,6 +5,7 @@ import {
   updateStoreProfileAction,
   updateTradingHoursAction,
   toggleStoreOpenAction,
+  updateBankDetailsAction,
 } from './actions';
 
 export default async function SettingsPage() {
@@ -24,6 +25,12 @@ export default async function SettingsPage() {
       sat_close_time: true,
       sun_open: true,
       manual_closed: true,
+      bank_name: true,
+      bank_acc_no: true,
+      bank_type: true,
+      address: true,
+      location_visible: true,
+      store_category: true,
     },
   });
 
@@ -177,7 +184,50 @@ export default async function SettingsPage() {
         </form>
       </div>
 
-      {/* ── Section 3: Store status ── */}
+      {/* ── Section 3: Bank & location ── */}
+      <div className="card" style={{ marginBottom: 24, padding: '24px 28px' }}>
+        <div style={sectionHeadStyle}>Bank account & location</div>
+        <form action={updateBankDetailsAction} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <label style={labelStyle}>Bank name</label>
+              <input className="input" name="bank_name" defaultValue={merchant.bank_name ?? ''} placeholder="e.g. FNB" style={{ width: '100%' }} />
+            </div>
+            <div>
+              <label style={labelStyle}>Account type</label>
+              <select className="input" name="bank_type" defaultValue={merchant.bank_type ?? ''} style={{ width: '100%' }}>
+                <option value="">Select…</option>
+                <option value="CHEQUE">Cheque</option>
+                <option value="SAVINGS">Savings</option>
+                <option value="TRANSMISSION">Transmission</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label style={labelStyle}>Account number</label>
+            <input className="input" name="bank_acc_no" defaultValue={merchant.bank_acc_no ?? ''} placeholder="123456789" style={{ width: '100%' }} />
+          </div>
+          <div>
+            <label style={labelStyle}>Store address</label>
+            <input className="input" name="address" defaultValue={merchant.address ?? ''} placeholder="123 Main St, Cape Town" style={{ width: '100%' }} />
+          </div>
+          <div>
+            <label style={labelStyle}>Store category</label>
+            <input className="input" name="store_category" defaultValue={merchant.store_category ?? ''} placeholder="e.g. Food & Beverages" style={{ width: '100%' }} />
+          </div>
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+              <input type="checkbox" name="location_visible" defaultChecked={merchant.location_visible} style={{ width: 17, height: 17, accentColor: 'var(--lime)', cursor: 'pointer' }} />
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>Show address on your store page</span>
+            </label>
+          </div>
+          <div>
+            <button type="submit" className="btn-lime" style={{ padding: '10px 24px', fontSize: 13 }}>Save details</button>
+          </div>
+        </form>
+      </div>
+
+      {/* ── Section 4: Store status ── */}
       <div className="card" style={{ padding: '24px 28px' }}>
         <div style={sectionHeadStyle}>Store status</div>
         <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--mid-gray)', marginBottom: 24 }}>

@@ -1,0 +1,101 @@
+[02:15:41.910] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[02:15:41.932] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[02:15:41.946] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[02:15:41.960] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[05:21:34.159] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[05:21:34.205] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[05:21:34.220] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[05:21:34.243] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[13:59:49.239] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[13:59:49.260] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[13:59:49.287] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[13:59:49.297] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/router-server.js
+- /Users/nietzsche/Downloads/omeruHQ/merchant-portal-main/node_modules/next/dist/server/lib/start-server.js
+[22:21:09.014] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.022] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.022] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.037] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.155] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.163] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.960] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:09.967] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.345] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.349] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.529] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.645] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.646] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.657] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:10.835] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:11.514] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
+[22:21:11.643] Server  LOG     prisma:error "Error in PostgreSQL connection: Error { kind: Closed, cause: None }"
