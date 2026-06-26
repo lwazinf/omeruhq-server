@@ -664,3 +664,93 @@ These are forward-looking improvements beyond fixing known issues. Each would ma
 | `OmeruHQ/app/(portal)/orders/OrderKanban.tsx` | Remove kanban-outer/inner wrapper and `<style>` block |
 | `OmeruHQ/app/(portal)/products/page.tsx` | Revert padding and grid class name |
 | `OmeruHQ/app/login/page.tsx` | Revert form panel padding and mobile style block |
+
+---
+
+### v1.13.0 — 2026-06-25 SAST
+**OmeruIO: Apply page, mobile invite routing, storefront preview CSP, modal/accordion mobile fixes.**
+
+**What changed:**
+
+*Apply page — `app/[locale]/apply/page.tsx`:*
+- New multi-step merchant application form writing directly to `invite_applications` table
+- Fields: trading name, WhatsApp number, store category, description
+- Rate-limited (3 submissions/IP/hour via `lib/rateLimit.ts`)
+- Replaces the old "apply via email" CTA — closes the self-serve onboarding gap
+- Success state shows confirmation with next-steps copy
+
+*Mobile invite routing — `components/InviteModal.tsx`:*
+- On mobile (`window.innerWidth < 768`), InviteModal redirects to `/apply` instead of showing in-page modal
+- Prevents modal scroll-lock issues on iOS Safari
+
+*Preview CSP fix — `OmeruIO/next.config.ts`:*
+- `frame-ancestors` extended from `'self'` to `'self' https://hq.omeru.io`
+- Allows the HQ portal's preview iframe to load merchant storefronts
+- Modern browsers use CSP `frame-ancestors` over `X-Frame-Options` when both present
+
+*Mobile modal — `components/InviteModal.tsx`:*
+- Bottom-sheet pattern on mobile: `position: fixed; bottom: 0; borderRadius: 24px 24px 0 0`
+- Scroll container uses `overflow-y: auto; -webkit-overflow-scrolling: touch` inside modal
+- Close button pinned inside header, not outside scroll container
+
+*Accordion mobile — `components/StoreAccordion.tsx`, `components/StoresAccordion.tsx`:*
+- Added `overflow-x: auto; -webkit-overflow-scrolling: touch` to outer scroll container
+- `overflow: visible !important` on inner flex container (was `overflow: hidden`, blocking scroll)
+- Mobile CSS: active card `82vw - 16px`, inactive card `48px`
+
+**Score impact:**
+- Usability: +0.5 (apply form removes email friction from onboarding)
+- Security: +0.1 (rate limiting on apply route)
+- Mobile UX: +0.3 (modal bottom sheet, accordion scrollable)
+
+### Rollback to v1.12.0
+
+| File | Change to reverse |
+|------|------------------|
+| `app/[locale]/apply/page.tsx` | Delete file |
+| `components/InviteModal.tsx` | Remove mobile redirect + bottom-sheet styles, restore original modal layout |
+| `next.config.ts` | Revert `frame-ancestors` to `'self'` only |
+| `components/StoreAccordion.tsx` | Remove mobile CSS block (`overflow-x: auto`, mobile width overrides) |
+| `components/StoresAccordion.tsx` | Same as above |
+
+---
+
+### v1.14.0 — 2026-06-26 SAST
+**OmeruIO: Card swipe/tap fixed, mobile overflow prevention, stores accordion parity.**
+
+**What changed:**
+
+*`components/StoreAccordion.tsx` — core fix:*
+- **Removed** container-level `onTouchStart`/`onTouchEnd` handlers. These were intercepting any horizontal swipe > 50px and calling `setActiveIndex`, causing card width animations to fire mid-scroll → jitter + content jumping
+- **Added** per-card `onPointerDown`/`onPointerUp` tap detection: movement < 12px = tap → expand card; larger movement = scroll → browser handles natively. `onPointerCancel` fires when browser takes gesture for scroll — card never expands
+- **Added** `scrollContainerRef` + `cardRefs` map to track DOM nodes
+- **Added** `useEffect` to scroll active card into view after index changes (checks `cardLeft`/`cardRight` against container bounds before scrolling)
+- **Mobile CSS**: `scroll-snap-type: x proximity`, `touch-action: pan-x`, `transition: none !important` on card widths (eliminates layout-reflow animation during touch)
+- Entry animation stagger capped at `Math.min(i * 0.055, 0.25)` — max 250ms delay even for long lists
+
+*`components/StoresAccordion.tsx` — parity fix:*
+- Identical set of changes as `StoreAccordion.tsx` above (stores listing accordion had same bug)
+
+*`app/[locale]/[handle]/page.tsx` — overflow fix:*
+- Sticky bottom CTA: added `maxWidth: calc(100vw - 48px)` + `overflow: hidden; textOverflow: ellipsis`
+- Long merchant names (e.g. "Chat with Patel's Famous Spice Emporium") no longer push the button past the viewport edge
+- Hero buttons row: added `store-hero-btns` CSS class
+
+*`app/globals.css` — mobile safety:*
+- `img, video, iframe, table { max-width: 100% }` — media can't escape viewport
+- `.btn-lime, .btn-outline { white-space: normal; text-align: center }` at ≤768px — buttons wrap text instead of forcing horizontal overflow
+- Word-break protection on hero headlines
+
+**Score impact:**
+- Mobile UX: +0.7 (swipe-to-scroll works correctly, no more jitter)
+- Usability: +0.3 (no horizontal overflow on narrow screens)
+
+### Rollback to v1.13.0
+
+| File | Change to reverse |
+|------|------------------|
+| `components/StoreAccordion.tsx` | Restore container `onTouchStart`/`onTouchEnd`, remove `scrollContainerRef`/`cardRefs`/`pointerDownPos` refs, remove `useEffect`, remove `ref` on scroll-outer, remove pointer event handlers from cards, remove new mobile CSS block, revert `delay: i * 0.055` |
+| `components/StoresAccordion.tsx` | Same |
+| `app/[locale]/[handle]/page.tsx` | Remove `maxWidth`/`overflow`/`textOverflow` from sticky CTA; remove `store-hero-btns` class |
+| `app/globals.css` | Remove mobile safety block at end of file |
+

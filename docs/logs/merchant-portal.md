@@ -174,3 +174,146 @@ v0.1.0 is the initial commit. Rolling back removes the entire `OmeruHQ/` directo
 ---
 
 *Next entry: v0.2.0 — Phase 2 (Services, Settings, Broadcast, Team)*
+
+---
+
+### v0.2.0 — 2026-06-25 SAST — Phase 2: Services, Broadcast, Team, Settings
+**Full merchant management suite beyond core orders.**
+
+**What changed:**
+
+*Services & Bookings — `app/(portal)/services/page.tsx` + `actions.ts`:*
+- Services CRUD: create/edit/delete service listings with name, price, duration, description
+- Bookings view with calendar-style status management (PENDING → CONFIRMED → COMPLETED)
+- Booking status advance via Server Actions
+
+*Broadcast — `app/(portal)/broadcast/page.tsx` + `actions.ts`:*
+- Send WhatsApp messages to opted-in customers
+- Segment filters: all customers, opted-in only
+- Character count + preview before send
+- Audit logged via `AuditLog` table
+
+*Team — `app/(portal)/team/page.tsx` + `actions.ts`:*
+- Invite staff by WhatsApp number with role selection (ADMIN/STAFF)
+- Role-based access: OWNER sees all, ADMIN manages orders/products, STAFF sees orders
+- Remove team member action
+
+*Settings — `app/(portal)/settings/page.tsx`:*
+- Store open/close toggle
+- WhatsApp number display (read-only)
+- Store category, description, location visibility
+- Partially complete — saves to DB, some fields still placeholder
+
+*Sidebar — `components/Sidebar.tsx`:*
+- Phase 2 nav items enabled: Services, Broadcast, Team, Settings
+- `const disabled = phase > 2` (was phase > 1)
+
+### Rollback to v0.1.0
+
+| File | Change to reverse |
+|------|------------------|
+| `app/(portal)/services/` | Delete directory |
+| `app/(portal)/broadcast/` | Delete directory |
+| `app/(portal)/team/` | Delete directory |
+| `app/(portal)/settings/` | Delete directory |
+| `components/Sidebar.tsx` | Restore `phase > 1` threshold |
+
+---
+
+### v0.3.0 — 2026-06-25 SAST — Phase 3: Analytics, Customers, Payments + Preview fix
+**Business intelligence, customer management, and payout infrastructure.**
+
+**What changed:**
+
+*Analytics — `app/(portal)/analytics/page.tsx`:*
+- 14-day daily revenue + order count (raw data, no chart library — pure CSS)
+- Day-of-week buying patterns (7-bar CSS chart, today highlighted)
+- Top customers by spend (wa_id join to MerchantCustomer for display name)
+- Revenue projection: `sevenDayAvg * 30` displayed as 30-day projection
+- Customer overview grid: total, new 30d, new 7d, returning, avg order value
+- Growth badge: % change vs previous 30-day period
+
+*Customers — `app/(portal)/customers/page.tsx` + `actions.ts`:*
+- Customer table with last-seen date, order count, spend, opt-in badge
+- Bookmark toggle and opt-out toggle via `toggleBookmarkAction` / `toggleOptOutAction`
+- KPI strip: total customers, opted-in count, bookmarked count
+
+*Reviews — `app/(portal)/reviews/page.tsx`:*
+- Coming-soon page with real counts (completed orders, completed bookings, total customers)
+- Shows "potential review count" projection
+- Placeholder for future star-rating integration
+
+*Payments — `app/(portal)/payments/page.tsx` + `actions.ts`:*
+- KPI strip: unpaid gross, net (after platform fee), last payout date
+- Bank account on file display
+- Unpaid completed orders table with gross/net per order
+- "Request Payout" CTA → `requestPayoutAction` (creates `Payout` record, links all unpaid orders)
+- Payout history with status badges (PENDING/REQUESTED/PROCESSING/COMPLETED/FAILED)
+- Platform fee explainer footer
+
+*Prisma schema — `prisma/schema.prisma`:*
+- New `Payout` model with `PayoutStatus` enum (PENDING/REQUESTED/PROCESSING/COMPLETED/FAILED)
+- Added `payout_id String?` FK on `Order`
+- Added `payouts Payout[]` relation on `Merchant`
+- `@@index([payout_id])` on Order
+
+*Preview fix — `components/Sidebar.tsx`:*
+- Preview URL corrected from `https://hq.omeru.io/@{handle}` (404) to `https://omeru.io/@{handle}?preview=1`
+- Phase 3 nav items enabled: `const disabled = phase > 3`
+- Added Payments nav item
+
+### Rollback to v0.2.0
+
+| File | Change to reverse |
+|------|------------------|
+| `app/(portal)/analytics/page.tsx` | Restore to stub/placeholder |
+| `app/(portal)/customers/page.tsx` | Delete file |
+| `app/(portal)/customers/actions.ts` | Delete file |
+| `app/(portal)/reviews/page.tsx` | Delete file |
+| `app/(portal)/payments/page.tsx` | Delete file |
+| `app/(portal)/payments/actions.ts` | Delete file |
+| `prisma/schema.prisma` | Remove `Payout` model, `PayoutStatus` enum, `payout_id` from Order |
+| `components/Sidebar.tsx` | Revert `phase > 2`, remove Payments nav, fix preview URL |
+
+---
+
+### v0.4.0 — 2026-06-26 SAST — omeru-intel MCP + ecosystem vault
+**AI-accessible platform intelligence via Model Context Protocol.**
+
+**What changed:**
+
+*New: `omeru-intel/` — standalone MCP server:*
+- `src/db.ts` — Raw Postgres queries to Supabase (`DIRECT_URL` from OmeruHQ `.env.local`)
+  - `getPlatformSummary()` — merchants by status, GMV 7d/30d/all-time, customers, payouts, applications
+  - `getMerchantProfile(handle)` — per-merchant orders/customers/products/services/payout stats
+  - `getAllMerchants()` — full merchant list for index
+  - `getPayoutIndex()` — merchants with pending payouts
+  - `getApplications()` — invite applications by status
+  - `getDailyMetrics()` — 14-day revenue, top products, new customers
+- `src/vault.ts` — Markdown writers to `omeru-vault/`
+  - Builders: `buildPlatformOverview`, `buildMerchantNote`, `buildMerchantIndex`, `buildPayoutIndex`, `buildDailySnapshot`, `buildApplicationsNote`
+  - All notes include YAML frontmatter (`type`, `updated`, `sync: auto`) and bi-directional `[[wiki-links]]`
+- `src/index.ts` — MCP server (9 tools): `sync_platform_overview`, `sync_merchant`, `sync_all_merchants`, `sync_payouts`, `sync_daily`, `sync_applications`, `sync_all`, `write_insight`, `read_note`
+- `src/sync.ts` — CLI script with `--scope` flag for scheduled runs
+- `package.json` — `{ type: "module", deps: @modelcontextprotocol/sdk, postgres, zod, dotenv }`
+
+*New: `omeru-vault/` — Obsidian knowledge base:*
+- `.obsidian/app.json` — vault config
+- `.obsidian/graph.json` — 7 color-coded node groups (Platform, Merchants, Payouts, OmeruIO, OmeruHQ, OmeruWA, Insights)
+- Sections: Platform/, Merchants/, Payouts/, OmeruIO/, OmeruHQ/, OmeruWA/, Insights/
+- Placeholder notes in each section with manual context
+- Auto-sync writes: Platform/Overview.md, Merchants/_Index.md, Merchants/{handle}.md, Payouts/_Index.md, OmeruIO/Applications.md, Platform/Daily/YYYY-MM-DD.md
+
+*`.mcp.json` — repo root:*
+```json
+{ "mcpServers": { "omeru-intel": { "command": "npx", "args": ["tsx", ".../src/index.ts"] } } }
+```
+
+### Rollback to v0.3.0
+
+| File | Change to reverse |
+|------|------------------|
+| `omeru-intel/` | Delete entire directory |
+| `omeru-vault/` | Delete entire directory |
+| `.mcp.json` | Delete file |
+
