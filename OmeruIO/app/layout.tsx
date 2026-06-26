@@ -5,7 +5,7 @@ import ConsentBanner from "@/components/ConsentBanner";
 import InviteModal from "@/components/InviteModal";
 import { getLocale } from 'next-intl/server';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://hq.omeru.io";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://omeru.io";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -95,6 +95,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://sciuelzkljjriiidtyry.supabase.co" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

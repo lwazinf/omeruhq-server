@@ -12,6 +12,14 @@
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--browser", "chromium"]
+    },
+    "lighthouse": {
+      "command": "npx",
+      "args": ["lighthouse-mcp@latest"]
     }
   }
 }

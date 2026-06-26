@@ -61,6 +61,7 @@ export default function LoginPage() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       {/* ── Left: branding panel ── */}
+
       <div style={{
         width: '45%', background: 'var(--dark-gray)', position: 'relative',
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -107,7 +108,7 @@ export default function LoginPage() {
       </div>
 
       {/* ── Right: form panel ── */}
-      <div className="login-form-panel" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(32px, 6vw, 52px) clamp(20px, 6vw, 52px)', position: 'relative' }}>
+      <main className="login-form-panel" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(32px, 6vw, 52px) clamp(20px, 6vw, 52px)', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 24, right: 28 }}>
           <LanguageSwitcher />
         </div>
@@ -174,7 +175,7 @@ export default function LoginPage() {
             )}
           </AnimatePresence>
         </div>
-      </div>
+      </main>
 
       <style>{`
         @media (max-width: 768px) {
