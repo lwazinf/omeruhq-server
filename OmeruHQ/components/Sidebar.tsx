@@ -44,7 +44,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
     router.push('/login');
   }
 
-  const previewUrl = `https://hq.omeru.io/@${merchantHandle}?preview=1`;
+  const previewUrl = `https://omeru.io/@${merchantHandle}?preview=1`;
   const liveUrl = `https://omeru.io/@${merchantHandle}`;
 
   function closeMobileMenu() { setMobileOpen(false); }
@@ -227,7 +227,7 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
       <nav style={{ flex: 1, padding: '12px 0', overflowY: 'auto' }}>
         {NAV.map(({ label, href, icon: Icon, phase }) => {
           const active = pathname === href || pathname.startsWith(href + '/');
-          const disabled = phase > 2;
+          const disabled = phase > 3;
           const badge = href === '/orders' && pendingOrders > 0 ? pendingOrders : null;
 
           return (
