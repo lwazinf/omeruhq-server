@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /* ─── Types ────────────────────────────────────────────── */
@@ -313,6 +314,7 @@ function getLenis(): LenisInstance | undefined {
 /* ─── Modal ────────────────────────────────────────────── */
 
 export default function InviteModal() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
@@ -327,10 +329,16 @@ export default function InviteModal() {
   }, []);
 
   useEffect(() => {
-    const handler = () => setOpen(true);
+    const handler = () => {
+      if (window.innerWidth <= 768) {
+        router.push('/apply');
+      } else {
+        setOpen(true);
+      }
+    };
     window.addEventListener('omeru:invite', handler);
     return () => window.removeEventListener('omeru:invite', handler);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (open) {

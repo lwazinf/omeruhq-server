@@ -7,7 +7,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const securityHeaders = [
   // Prevent MIME-type sniffing
   { key: 'X-Content-Type-Options',    value: 'nosniff' },
-  // Block clickjacking from other origins
+  // Block clickjacking — hq.omeru.io is allowed to iframe store pages for the preview feature
   { key: 'X-Frame-Options',           value: 'SAMEORIGIN' },
   // Legacy XSS filter (still helps on older browsers)
   { key: 'X-XSS-Protection',          value: '1; mode=block' },
@@ -29,7 +29,7 @@ const securityHeaders = [
       "img-src 'self' data: blob: https:",
       "connect-src 'self' https://www.googletagmanager.com https://analytics.google.com https://www.google-analytics.com https://region1.google-analytics.com",
       "frame-src 'none'",
-      "frame-ancestors 'self'",
+      "frame-ancestors 'self' https://hq.omeru.io",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
