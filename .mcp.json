@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "omeru-intel": {
+      "command": "npx",
+      "args": ["tsx", "/Users/nietzsche/Downloads/omeruHQ/omeru-intel/src/index.ts"],
+      "cwd": "/Users/nietzsche/Downloads/omeruHQ/omeru-intel"
+    }
+  }
+}

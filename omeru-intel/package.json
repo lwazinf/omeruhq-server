@@ -1,0 +1,25 @@
+{
+  "name": "omeru-intel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Omeru ecosystem intelligence — MCP server + sync script for Obsidian vault",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "sync": "tsx src/sync.ts",
+    "sync:platform": "tsx src/sync.ts --scope platform",
+    "sync:merchants": "tsx src/sync.ts --scope merchants",
+    "sync:daily": "tsx src/sync.ts --scope daily"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "postgres": "^3.4.4",
+    "zod": "^3.23.8",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.15.7",
+    "typescript": "^5.4.5"
+  }
+}
