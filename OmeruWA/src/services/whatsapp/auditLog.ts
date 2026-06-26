@@ -78,6 +78,6 @@ export const log = async (
             }
         });
     } catch (e) {
-        console.error(`[AuditLog] Failed to write ${action}:`, e);
+        console.error('[AuditLog] Failed to write', action, e);
     }
 };

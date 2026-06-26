@@ -117,7 +117,8 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
   return (
     <div style={{ background: 'var(--off-white)', minHeight: '100vh', paddingTop: preview === '1' ? 36 : 0 }}>
       <div className="noise" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {/* nosemgrep: react-dangerouslysetinnerhtml — <, >, & are unicode-escaped */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }} />
       <TrackEvent event="view_store" params={{ store_name: merchant.trading_name, store_handle: merchant.handle }} />
 
       {preview === '1' && (

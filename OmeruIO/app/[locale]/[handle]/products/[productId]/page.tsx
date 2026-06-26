@@ -96,7 +96,8 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div style={{ background: 'var(--off-white)', minHeight: '100vh' }}>
       <div className="noise" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {/* nosemgrep: react-dangerouslysetinnerhtml — <, >, & are unicode-escaped */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }} />
       <TrackEvent event="view_item" params={{ item_id: product.id, item_name: product.name, currency: 'ZAR', value: fromPrice, item_brand: merchant.trading_name }} />
 
       {/* ── Dark hero ── */}

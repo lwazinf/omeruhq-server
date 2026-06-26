@@ -192,7 +192,7 @@ const processBuyNow = async (
             ]
         );
     } catch (err: any) {
-        console.error(`❌ Buy Now payment failed: ${err.message}`, err.response?.data ? JSON.stringify(err.response.data) : '');
+        console.error('❌ Buy Now payment failed:', err.message, err.response?.data ?? '');
         await sendTextMessage(from, '⚠️ Could not generate payment link. Please try again.');
     }
 };
@@ -797,7 +797,7 @@ export const handleCustomerDiscovery = async (from: string, input: string): Prom
                 { id: 'c_my_orders', title: '📦 My Orders' }
             ]);
         } catch (payErr: any) {
-            console.error(`❌ Cart payment failed: ${payErr.message}`, payErr.response?.data ? JSON.stringify(payErr.response.data) : '');
+            console.error('❌ Cart payment failed:', payErr.message, payErr.response?.data ?? '');
             await sendButtons(from,
                 [
                     `✅ *Order #${order.id.slice(-5)} placed!*`,

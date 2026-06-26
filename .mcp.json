@@ -4,6 +4,10 @@
       "command": "npx",
       "args": ["tsx", "/Users/nietzsche/Downloads/omeruHQ/omeru-intel/src/index.ts"],
       "cwd": "/Users/nietzsche/Downloads/omeruHQ/omeru-intel"
+    },
+    "semgrep": {
+      "command": "uvx",
+      "args": ["semgrep-mcp"]
     }
   }
 }
