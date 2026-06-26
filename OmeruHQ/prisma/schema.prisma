@@ -72,6 +72,7 @@ model Merchant {
   invites              MerchantInvite[]
   owners               MerchantOwner[]
   orders               Order[]
+  payouts              Payout[]
   products             Product[]
   services             Service[]
   serviceApplications  ServiceApplication[]
@@ -222,12 +223,39 @@ model Order {
   payment_ref         String?
   payment_url         String?
   customer_alerted_at DateTime?
+  payout_id           String?
   merchant            Merchant    @relation(fields: [merchant_id], references: [id])
+  payout              Payout?     @relation(fields: [payout_id], references: [id])
   order_items         OrderItem[]
 
   @@index([merchant_id, status])
   @@index([customer_id, createdAt])
   @@index([payment_ref])
+  @@index([payout_id])
+}
+
+model Payout {
+  id           String       @id @default(cuid())
+  merchant_id  String
+  gross_amount Float
+  platform_fee Float
+  net_amount   Float
+  fee_pct      Float
+  status       PayoutStatus @default(PENDING)
+  period_start DateTime
+  period_end   DateTime
+  order_count  Int
+  reference    String?
+  notes        String?
+  processed_at DateTime?
+  requested_at DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  merchant     Merchant     @relation(fields: [merchant_id], references: [id])
+  orders       Order[]
+
+  @@index([merchant_id, status])
+  @@index([merchant_id, createdAt])
 }
 
 model OrderItem {
@@ -367,4 +395,12 @@ enum ServiceAppStatus {
   PENDING
   APPROVED
   DENIED
+}
+
+enum PayoutStatus {
+  PENDING
+  REQUESTED
+  PROCESSING
+  COMPLETED
+  FAILED
 }

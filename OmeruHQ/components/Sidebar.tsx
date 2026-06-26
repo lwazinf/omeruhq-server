@@ -25,12 +25,13 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
     { label: t('orders'),    href: '/orders',    icon: OrdersIcon, phase: 1 },
     { label: t('products'),  href: '/products',  icon: BoxIcon,    phase: 1 },
     { label: t('services'),  href: '/services',  icon: CalIcon,    phase: 2 },
-    { label: t('analytics'), href: '/analytics', icon: ChartIcon,  phase: 3 },
-    { label: t('customers'), href: '/customers', icon: UsersIcon,  phase: 3 },
-    { label: t('broadcast'), href: '/broadcast', icon: MegaIcon,   phase: 2 },
-    { label: t('team'),      href: '/team',      icon: UsersIcon,  phase: 2 },
-    { label: t('reviews'),   href: '/reviews',   icon: StarIcon,   phase: 3 },
-    { label: t('settings'),  href: '/settings',  icon: GearIcon,   phase: 2 },
+    { label: t('analytics'), href: '/analytics', icon: ChartIcon,    phase: 3 },
+    { label: t('customers'), href: '/customers', icon: UsersIcon,    phase: 3 },
+    { label: t('payments'),  href: '/payments',  icon: CardIcon,     phase: 3 },
+    { label: t('broadcast'), href: '/broadcast', icon: MegaIcon,     phase: 2 },
+    { label: t('team'),      href: '/team',      icon: UsersIcon,    phase: 2 },
+    { label: t('reviews'),   href: '/reviews',   icon: StarIcon,     phase: 3 },
+    { label: t('settings'),  href: '/settings',  icon: GearIcon,     phase: 2 },
   ];
 
   // Lock body scroll when modal or mobile menu is open
@@ -341,5 +342,12 @@ function GearIcon({ active }: { active: boolean }) {
   return <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
     <circle cx="8" cy="8" r="2.5" stroke={active ? 'white' : 'rgba(255,255,255,0.4)'} strokeWidth="1.3"/>
     <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.414 1.414M11.536 11.536l1.414 1.414M3.05 12.95l1.414-1.414M11.536 4.464l1.414-1.414" stroke={active ? 'white' : 'rgba(255,255,255,0.4)'} strokeWidth="1.3" strokeLinecap="round"/>
+  </svg>;
+}
+function CardIcon({ active }: { active: boolean }) {
+  return <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+    <rect x="1" y="3" width="14" height="10" rx="2" stroke={active ? 'white' : 'rgba(255,255,255,0.4)'} strokeWidth="1.3"/>
+    <path d="M1 6h14" stroke={active ? 'white' : 'rgba(255,255,255,0.4)'} strokeWidth="1.3"/>
+    <path d="M4 10h3M10 10h2" stroke={active ? 'white' : 'rgba(255,255,255,0.4)'} strokeWidth="1.3" strokeLinecap="round"/>
   </svg>;
 }
