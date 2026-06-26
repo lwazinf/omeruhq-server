@@ -185,7 +185,7 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
                 </p>
               )}
 
-              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <div className="store-hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <a href={chatLink} rel="nofollow" className="btn-lime">
                   {t('shopOnWhatsApp')}
                 </a>
@@ -347,7 +347,7 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
 
       <div style={{ position: 'sticky', bottom: 0, zIndex: 10, paddingBottom: 20, background: 'linear-gradient(transparent, var(--off-white) 45%)', pointerEvents: 'none' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', pointerEvents: 'auto' }}>
-          <a href={chatLink} rel="nofollow" className="btn-lime" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.18)', fontSize: 14 }}>
+          <a href={chatLink} rel="nofollow" className="btn-lime" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.18)', fontSize: 14, maxWidth: 'calc(100vw - 48px)', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {t('chatWith', { name: merchant.trading_name })}
           </a>
         </div>

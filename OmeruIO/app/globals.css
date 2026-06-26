@@ -176,3 +176,18 @@ section, footer { width: 100%; }
 @supports (-webkit-overflow-scrolling: touch) {
   .kanban-outer, .sidebar { -webkit-overflow-scrolling: touch; }
 }
+
+/* ── Mobile overflow safety ── */
+@media (max-width: 768px) {
+  /* Prevent any single element from exceeding viewport width */
+  img, video, iframe, table { max-width: 100%; }
+
+  /* Allow buttons to wrap text on very small screens instead of forcing overflow */
+  .btn-lime, .btn-outline { white-space: normal; text-align: center; }
+
+  /* Store page hero: stack buttons neatly */
+  .store-hero-btns { flex-direction: column; align-items: flex-start; }
+
+  /* Prevent hero headline from overflowing — it should wrap */
+  .hero-main-grid h1, .hero-main-grid .display-md { word-break: break-word; }
+}

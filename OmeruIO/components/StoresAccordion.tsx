@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -24,7 +24,9 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
   const [search, setSearch] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const touchStartX = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
 
   const q = search.trim().toLowerCase();
 
@@ -33,6 +35,19 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
     .filter(s => !q || s.trading_name.toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q));
 
   const safeActive = Math.min(activeIndex, filtered.length - 1);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    const card = cardRefs.current.get(safeActive);
+    if (!container || !card) return;
+    const cardLeft = card.offsetLeft;
+    const cardRight = cardLeft + card.offsetWidth;
+    const visibleLeft = container.scrollLeft;
+    const visibleRight = container.scrollLeft + container.offsetWidth;
+    if (cardLeft < visibleLeft || cardRight > visibleRight) {
+      container.scrollTo({ left: Math.max(0, cardLeft - 16), behavior: 'smooth' });
+    }
+  }, [safeActive]);
 
   return (
     <div>
@@ -115,13 +130,7 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
           {/* ── Accordion track ── */}
           <div
             className="accordion-scroll-outer"
-            onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
-            onTouchEnd={e => {
-              const delta = touchStartX.current - e.changedTouches[0].clientX;
-              if (Math.abs(delta) < 50) return;
-              if (delta > 0) setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
-              else setActiveIndex(i => Math.max(i - 1, 0));
-            }}
+            ref={scrollContainerRef}
           >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -142,11 +151,20 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
                 return (
                   <motion.div
                     key={store.handle}
+                    ref={(el) => { if (el) cardRefs.current.set(i, el); else cardRefs.current.delete(i); }}
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.42, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.42, delay: Math.min(i * 0.055, 0.25), ease: [0.16, 1, 0.3, 1] }}
                     className={isActive ? 'accordion-card-active' : 'accordion-card-inactive'}
-                    onClick={() => setActiveIndex(i)}
+                    onPointerDown={(e) => { pointerDownPos.current = { x: e.clientX, y: e.clientY }; }}
+                    onPointerUp={(e) => {
+                      if (!pointerDownPos.current) return;
+                      const dx = Math.abs(e.clientX - pointerDownPos.current.x);
+                      const dy = Math.abs(e.clientY - pointerDownPos.current.y);
+                      if (dx < 12 && dy < 12) setActiveIndex(i);
+                      pointerDownPos.current = null;
+                    }}
+                    onPointerCancel={() => { pointerDownPos.current = null; }}
                     onMouseEnter={() => !isActive && setHoveredCard(store.handle)}
                     onMouseLeave={() => setHoveredCard(null)}
                     style={{
@@ -154,6 +172,7 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
                       width: isActive ? 'clamp(260px, 34vw, 400px)' : 'clamp(88px, 11vw, 130px)',
                       transition: 'width 0.55s cubic-bezier(0.16,1,0.3,1)',
                       cursor: isActive ? 'default' : 'pointer',
+                      userSelect: 'none',
                     }}
                   >
                     {/* ── Card ── */}
@@ -324,12 +343,24 @@ export default function StoresAccordion({ stores }: { stores: Store[] }) {
         }
         .accordion-scroll-outer::-webkit-scrollbar { display: none; }
         @media (max-width: 768px) {
-          /* fix: the flex container had overflow:hidden, blocking horizontal scroll */
+          .accordion-scroll-outer {
+            scroll-snap-type: x proximity;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+          }
           .accordion-scroll-outer > div { overflow: visible !important; }
-          /* active card: fills most of viewport so it feels like a focused card */
-          .accordion-card-active { width: calc(82vw - 16px) !important; min-width: 220px !important; }
-          /* inactive cards: slim peek strips */
-          .accordion-card-inactive { width: 48px !important; min-width: 48px !important; }
+          .accordion-card-active {
+            width: calc(82vw - 16px) !important;
+            min-width: 220px !important;
+            scroll-snap-align: start;
+            transition: none !important;
+          }
+          .accordion-card-inactive {
+            width: 48px !important;
+            min-width: 48px !important;
+            scroll-snap-align: start;
+            transition: none !important;
+          }
         }
       `}</style>
     </div>

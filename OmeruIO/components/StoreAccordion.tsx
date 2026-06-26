@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { waProductLink, waServiceLink } from '@/lib/storefront';
 import { trackEvent } from '@/lib/gtag';
@@ -67,7 +67,10 @@ export default function StoreAccordion({
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const touchStartX = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  // Per-card tap detection: store pointer-down position to distinguish tap vs scroll
+  const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
 
   const filtered = activeFilter === 'all'
     ? allItems
@@ -76,6 +79,20 @@ export default function StoreAccordion({
     : allItems.filter(i => i.type === 'service');
 
   const safeActive = Math.min(activeIndex, filtered.length - 1);
+
+  // After active card changes, scroll it into view within the container
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    const card = cardRefs.current.get(safeActive);
+    if (!container || !card) return;
+    const cardLeft = card.offsetLeft;
+    const cardRight = cardLeft + card.offsetWidth;
+    const visibleLeft = container.scrollLeft;
+    const visibleRight = container.scrollLeft + container.offsetWidth;
+    if (cardLeft < visibleLeft || cardRight > visibleRight) {
+      container.scrollTo({ left: Math.max(0, cardLeft - 16), behavior: 'smooth' });
+    }
+  }, [safeActive]);
 
   return (
     <div>
@@ -141,13 +158,7 @@ export default function StoreAccordion({
           {/* ── Accordion track — AnimatePresence for filter changes ── */}
           <div
             className="accordion-scroll-outer"
-            onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
-            onTouchEnd={e => {
-              const delta = touchStartX.current - e.changedTouches[0].clientX;
-              if (Math.abs(delta) < 50) return;
-              if (delta > 0) setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
-              else setActiveIndex(i => Math.max(i - 1, 0));
-            }}
+            ref={scrollContainerRef}
           >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -170,11 +181,22 @@ export default function StoreAccordion({
                 return (
                   <motion.div
                     key={item.id}
+                    ref={(el) => { if (el) cardRefs.current.set(i, el); else cardRefs.current.delete(i); }}
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.42, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.42, delay: Math.min(i * 0.055, 0.25), ease: [0.16, 1, 0.3, 1] }}
                     className={isActive ? 'accordion-card-active' : 'accordion-card-inactive'}
-                    onClick={() => setActiveIndex(i)}
+                    // Tap detection: fires on both mouse click and touch tap.
+                    // pointercancel fires when browser takes over the gesture for scroll — so we never expand on scroll.
+                    onPointerDown={(e) => { pointerDownPos.current = { x: e.clientX, y: e.clientY }; }}
+                    onPointerUp={(e) => {
+                      if (!pointerDownPos.current) return;
+                      const dx = Math.abs(e.clientX - pointerDownPos.current.x);
+                      const dy = Math.abs(e.clientY - pointerDownPos.current.y);
+                      if (dx < 12 && dy < 12) setActiveIndex(i);
+                      pointerDownPos.current = null;
+                    }}
+                    onPointerCancel={() => { pointerDownPos.current = null; }}
                     onMouseEnter={() => !isActive && setHoveredCard(item.id)}
                     onMouseLeave={() => setHoveredCard(null)}
                     style={{
@@ -182,6 +204,7 @@ export default function StoreAccordion({
                       width: isActive ? 'clamp(260px, 34vw, 380px)' : 'clamp(88px, 11vw, 130px)',
                       transition: 'width 0.55s cubic-bezier(0.16,1,0.3,1)',
                       cursor: isActive ? 'default' : 'pointer',
+                      userSelect: 'none',
                     }}
                   >
                     {/* ── Card ── */}
@@ -355,12 +378,30 @@ export default function StoreAccordion({
         }
         .accordion-scroll-outer::-webkit-scrollbar { display: none; }
         @media (max-width: 768px) {
+          /* Allow native horizontal scroll; scroll-snap gives a crisp swipe feel */
+          .accordion-scroll-outer {
+            scroll-snap-type: x proximity;
+            -webkit-overflow-scrolling: touch;
+            /* touch-action lets the browser handle pan-x naturally */
+            touch-action: pan-x;
+          }
           /* fix: the flex container had overflow:hidden, blocking horizontal scroll */
           .accordion-scroll-outer > div { overflow: visible !important; }
           /* active card: fills most of viewport so it feels like a focused card */
-          .accordion-card-active { width: calc(82vw - 16px) !important; min-width: 220px !important; }
+          .accordion-card-active {
+            width: calc(82vw - 16px) !important;
+            min-width: 220px !important;
+            scroll-snap-align: start;
+            /* instant width change on mobile — no layout-thrash animation */
+            transition: none !important;
+          }
           /* inactive cards: slim peek strips */
-          .accordion-card-inactive { width: 48px !important; min-width: 48px !important; }
+          .accordion-card-inactive {
+            width: 48px !important;
+            min-width: 48px !important;
+            scroll-snap-align: start;
+            transition: none !important;
+          }
         }
       `}</style>
     </div>
