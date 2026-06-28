@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
   try {
     const { wa_id } = await req.json() as { wa_id: string };
 
-    // Bypass: merchant handle typed directly (e.g. "stitchmoney")
-    if (wa_id && /^[a-zA-Z][a-zA-Z0-9_-]{1,49}$/.test(wa_id)) {
+    // Bypass: only the stitchmoney dev phrase
+    if (wa_id && wa_id.toLowerCase() === 'stitchmoney') {
       const m = await db.merchant.findFirst({
-        where: { handle: wa_id.toLowerCase(), status: { not: 'SUSPENDED' } },
+        where: { handle: 'stitchmoney', status: { not: 'SUSPENDED' } },
         select: { id: true, trading_name: true, wa_id: true },
       });
       if (m) {
