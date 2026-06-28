@@ -22,20 +22,21 @@ export default function PrivacyPage() {
 
   return (
     <SmoothScroll>
+      <div style={{ overflowX: 'hidden' }}>
       <div className="noise" />
       <CustomCursor />
       <Nav darkHero />
 
       {/* Page hero — dark */}
-      <div style={{ paddingTop: 'clamp(96px, 14vh, 128px)', paddingBottom: 72, background: 'var(--black)', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ paddingTop: 'clamp(96px, 14vh, 128px)', paddingBottom: 'clamp(40px, 8vw, 72px)', background: 'var(--black)', position: 'relative', overflow: 'hidden' }}>
         {/* Tile texture */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: "url('/bg-tile.jpg')", backgroundSize: '500px 333px', backgroundRepeat: 'repeat', mixBlendMode: 'screen', filter: 'invert(1)', opacity: 0.08 }} />
         {/* Lime glow */}
         <div style={{ position: 'absolute', bottom: '-60%', left: '10%', width: '50%', height: '120%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <span className="pill" style={{ marginBottom: 20, background: 'rgba(200,241,53,0.12)', color: 'var(--lime)', borderColor: 'rgba(200,241,53,0.2)' }}>Legal</span>
-          <h1 className="display-md" style={{ marginTop: 16, marginBottom: 12, color: 'white' }}>Privacy Policy</h1>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', fontWeight: 300 }}>
+          <h1 className="display-md" style={{ marginTop: 16, marginBottom: 12, color: 'white', wordBreak: 'break-word', overflowWrap: 'break-word' }}>Privacy Policy</h1>
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', fontWeight: 300, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             Last updated <strong style={{ fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}>22 June 2026</strong>
             &nbsp;·&nbsp;REMOLUHLE (PTY) Ltd. trading as Omeru
           </p>
@@ -43,7 +44,7 @@ export default function PrivacyPage() {
       </div>
 
       {/* Body */}
-      <div className="container" style={{ paddingTop: 64, paddingBottom: 120 }}>
+      <div className="container" style={{ paddingTop: 'clamp(32px, 6vw, 64px)', paddingBottom: 120 }}>
         <div className="privacy-layout">
 
           {/* Sticky TOC */}
@@ -307,6 +308,7 @@ export default function PrivacyPage() {
       </div>
 
       <Footer />
+      </div>
 
       <style>{`
         .privacy-layout {
@@ -316,7 +318,8 @@ export default function PrivacyPage() {
           align-items: start;
         }
         @media (max-width: 860px) {
-          .privacy-layout { grid-template-columns: 1fr; }
+          .privacy-layout { grid-template-columns: 1fr; gap: 0; }
+          .privacy-layout article { min-width: 0; }
           aside { display: none; }
         }
         .toc-link {
@@ -333,6 +336,12 @@ export default function PrivacyPage() {
         .toc-link:hover { color: var(--black); }
         article a { color: var(--black); font-weight: 500; text-underline-offset: 3px; }
         article a:hover { color: var(--lime-dark); }
+        @media (max-width: 768px) {
+          .privacy-layout article h2,
+          .privacy-layout article h3 { word-break: break-word; overflow-wrap: break-word; }
+          .privacy-layout article p,
+          .privacy-layout article li { word-break: break-word; overflow-wrap: break-word; }
+        }
       `}</style>
     </SmoothScroll>
   );
