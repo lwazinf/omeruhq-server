@@ -15,7 +15,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const fullPhone = `+27${localPhone.replace(/^0/, '')}`;
+  const isBypass = /^[a-zA-Z]/.test(localPhone);
+  const fullPhone = isBypass ? localPhone : `+27${localPhone.replace(/^0/, '')}`;
 
   async function sendOtp(e: React.FormEvent) {
     e.preventDefault();
@@ -190,21 +191,23 @@ export default function LoginPage() {
                     display: 'flex', border: '1.5px solid rgba(0,0,0,0.12)', borderRadius: 12,
                     overflow: 'hidden', background: 'white', marginBottom: 14,
                   }}>
-                    <div style={{
-                      display: 'flex', alignItems: 'center', gap: 6,
-                      padding: '13px 14px',
-                      background: 'rgba(0,0,0,0.04)',
-                      borderRight: '1.5px solid rgba(0,0,0,0.08)',
-                      flexShrink: 0,
-                    }}>
-                      <span style={{ fontSize: 17, lineHeight: 1 }}>🇿🇦</span>
-                      <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--black)', fontWeight: 500 }}>+27</span>
-                    </div>
+                    {!isBypass && (
+                      <div style={{
+                        display: 'flex', alignItems: 'center', gap: 6,
+                        padding: '13px 14px',
+                        background: 'rgba(0,0,0,0.04)',
+                        borderRight: '1.5px solid rgba(0,0,0,0.08)',
+                        flexShrink: 0,
+                      }}>
+                        <span style={{ fontSize: 17, lineHeight: 1 }}>🇿🇦</span>
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--black)', fontWeight: 500 }}>+27</span>
+                      </div>
+                    )}
                     <input
-                      type="tel"
+                      type="text"
                       placeholder={t('phonePlaceholder')}
                       value={localPhone}
-                      onChange={e => setLocalPhone(e.target.value.replace(/\D/g, ''))}
+                      onChange={e => setLocalPhone(e.target.value)}
                       required
                       style={{
                         flex: 1, border: 'none', outline: 'none',

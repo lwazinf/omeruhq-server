@@ -33,6 +33,19 @@ export async function POST(req: NextRequest) {
   try {
     const { wa_id } = await req.json() as { wa_id: string };
 
+    // Bypass: merchant handle typed directly (e.g. "stitchmoney")
+    if (wa_id && /^[a-zA-Z][a-zA-Z0-9_-]{1,49}$/.test(wa_id)) {
+      const m = await db.merchant.findFirst({
+        where: { handle: wa_id.toLowerCase(), status: { not: 'SUSPENDED' } },
+        select: { id: true, trading_name: true, wa_id: true },
+      });
+      if (m) {
+        const token = await signSession({ wa_id: m.wa_id, merchant_id: m.id, merchant_name: m.trading_name, role: 'OWNER' });
+        await setSessionCookie(token);
+        return NextResponse.json({ dev_bypass: true });
+      }
+    }
+
     if (!wa_id || !/^\+?[1-9]\d{7,14}$/.test(wa_id)) {
       return NextResponse.json({ error: 'Enter a valid WhatsApp number (e.g. +27820000000)' }, { status: 400 });
     }
