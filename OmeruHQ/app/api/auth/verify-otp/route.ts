@@ -9,11 +9,14 @@ const otpStore: Map<string, { code: string; expires: number; attempts: number }>
 
 export async function POST(req: NextRequest) {
   try {
-    const { wa_id, code } = await req.json() as { wa_id: string; code: string };
+    const { wa_id: wa_id_raw, code } = await req.json() as { wa_id: string; code: string };
 
-    if (!wa_id || !code) {
+    if (!wa_id_raw || !code) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
+
+    // Normalise to digits-only to match DB storage and send-otp key
+    const wa_id = wa_id_raw.replace(/^\+/, '');
 
     const entry = otpStore.get(wa_id);
     if (!entry || entry.expires < Date.now()) {
