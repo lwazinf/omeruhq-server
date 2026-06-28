@@ -54,7 +54,7 @@ function DashboardMockup() {
       boxShadow: '0 40px 120px rgba(0,0,0,0.7)',
       background: '#111',
       width: '100%',
-      maxWidth: 860,
+      maxWidth: 1080,
       margin: '0 auto',
       position: 'relative' as const,
     },
@@ -72,9 +72,9 @@ function DashboardMockup() {
       padding: '4px 10px', fontSize: 11, color: 'rgba(255,255,255,0.35)',
       fontFamily: 'var(--font-body)', textAlign: 'center' as const,
     },
-    body: { display: 'flex', height: 320 },
+    body: { display: 'flex', height: 420 },
     sidebar: {
-      width: 150, background: '#0f0f0f', borderRight: '1px solid rgba(255,255,255,0.06)',
+      width: 180, background: '#0f0f0f', borderRight: '1px solid rgba(255,255,255,0.06)',
       padding: '16px 0', flexShrink: 0,
     },
     sidebarLogo: {
@@ -91,7 +91,7 @@ function DashboardMockup() {
     colHeader: { display: 'flex', alignItems: 'center', gap: 5, marginBottom: 8 },
     card: {
       background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)',
-      borderRadius: 7, padding: '8px 10px', marginBottom: 6,
+      borderRadius: 8, padding: '10px 14px', marginBottom: 8,
     },
   };
 
@@ -130,7 +130,7 @@ function DashboardMockup() {
               color: item.active ? 'var(--lime)' : 'rgba(255,255,255,0.35)',
             }}>
               <Icon d={item.icon} size={13} />
-              <span style={{ fontSize: 11, fontWeight: item.active ? 600 : 400 }}>{item.label}</span>
+              <span style={{ fontSize: 13, fontWeight: item.active ? 600 : 400 }}>{item.label}</span>
             </div>
           ))}
         </div>
@@ -138,23 +138,23 @@ function DashboardMockup() {
         {/* Main */}
         <div style={s.main}>
           <div style={s.mainHeader}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>Orders</span>
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>12 today · <span style={{ color: 'var(--lime)' }}>R1,940</span></span>
+            <span style={{ fontSize: 17, fontWeight: 700, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>Orders</span>
+            <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>12 today · <span style={{ color: 'var(--lime)' }}>R1,940</span></span>
           </div>
           <div style={s.kanban}>
             {COLS.map(col => (
               <div key={col.status} style={s.col}>
                 <div style={s.colHeader}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: col.dot, flexShrink: 0 }} />
-                  <span style={{ fontSize: 9, fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.08em' }}>{col.status}</span>
-                  <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>· {col.count}</span>
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: col.dot, flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.08em' }}>{col.status}</span>
+                  <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)' }}>· {col.count}</span>
                 </div>
                 {col.cards.map(card => (
                   <div key={card.id} style={s.card}>
-                    <p style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.8)', marginBottom: 3, lineHeight: 1.35 }}>{card.name}</p>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.85)', marginBottom: 5, lineHeight: 1.35 }}>{card.name}</p>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>{card.id}</span>
-                      <span style={{ fontSize: 9, color: 'var(--lime)', fontWeight: 600 }}>{card.price}</span>
+                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)' }}>{card.id}</span>
+                      <span style={{ fontSize: 10, color: 'var(--lime)', fontWeight: 600 }}>{card.price}</span>
                     </div>
                   </div>
                 ))}
@@ -383,11 +383,11 @@ export default function LandingPage() {
       {/* ── Hero ── */}
       <section style={{
         background: 'var(--black)',
-        minHeight: '100vh',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         padding: '80px clamp(20px, 5vw, 52px) 0',
         position: 'relative',
         overflow: 'hidden',
@@ -447,7 +447,7 @@ export default function LandingPage() {
           </div>
 
           {/* Trust line */}
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300, marginBottom: 56 }}>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300, marginBottom: 32 }}>
             No app for customers · Live in ~24 hours · 7% per completed order
           </p>
 
@@ -456,7 +456,7 @@ export default function LandingPage() {
             <DashboardMockup />
             <div style={{
               position: 'absolute',
-              bottom: -24,
+              bottom: 24,
               right: 24,
               zIndex: 20,
               filter: 'drop-shadow(0 16px 40px rgba(0,0,0,0.5))',
