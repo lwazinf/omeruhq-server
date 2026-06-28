@@ -129,7 +129,7 @@ export default function LoginPage() {
         <div>
           <div style={{
             background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 14, padding: '20px 22px', marginBottom: 28,
+            borderRadius: 14, padding: '20px 22px', marginBottom: 28, maxWidth: 360,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
               <div style={{
