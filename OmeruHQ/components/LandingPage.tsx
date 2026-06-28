@@ -54,59 +54,74 @@ const STATS = [
 function ChatMock() {
   return (
     <div style={{
-      background: '#1a1a18',
-      borderRadius: 20,
-      padding: '16px',
-      width: '100%',
-      maxWidth: 300,
+      background: '#141413',
+      borderRadius: 24,
+      padding: '20px',
+      width: 320,
       border: '1px solid rgba(255,255,255,0.08)',
       fontFamily: 'var(--font-body)',
+      boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
     }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--lime)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--black)' }}>O</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, paddingBottom: 14, borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'var(--lime)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--black)' }}>O</span>
         </div>
         <div>
           <p style={{ fontSize: 13, fontWeight: 600, color: 'white' }}>Omeru Bot</p>
           <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>WhatsApp Business</p>
         </div>
-        <div style={{ marginLeft: 'auto', width: 8, height: 8, borderRadius: '50%', background: '#25d366' }} />
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#25d366' }} />
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>online</span>
+        </div>
       </div>
 
       {/* Messages */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '12px 12px 12px 4px', padding: '9px 12px', maxWidth: '85%' }}>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '14px 14px 14px 4px', padding: '10px 14px', maxWidth: '88%' }}>
+          <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.85)', lineHeight: 1.55 }}>
             🛍️ <strong style={{ color: 'white' }}>New order #A3F2</strong><br />
             Spicy Chicken Wrap × 2<br />
-            <span style={{ color: 'var(--lime)' }}>R89.00 — Paid via EFT</span>
+            <span style={{ color: 'var(--lime)', fontWeight: 500 }}>R89.00 — Paid via EFT</span>
           </p>
-          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 4, textAlign: 'right' }}>09:14</p>
+          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.22)', marginTop: 5, textAlign: 'right' }}>09:14</p>
         </div>
 
-        <div style={{ background: 'rgba(200,241,53,0.12)', borderRadius: '12px 12px 4px 12px', padding: '9px 12px', maxWidth: '85%', alignSelf: 'flex-end', border: '1px solid rgba(200,241,53,0.15)' }}>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
-            ✅ Order marked <strong style={{ color: 'var(--lime)' }}>Ready</strong>
+        <div style={{ background: 'rgba(200,241,53,0.1)', borderRadius: '14px 14px 4px 14px', padding: '10px 14px', maxWidth: '88%', alignSelf: 'flex-end', border: '1px solid rgba(200,241,53,0.18)' }}>
+          <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.85)', lineHeight: 1.55 }}>
+            ✅ Order marked <strong style={{ color: 'var(--lime)' }}>Ready for pickup</strong>
           </p>
-          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 4, textAlign: 'right' }}>09:17 ✓✓</p>
+          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.22)', marginTop: 5, textAlign: 'right' }}>09:17 ✓✓</p>
         </div>
 
-        <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '12px 12px 12px 4px', padding: '9px 12px', maxWidth: '85%' }}>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
+        <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '14px 14px 14px 4px', padding: '10px 14px', maxWidth: '88%' }}>
+          <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.85)', lineHeight: 1.55 }}>
             ⭐⭐⭐⭐⭐<br />
-            <span style={{ color: 'rgba(255,255,255,0.55)' }}>"Always fresh, fast delivery!"</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>"Always fresh, fast delivery!"</span>
           </p>
-          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 4, textAlign: 'right' }}>09:42</p>
+          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.22)', marginTop: 5, textAlign: 'right' }}>09:42</p>
+        </div>
+
+        {/* Floating KPI badge */}
+        <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+          <div style={{ flex: 1, background: 'rgba(200,241,53,0.08)', border: '1px solid rgba(200,241,53,0.15)', borderRadius: 12, padding: '10px 12px', textAlign: 'center' }}>
+            <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--lime)', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>R2 340</p>
+            <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>Today's revenue</p>
+          </div>
+          <div style={{ flex: 1, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, padding: '10px 12px', textAlign: 'center' }}>
+            <p style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>14</p>
+            <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>Orders today</p>
+          </div>
         </div>
       </div>
 
       {/* Input bar mock */}
-      <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: 8, alignItems: 'center' }}>
-        <div style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 20, padding: '7px 12px' }}>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)' }}>Type a message…</p>
+      <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 20, padding: '8px 14px' }}>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.18)' }}>Type a message…</p>
         </div>
-        <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--lime)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--lime)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--black)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" />
           </svg>
@@ -127,8 +142,8 @@ export default function LandingPage() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 clamp(20px, 5vw, 52px)',
         height: 64,
-        background: 'rgba(10,10,10,0.85)',
-        backdropFilter: 'blur(16px)',
+        background: 'rgba(10,10,10,0.88)',
+        backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -143,13 +158,8 @@ export default function LandingPage() {
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <button
-            onClick={openInviteModal}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-body)', padding: '8px 12px', borderRadius: 8, transition: 'color 0.15s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
-          >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button onClick={openInviteModal} className="landing-nav-apply">
             Apply
           </button>
           <Link href="/login" className="btn-lime" style={{ padding: '9px 20px', fontSize: 13 }}>
@@ -161,24 +171,20 @@ export default function LandingPage() {
       {/* ── Hero ── */}
       <section style={{
         background: 'var(--black)',
-        minHeight: '100vh',
-        paddingTop: 'clamp(100px, 16vh, 140px)',
-        paddingBottom: 'clamp(64px, 10vh, 100px)',
-        paddingLeft: 'clamp(20px, 5vw, 52px)',
-        paddingRight: 'clamp(20px, 5vw, 52px)',
+        padding: 'clamp(120px, 18vh, 160px) clamp(20px, 5vw, 52px) clamp(80px, 12vh, 112px)',
         position: 'relative',
         overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
       }}>
-        {/* Background glow */}
-        <div style={{ position: 'absolute', top: '20%', right: '10%', width: '40%', height: '60%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: '35%', height: '60%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.03) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        {/* Tile texture */}
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: "url('/bg-tile.jpg')", backgroundSize: '500px 333px', backgroundRepeat: 'repeat', mixBlendMode: 'screen', filter: 'invert(1)', opacity: 0.05 }} />
+        {/* Lime glows */}
+        <div style={{ position: 'absolute', top: '10%', right: '5%', width: '45%', height: '80%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: '40%', height: '70%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.03) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-        <div className="hero-inner" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 64, alignItems: 'center', position: 'relative', zIndex: 1 }}>
+        <div className="hero-inner" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 72, alignItems: 'center', position: 'relative', zIndex: 1 }}>
           {/* Left */}
           <div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, border: '1px solid rgba(200,241,53,0.25)', marginBottom: 28 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, border: '1px solid rgba(200,241,53,0.25)', background: 'rgba(200,241,53,0.06)', marginBottom: 28 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--lime)' }} />
               <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--lime)' }}>Merchant Portal</span>
             </div>
@@ -189,24 +195,20 @@ export default function LandingPage() {
               from one place.
             </h1>
 
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 17px)', color: 'rgba(255,255,255,0.45)', lineHeight: 1.75, maxWidth: 480, marginBottom: 36, fontWeight: 300, wordBreak: 'break-word' }}>
-              Omeru HQ is the command centre for your Omeru store — manage orders, products, bookings, your team, and more. Invite only.
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 17px)', color: 'rgba(255,255,255,0.42)', lineHeight: 1.8, maxWidth: 460, marginBottom: 36, fontWeight: 300, wordBreak: 'break-word' }}>
+              Omeru HQ is the command centre for your store — orders, products, bookings, your team, analytics and more. Invite only.
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <button onClick={openInviteModal} className="btn-lime" style={{ padding: '14px 28px', fontSize: 15 }}>
+              <button onClick={openInviteModal} className="btn-lime" style={{ padding: '14px 30px', fontSize: 15 }}>
                 Apply for access
               </button>
-              <Link href="/login" className="btn-outline" style={{ padding: '13px 26px', fontSize: 15, color: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.15)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'white'; (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.4)'; (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.04)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
-              >
+              <Link href="/login" className="landing-btn-dark">
                 Log in →
               </Link>
             </div>
 
-            {/* Trust line */}
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', marginTop: 24, fontWeight: 300 }}>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.18)', marginTop: 28, fontWeight: 300 }}>
               Invite only · South African merchants · Powered by WhatsApp
             </p>
           </div>
@@ -221,10 +223,10 @@ export default function LandingPage() {
       {/* ── Features ── */}
       <section style={{
         background: 'var(--off-white)',
-        padding: 'clamp(64px, 10vh, 100px) clamp(20px, 5vw, 52px)',
+        padding: 'clamp(64px, 10vh, 96px) clamp(20px, 5vw, 52px)',
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+          <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--mid-gray)' }}>Everything in one dashboard</span>
             <h2 className="display-md" style={{ marginTop: 12, color: 'var(--black)', wordBreak: 'break-word' }}>
               Built for how SA merchants actually work.
@@ -233,12 +235,12 @@ export default function LandingPage() {
 
           <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
             {FEATURES.map((f) => (
-              <div key={f.label} className="card" style={{ padding: '24px', borderRadius: 18, background: 'white' }}>
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--black)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16, color: 'var(--lime)' }}>
+              <div key={f.label} className="card" style={{ padding: '26px', borderRadius: 18, background: 'white' }}>
+                <div style={{ width: 42, height: 42, borderRadius: 13, background: 'var(--black)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16, color: 'var(--lime)' }}>
                   <Icon d={f.icon} size={18} />
                 </div>
                 <p style={{ fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 700, color: 'var(--black)', marginBottom: 8, letterSpacing: '-0.01em' }}>{f.label}</p>
-                <p style={{ fontSize: 13, color: 'var(--mid-gray)', lineHeight: 1.7, fontWeight: 300 }}>{f.desc}</p>
+                <p style={{ fontSize: 13, color: 'var(--mid-gray)', lineHeight: 1.75, fontWeight: 300 }}>{f.desc}</p>
               </div>
             ))}
           </div>
@@ -251,11 +253,11 @@ export default function LandingPage() {
           <div className="stats-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0 }}>
             {STATS.map((s, i) => (
               <div key={s.label} style={{
-                padding: '24px 28px',
+                padding: '28px 32px',
                 borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none',
               }}>
                 <p className="kpi-number" style={{ color: 'var(--lime)', marginBottom: 8 }}>{s.value}</p>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5, fontWeight: 300 }}>{s.label}</p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.38)', lineHeight: 1.6, fontWeight: 300 }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -268,17 +270,17 @@ export default function LandingPage() {
         padding: 'clamp(64px, 10vh, 96px) clamp(20px, 5vw, 52px)',
         textAlign: 'center',
       }}>
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+        <div style={{ maxWidth: 580, margin: '0 auto' }}>
           <h2 className="display-md" style={{ color: 'var(--black)', marginBottom: 16, wordBreak: 'break-word' }}>
             Ready to open your store?
           </h2>
-          <p style={{ fontSize: 15, color: 'var(--mid-gray)', lineHeight: 1.7, marginBottom: 36, fontWeight: 300 }}>
-            Apply for an invite and we'll reach out on WhatsApp within a few days to get you set up.
+          <p style={{ fontSize: 15, color: 'var(--mid-gray)', lineHeight: 1.75, marginBottom: 36, fontWeight: 300 }}>
+            Apply for an invite and we&apos;ll reach out on WhatsApp within a few days to get you set up.
           </p>
           <button onClick={openInviteModal} className="btn-lime" style={{ padding: '16px 36px', fontSize: 16 }}>
             Apply for access
           </button>
-          <p style={{ fontSize: 12, color: 'var(--mid-gray)', marginTop: 16, fontWeight: 300 }}>
+          <p style={{ fontSize: 12, color: 'var(--mid-gray)', marginTop: 20, fontWeight: 300 }}>
             Already have access?{' '}
             <Link href="/login" style={{ color: 'var(--black)', fontWeight: 500, textUnderlineOffset: 3 }}>
               Log in here
@@ -290,25 +292,51 @@ export default function LandingPage() {
       {/* ── Footer ── */}
       <footer style={{
         background: 'var(--black)',
-        padding: 'clamp(32px, 5vw, 48px) clamp(20px, 5vw, 52px)',
+        padding: 'clamp(28px, 4vw, 44px) clamp(20px, 5vw, 52px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: 16,
       }}>
-        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'rgba(255,255,255,0.25)', letterSpacing: '-0.01em' }}>
+        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}>
           omeru hq
         </span>
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 300 }}>
+        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.18)', fontWeight: 300 }}>
           © {new Date().getFullYear()} REMOLUHLE (PTY) Ltd. ·{' '}
-          <a href="https://omeru.io/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>
+          <a href="https://omeru.io/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.28)', textDecoration: 'none' }}>
             Privacy
           </a>
         </p>
       </footer>
 
       <style>{`
+        .landing-nav-apply {
+          background: none; border: none; cursor: pointer;
+          font-size: 13px; color: rgba(255,255,255,0.45);
+          font-family: var(--font-body); padding: 8px 12px;
+          border-radius: 8px; transition: color 0.15s, background 0.15s;
+        }
+        .landing-nav-apply:hover { color: white; background: rgba(255,255,255,0.06); }
+
+        .landing-btn-dark {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 13px 26px; background: transparent;
+          color: rgba(255,255,255,0.6);
+          border-radius: 100px; font-family: var(--font-body); font-size: 15px;
+          font-weight: 500; cursor: pointer;
+          border: 1.5px solid rgba(255,255,255,0.15);
+          text-decoration: none;
+          transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .landing-btn-dark:hover {
+          color: white;
+          border-color: rgba(255,255,255,0.4);
+          background: rgba(255,255,255,0.06);
+          transform: translateY(-2px);
+        }
+        .landing-btn-dark:active { transform: scale(0.97); transition-duration: 0.07s; }
+
         @media (max-width: 900px) {
           .hero-inner { grid-template-columns: 1fr !important; gap: 48px !important; }
           .hero-chat { display: flex; justify-content: center; }
@@ -316,7 +344,7 @@ export default function LandingPage() {
           .stats-row { grid-template-columns: repeat(2, 1fr) !important; }
           .stats-row > div:nth-child(2) { border-left: 1px solid rgba(255,255,255,0.07) !important; }
           .stats-row > div:nth-child(3) { border-left: none !important; border-top: 1px solid rgba(255,255,255,0.07); }
-          .stats-row > div:nth-child(4) { border-left: 1px solid rgba(255,255,255,0.07) !important; border-top: 1px solid rgba(255,255,255,0.07); }
+          .stats-row > div:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.07); }
         }
         @media (max-width: 560px) {
           .hero-chat { display: none !important; }
