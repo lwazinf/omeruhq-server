@@ -43,19 +43,19 @@ export default function OrderKanban({ orders }: { orders: Order[] }) {
         return (
           <div key={col.key}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <div style={{ height: 3, width: 18, borderRadius: 2, background: col.key === 'PAID' ? 'var(--lime)' : col.key === 'COMPLETED' ? 'var(--lime-muted)' : 'var(--warm-gray)' }} />
+              <div style={{ height: 3, width: 18, borderRadius: 2, background: col.key === 'PAID' ? 'var(--lime)' : col.key === 'COMPLETED' ? 'var(--lime-muted)' : 'rgba(255,255,255,0.15)' }} />
               <span style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--mid-gray)' }}>
                 {col.label}
               </span>
               {colOrders.length > 0 && (
-                <span style={{ background: col.key === 'PAID' ? 'var(--lime)' : 'var(--warm-gray)', color: col.key === 'PAID' ? 'var(--black)' : 'var(--mid-gray)', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 100 }}>
+                <span style={{ background: col.key === 'PAID' ? 'var(--lime)' : 'rgba(255,255,255,0.1)', color: col.key === 'PAID' ? 'var(--black)' : 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 100 }}>
                   {colOrders.length}
                 </span>
               )}
             </div>
 
             {colOrders.length === 0 ? (
-              <div style={{ background: 'rgba(0,0,0,0.025)', borderRadius: 14, padding: '18px 16px', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(0,0,0,0.2)' }}>
+              <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 14, padding: '18px 16px', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
                 {t('noOrders')}
               </div>
             ) : (
@@ -63,12 +63,12 @@ export default function OrderKanban({ orders }: { orders: Order[] }) {
                 <div key={o.id} className="card" style={{ padding: '14px 16px', marginBottom: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--mid-gray)', letterSpacing: '0.04em' }}>#{o.id.slice(-6)}</span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(0,0,0,0.35)' }}>{elapsed(o.createdAt)}</span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>{elapsed(o.createdAt)}</span>
                   </div>
                   <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, letterSpacing: '-0.01em', marginBottom: 8 }}>{formatZAR(o.total)}</div>
                   <div style={{ marginBottom: 12 }}>
                     {o.order_items.slice(0, 3).map((item, i) => (
-                      <div key={i} style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#555', lineHeight: 1.4 }}>
+                      <div key={i} style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4 }}>
                         {item.quantity}× {item.product?.name ?? 'Item'}
                       </div>
                     ))}

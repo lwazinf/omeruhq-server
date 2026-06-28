@@ -47,12 +47,12 @@ export default async function ProductsPage() {
           {products.map(p => (
             <div key={p.id} className="card" style={{ overflow: 'hidden' }}>
               {p.image_url ? (
-                <div style={{ height: 140, overflow: 'hidden', borderRadius: '12px 12px 0 0', background: 'var(--warm-gray)' }}>
+                <div style={{ height: 140, overflow: 'hidden', borderRadius: '12px 12px 0 0', background: 'rgba(255,255,255,0.06)' }}>
                   <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               ) : (
-                <div style={{ height: 80, background: 'var(--warm-gray)', borderRadius: '12px 12px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M3 14C3 8.201 7.701 3.5 13.5 3.5S24 8.201 24 14s-4.701 10.5-10.5 10.5S3 19.799 3 14z" stroke="rgba(0,0,0,0.15)" strokeWidth="1.5"/><path d="M10.5 14h7M14 10.5v7" stroke="rgba(0,0,0,0.15)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                <div style={{ height: 80, background: 'rgba(255,255,255,0.06)', borderRadius: '12px 12px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M3 14C3 8.201 7.701 3.5 13.5 3.5S24 8.201 24 14s-4.701 10.5-10.5 10.5S3 19.799 3 14z" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"/><path d="M10.5 14h7M14 10.5v7" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
               )}
               <div style={{ padding: '16px' }}>

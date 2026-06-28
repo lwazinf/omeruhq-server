@@ -70,9 +70,9 @@ export default async function DashboardPage() {
           <input type="hidden" name="current_state" value={isOpen ? 'open' : 'closed'} />
           <button type="submit" style={{
             display: 'flex', alignItems: 'center', gap: 10, padding: '10px 20px',
-            borderRadius: 100, border: '1.5px solid rgba(0,0,0,0.12)',
-            background: 'white', cursor: 'pointer', fontFamily: 'var(--font-body)',
-            fontSize: 13, fontWeight: 500, transition: 'border-color 0.2s',
+            borderRadius: 100, border: '1.5px solid rgba(255,255,255,0.12)',
+            background: 'rgba(255,255,255,0.06)', cursor: 'pointer', fontFamily: 'var(--font-body)',
+            color: 'white', fontSize: 13, fontWeight: 500, transition: 'border-color 0.2s',
           }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: isOpen ? 'var(--lime)' : '#ef4444', boxShadow: isOpen ? '0 0 5px var(--lime)' : '0 0 5px #ef4444' }} />
             Store {isOpen ? 'Open' : 'Closed'} — {isOpen ? 'Close' : 'Open'}
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
                       <span>{nameById.get(t.product_id) ?? 'Product'}</span>
                       <span style={{ color: 'var(--mid-gray)' }}>{qty} sold</span>
                     </div>
-                    <div style={{ height: 5, background: 'var(--warm-gray)', borderRadius: 3 }}>
+                    <div style={{ height: 5, background: 'rgba(255,255,255,0.08)', borderRadius: 3 }}>
                       <div style={{ height: '100%', width: `${(qty / maxQty) * 100}%`, background: i === 0 ? 'var(--lime)' : 'var(--lime-muted)', borderRadius: 3, transition: 'width 0.4s' }} />
                     </div>
                   </div>
@@ -170,9 +170,9 @@ export default async function DashboardPage() {
 
 function KpiCard({ label, value, featured = false }: { label: string; value: string; featured?: boolean }) {
   return (
-    <div className="card" style={{ padding: '20px 22px', background: featured ? 'var(--dark-gray)' : 'white' }}>
-      <div className="kpi-number" style={{ color: featured ? 'var(--lime)' : 'var(--black)', marginBottom: 4 }}>{value}</div>
-      <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: featured ? 'rgba(255,255,255,0.4)' : 'var(--mid-gray)' }}>{label}</div>
+    <div className="card" style={{ padding: '20px 22px', background: featured ? 'rgba(200,241,53,0.08)' : undefined, borderColor: featured ? 'rgba(200,241,53,0.2)' : undefined }}>
+      <div className="kpi-number" style={{ color: featured ? 'var(--lime)' : 'white', marginBottom: 4 }}>{value}</div>
+      <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{label}</div>
     </div>
   );
 }

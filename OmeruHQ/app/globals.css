@@ -57,19 +57,19 @@ body { font-family: var(--font-body); background: var(--off-white); color: var(-
 .btn-ghost:hover { background: rgba(0,0,0,0.05); color: var(--black); }
 
 /* ── Cards ── */
-.card { background: white; border-radius: 18px; border: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.25s; }
-.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+.card { background: rgba(255,255,255,0.04); border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); transition: box-shadow 0.25s; }
+.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
 
 /* ── Status pills ── */
 .pill {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 500; letter-spacing: 0.03em;
 }
-.pill-lime   { background: var(--lime);      color: var(--black); }
-.pill-warm   { background: var(--warm-gray); color: var(--mid-gray); }
-.pill-dark   { background: var(--dark-gray); color: white; }
-.pill-red    { background: #ffe4e4;          color: #c0392b; }
-.pill-yellow { background: #fff9db;          color: #8a6d00; }
+.pill-lime   { background: var(--lime);              color: var(--black); }
+.pill-warm   { background: rgba(255,255,255,0.09);   color: rgba(255,255,255,0.55); }
+.pill-dark   { background: rgba(255,255,255,0.15);   color: white; }
+.pill-red    { background: rgba(220,38,38,0.18);     color: #f87171; }
+.pill-yellow { background: rgba(234,179,8,0.18);     color: #fbbf24; }
 
 /* ── Toggle switch ── */
 .toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
@@ -104,7 +104,8 @@ body { font-family: var(--font-body); background: var(--off-white); color: var(-
 .main-content {
   margin-left: var(--sidebar-width);
   flex: 1; min-height: 100vh;
-  background: var(--off-white);
+  background: #111;
+  color: white;
 }
 
 /* ── Mobile topbar ── */
@@ -170,24 +171,30 @@ body { font-family: var(--font-body); background: var(--off-white); color: var(-
 .data-table th {
   text-align: left; font-family: var(--font-display); font-size: 10px;
   font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--mid-gray); padding: 10px 16px; border-bottom: 1px solid rgba(0,0,0,0.08);
+  color: rgba(255,255,255,0.3); padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.data-table td { padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 13px; vertical-align: middle; }
+.data-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; vertical-align: middle; color: rgba(255,255,255,0.8); }
 .data-table tbody tr:last-child td { border-bottom: none; }
-.data-table tbody tr:hover td { background: rgba(0,0,0,0.015); }
+.data-table tbody tr:hover td { background: rgba(255,255,255,0.03); }
 
 /* ── Divider ── */
-.divider { height: 1px; background: rgba(0,0,0,0.07); }
+.divider { height: 1px; background: rgba(255,255,255,0.07); }
 
 /* ── Animations ── */
 @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
 
 /* ── Input ── */
 .input {
-  width: 100%; padding: 12px 16px; border: 1.5px solid rgba(0,0,0,0.12);
+  width: 100%; padding: 12px 16px; border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 12px; font-family: var(--font-body); font-size: 14px;
-  background: white; color: var(--black); outline: none;
+  background: rgba(255,255,255,0.05); color: white; outline: none;
   transition: border-color 0.2s;
 }
-.input:focus { border-color: var(--black); }
-.input::placeholder { color: var(--mid-gray); }
+.input:focus { border-color: rgba(255,255,255,0.35); }
+.input::placeholder { color: rgba(255,255,255,0.25); }
+/* Light-context input (login page, modals) */
+.input-light {
+  background: white; color: var(--black); border-color: rgba(0,0,0,0.12);
+}
+.input-light:focus { border-color: var(--black); }
+.input-light::placeholder { color: var(--mid-gray); }

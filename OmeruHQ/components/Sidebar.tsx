@@ -55,10 +55,9 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
     {/* ── Mobile top bar ── */}
     <div className="mobile-topbar">
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div style={{ width: 26, height: 26, background: 'rgba(200,241,53,0.12)', border: '1px solid rgba(200,241,53,0.2)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 26, height: 26, background: 'var(--lime)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="12" height="12" viewBox="0 0 18 18" fill="none">
-            <path d="M3 9C3 5.686 5.686 3 9 3s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="var(--lime)"/>
-            <path d="M9 6v6M6 9h6" stroke="rgba(0,0,0,0.5)" strokeWidth="1.8" strokeLinecap="round"/>
+            <circle cx="9" cy="9" r="4" fill="rgba(0,0,0,0.7)"/>
           </svg>
         </div>
         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'white', letterSpacing: '-0.01em' }}>Omeru HQ</span>
@@ -167,10 +166,9 @@ export default function Sidebar({ merchantName, merchantHandle, isOpen, pendingO
       {/* Logo */}
       <div style={{ padding: '28px 20px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-          <div style={{ width: 28, height: 28, background: 'rgba(200,241,53,0.12)', border: '1px solid rgba(200,241,53,0.2)', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 28, height: 28, background: 'var(--lime)', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="13" height="13" viewBox="0 0 18 18" fill="none">
-              <path d="M3 9C3 5.686 5.686 3 9 3s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="var(--lime)"/>
-              <path d="M9 6v6M6 9h6" stroke="rgba(0,0,0,0.5)" strokeWidth="1.8" strokeLinecap="round"/>
+              <circle cx="9" cy="9" r="4.5" fill="rgba(0,0,0,0.7)"/>
             </svg>
           </div>
           <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'white', letterSpacing: '-0.01em' }}>Omeru HQ</span>
