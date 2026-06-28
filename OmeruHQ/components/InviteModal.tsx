@@ -329,6 +329,12 @@ export default function InviteModal() {
   useEffect(() => {
     const handler = () => setOpen(true);
     window.addEventListener('omeru:invite', handler);
+
+    if (new URLSearchParams(window.location.search).get('invite') === '1') {
+      setOpen(true);
+      history.replaceState(null, '', window.location.pathname);
+    }
+
     return () => window.removeEventListener('omeru:invite', handler);
   }, []);
 
