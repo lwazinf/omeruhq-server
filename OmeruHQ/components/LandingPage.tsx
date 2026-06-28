@@ -164,27 +164,40 @@ function DashboardMockup() {
         </div>
       </div>
 
-      {/* WhatsApp notification overlay */}
-      <div style={{
-        position: 'absolute', bottom: 20, right: 16,
-        background: '#1e1e1e', border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 10, padding: '10px 14px',
-        display: 'flex', alignItems: 'flex-start', gap: 8,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-        maxWidth: 220,
-      }}>
-        <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--lime)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--black)' }}>O</span>
-        </div>
-        <div>
-          <p style={{ fontSize: 9, fontWeight: 600, color: 'white', marginBottom: 2 }}>Omeru Bot <span style={{ color: 'rgba(255,255,255,0.35)', fontWeight: 400 }}>· WhatsApp Business</span></p>
-          <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4 }}>
-            ✅ Order <strong style={{ color: 'white' }}>#A3F2</strong> marked Ready<br />
-            <span style={{ color: 'rgba(255,255,255,0.4)' }}>Customer notified on WhatsApp</span>
-          </p>
-        </div>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#25d366', marginTop: 3, flexShrink: 0 }} />
+    </div>
+  );
+}
+
+function WANotification() {
+  return (
+    <div style={{
+      background: '#1c1c1c',
+      border: '1px solid rgba(255,255,255,0.12)',
+      borderRadius: 14,
+      padding: '12px 16px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+      boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+      width: 280,
+    }}>
+      {/* Avatar */}
+      <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--lime)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--black)' }}>O</span>
       </div>
+      {/* Text */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, color: 'white' }}>Omeru Bot</p>
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', fontWeight: 300 }}>· WhatsApp Business</span>
+        </div>
+        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', lineHeight: 1.5 }}>
+          ✅ Order <strong style={{ color: 'white' }}>#A3F2</strong> marked Ready<br />
+          <span style={{ color: 'rgba(255,255,255,0.4)' }}>Customer notified on WhatsApp</span>
+        </p>
+      </div>
+      {/* Online dot */}
+      <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#25d366', flexShrink: 0, alignSelf: 'flex-start', marginTop: 4 }} />
     </div>
   );
 }
@@ -438,8 +451,19 @@ export default function LandingPage() {
             No app for customers · Live in ~24 hours · 7% per completed order
           </p>
 
-          {/* Dashboard mockup — bleeds into next section */}
-          <DashboardMockup />
+          {/* Dashboard mockup + floating WA notification */}
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <DashboardMockup />
+            <div style={{
+              position: 'absolute',
+              bottom: -24,
+              right: 24,
+              zIndex: 20,
+              filter: 'drop-shadow(0 16px 40px rgba(0,0,0,0.5))',
+            }}>
+              <WANotification />
+            </div>
+          </div>
         </div>
       </section>
 
