@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
-export default function StartPage({ params }: { params: { locale: string } }) {
-  redirect(`/${params.locale}?invite=1`);
+export default async function StartPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  redirect(`/${locale}?invite=1`);
 }
