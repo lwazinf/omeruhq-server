@@ -105,17 +105,6 @@ function ChatMock() {
           <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.22)', marginTop: 5, textAlign: 'right' }}>09:42</p>
         </div>
 
-        {/* Floating KPI badge */}
-        <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
-          <div style={{ flex: 1, background: 'rgba(200,241,53,0.08)', border: '1px solid rgba(200,241,53,0.15)', borderRadius: 12, padding: '10px 12px', textAlign: 'center' }}>
-            <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--lime)', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>R2 340</p>
-            <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>Today's revenue</p>
-          </div>
-          <div style={{ flex: 1, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, padding: '10px 12px', textAlign: 'center' }}>
-            <p style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>14</p>
-            <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>Orders today</p>
-          </div>
-        </div>
       </div>
 
       {/* Input bar mock */}
@@ -320,7 +309,10 @@ export default function LandingPage() {
       {/* ── Hero ── */}
       <section style={{
         background: 'var(--black)',
-        padding: 'clamp(120px, 18vh, 160px) clamp(20px, 5vw, 52px) clamp(80px, 12vh, 112px)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 clamp(20px, 5vw, 52px)',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -330,7 +322,7 @@ export default function LandingPage() {
         <div style={{ position: 'absolute', top: '10%', right: '5%', width: '45%', height: '80%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: '40%', height: '70%', background: 'radial-gradient(ellipse at center, rgba(200,241,53,0.03) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-        <div className="hero-inner" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 72, alignItems: 'center', position: 'relative', zIndex: 1 }}>
+        <div className="hero-inner" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 72, alignItems: 'center', position: 'relative', zIndex: 1, paddingTop: 64 }}>
           {/* Left */}
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, border: '1px solid rgba(200,241,53,0.25)', background: 'rgba(200,241,53,0.06)', marginBottom: 28 }}>
