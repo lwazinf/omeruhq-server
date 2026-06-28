@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const PUBLIC = ['/login', '/start', '/api/auth/send-otp', '/api/auth/verify-otp', '/api/invite'];
+const PUBLIC_STARTS = ['/login', '/start', '/api/auth/send-otp', '/api/auth/verify-otp', '/api/invite'];
+const PUBLIC_EXACT = ['/'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (PUBLIC.some(p => pathname.startsWith(p))) return NextResponse.next();
+  if (PUBLIC_EXACT.includes(pathname) || PUBLIC_STARTS.some(p => pathname.startsWith(p))) {
+    return NextResponse.next();
+  }
 
   const token = req.cookies.get('omeru_session')?.value;
   if (!token) return NextResponse.redirect(new URL('/login', req.url));
