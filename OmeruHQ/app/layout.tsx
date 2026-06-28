@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import InviteModal from '@/components/InviteModal';
 
 export const metadata: Metadata = {
   title: 'Omeru HQ — Merchant Portal',
@@ -16,6 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider messages={messages}>
           <div className="noise" aria-hidden />
           {children}
+          <InviteModal />
         </NextIntlClientProvider>
       </body>
     </html>
