@@ -57,7 +57,7 @@ async function allCustomerIds(): Promise<string[]> {
 async function merchantRevenueInWindow(windowDays: number): Promise<Map<string, { wa_id: string; revenue: number }>> {
   const since = new Date(Date.now() - windowDays * 24 * 60 * 60 * 1000);
   const orders = await db.order.findMany({
-    where: { createdAt: { gte: since }, status: { in: ['PAID', 'READY', 'COLLECTED', 'COMPLETED'] } },
+    where: { createdAt: { gte: since }, status: { in: ['PAID', 'READY_FOR_PICKUP', 'COMPLETED'] } },
     select: { merchant_id: true, total: true },
   });
   const merchants = await db.merchant.findMany({ where: { status: 'ACTIVE' }, select: { id: true, wa_id: true } });

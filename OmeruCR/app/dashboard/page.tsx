@@ -15,7 +15,7 @@ async function stats() {
   const now = Date.now();
   const d7 = new Date(now - 7 * 86400e3);
   const d30 = new Date(now - 30 * 86400e3);
-  const PAID = ['PAID', 'READY', 'COLLECTED', 'COMPLETED'];
+  const PAID = ['PAID', 'READY_FOR_PICKUP', 'COMPLETED'];
 
   const [merchants, openStores, customers, orders30, orders7, pending, recentMerchants, allOrders30, abandoned] =
     await Promise.all([

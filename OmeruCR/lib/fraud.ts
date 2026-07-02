@@ -20,7 +20,7 @@ export interface FraudSignal {
 export const maskWaId = (waId: string): string =>
   waId.length <= 5 ? '•••' : `${waId.slice(0, 4)}•••${waId.slice(-2)}`;
 
-const PAID = ['PAID', 'READY', 'READY_FOR_PICKUP', 'COLLECTED', 'COMPLETED'];
+const PAID = ['PAID', 'READY_FOR_PICKUP', 'COMPLETED'];
 
 export async function detectFraudSignals(): Promise<FraudSignal[]> {
   const now = Date.now();
