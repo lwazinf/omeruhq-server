@@ -120,7 +120,7 @@ export default function Nav({ darkHero = false }: { darkHero?: boolean }) {
             {t('merchantHQ')}
           </a>
           <a
-            href="https://wa.me/27750656348?text=Hi"
+            href="https://wa.me/27705736794?text=Hi"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-lime"
@@ -194,7 +194,7 @@ export default function Nav({ darkHero = false }: { darkHero?: boolean }) {
               <a href="https://hq.omeru.io" className="btn-outline" style={{ justifyContent: 'center', padding: '15px 24px' }}>
                 {t('merchantHQ')}
               </a>
-              <a href="https://wa.me/27750656348?text=Hi" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ justifyContent: 'center', padding: '15px 24px' }}>
+              <a href="https://wa.me/27705736794?text=Hi" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ justifyContent: 'center', padding: '15px 24px' }}>
                 {t('shopOnWhatsApp')}
               </a>
             </motion.div>

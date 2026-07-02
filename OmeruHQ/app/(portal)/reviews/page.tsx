@@ -109,9 +109,6 @@ export default async function ReviewsPage() {
                       {review.comment}
                     </p>
                   )}
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--mid-gray)', marginTop: 6 }}>
-                    {review.customer_wa_id.slice(0, 6)}••••{review.customer_wa_id.slice(-4)}
-                  </div>
                 </div>
                 <form action={toggleReviewVisibilityAction}>
                   <input type="hidden" name="id" value={review.id} />

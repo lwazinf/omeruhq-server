@@ -116,7 +116,7 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
   ];
 
   return (
-    <div style={{ background: 'var(--off-white)', minHeight: '100vh', paddingTop: preview === '1' ? 36 : 0 }}>
+    <div style={{ background: 'var(--off-white)', minHeight: '100vh', paddingTop: preview === '1' ? 36 : 0, overflowX: 'hidden' }}>
       <div className="noise" />
       {/* nosemgrep: react-dangerouslysetinnerhtml — <, >, & are unicode-escaped */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }} />
@@ -167,7 +167,7 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
             )}
 
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+              <div className="store-hero-badges" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
                 {merchant.store_category && (
                   <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 100, fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'rgba(200,241,53,0.12)', color: 'var(--lime)', border: '1px solid rgba(200,241,53,0.2)' }}>
                     {merchant.store_category}
@@ -181,10 +181,10 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
                 </span>
               </div>
 
-              <h1 className="display-md" style={{ color: 'white', marginBottom: 12 }}>{merchant.trading_name}</h1>
+              <h1 className="display-md" style={{ color: 'white', marginBottom: 12, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{merchant.trading_name}</h1>
 
               {merchant.description && (
-                <p style={{ fontSize: 16, lineHeight: 1.7, color: 'rgba(255,255,255,0.5)', fontWeight: 300, maxWidth: 560, marginBottom: 28 }}>
+                <p style={{ fontSize: 16, lineHeight: 1.7, color: 'rgba(255,255,255,0.5)', fontWeight: 300, maxWidth: 560, marginBottom: 28, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                   {merchant.description}
                 </p>
               )}
@@ -194,7 +194,7 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
                   {t('shopOnWhatsApp')}
                 </a>
                 {hasServices && (
-                  <a href={waServicesListLink(merchant.id)} rel="nofollow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', borderRadius: 100, border: '1.5px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, fontWeight: 500, transition: 'border-color 0.2s, color 0.2s' }}>
+                  <a href={waServicesListLink(merchant.id)} rel="nofollow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', borderRadius: 100, border: '1.5px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, fontWeight: 500, transition: 'border-color 0.2s, color 0.2s', whiteSpace: 'nowrap' }}>
                     {t('bookAService')}
                   </a>
                 )}
@@ -240,7 +240,7 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
             )}
           </aside>
 
-          <main>
+          <main style={{ minWidth: 0 }}>
             <div id="about" style={{ scrollMarginTop: 32 }}>
               <SectionHead n="01" title={t('about')} />
               <p style={{ fontSize: 15, color: 'var(--dark-gray)', lineHeight: 1.8, fontWeight: 300, marginBottom: 20 }}>
@@ -306,18 +306,18 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
               <SectionHead n={hasProducts || hasServices ? '03' : '02'} title={t('storeInfo')} />
 
               <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: 16 }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                <table className="store-hours-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ background: 'rgba(0,0,0,0.03)' }}>
-                      <th style={{ padding: '10px 16px', fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--black)', fontSize: 11, textAlign: 'left', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>{t('day')}</th>
-                      <th style={{ padding: '10px 16px', fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--black)', fontSize: 11, textAlign: 'left', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>{t('hours')}</th>
+                      <th style={{ padding: '10px 16px', fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--black)', fontSize: 11, textAlign: 'left', borderBottom: '1px solid rgba(0,0,0,0.07)', whiteSpace: 'nowrap' }}>{t('day')}</th>
+                      <th style={{ padding: '10px 16px', fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--black)', fontSize: 11, textAlign: 'left', borderBottom: '1px solid rgba(0,0,0,0.07)', whiteSpace: 'nowrap' }}>{t('hours')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {hoursRows.map(([day, hours], i) => (
                       <tr key={day} style={{ borderBottom: i < hoursRows.length - 1 ? '1px solid rgba(0,0,0,0.05)' : 'none' }}>
-                        <td style={{ padding: '10px 16px', fontWeight: 500, color: 'var(--black)' }}>{day}</td>
-                        <td style={{ padding: '10px 16px', fontWeight: 300, color: hours === closedLabel ? 'var(--mid-gray)' : 'var(--dark-gray)' }}>{hours}</td>
+                        <td style={{ padding: '10px 16px', fontWeight: 500, color: 'var(--black)', whiteSpace: 'nowrap' }}>{day}</td>
+                        <td style={{ padding: '10px 16px', fontWeight: 300, color: hours === closedLabel ? 'var(--mid-gray)' : 'var(--dark-gray)', wordBreak: 'break-word' }}>{hours}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -349,9 +349,9 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
         </div>
       </div>
 
-      <div style={{ position: 'sticky', bottom: 0, zIndex: 10, paddingBottom: 20, background: 'linear-gradient(transparent, var(--off-white) 45%)', pointerEvents: 'none' }}>
+      <div className="store-sticky-cta" style={{ position: 'sticky', bottom: 0, zIndex: 10, paddingBottom: 20, background: 'linear-gradient(transparent, var(--off-white) 45%)', pointerEvents: 'none' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', pointerEvents: 'auto' }}>
-          <a href={chatLink} rel="nofollow" className="btn-lime" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.18)', fontSize: 14, maxWidth: 'calc(100vw - 48px)', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <a href={chatLink} rel="nofollow" className="btn-lime" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.18)', fontSize: 14, maxWidth: 'calc(100vw - 48px)', textAlign: 'center', whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {t('chatWith', { name: merchant.trading_name })}
           </a>
         </div>
@@ -377,8 +377,28 @@ export default async function StorefrontPage({ params, searchParams }: Props) {
           aside { display: none; }
         }
         @media (max-width: 600px) {
-          .store-hero-row { align-items: center !important; }
+          .store-hero-row { align-items: flex-start !important; flex-wrap: wrap !important; }
           .store-hero-img { width: 64px !important; height: 64px !important; border-radius: 16px !important; }
+        }
+        /* ── Mobile overflow safety for storefront ── */
+        @media (max-width: 768px) {
+          /* Prevent any text from breaking out of its column */
+          .store-layout main, .store-layout main * {
+            max-width: 100%;
+          }
+          /* Badges / pills in hero row should wrap, not overflow */
+          .store-hero-badges { flex-wrap: wrap !important; }
+          /* Store name word-wrap */
+          .display-md { word-break: break-word; overflow-wrap: break-word; }
+          /* Table cells: allow text to wrap */
+          .store-hours-table td, .store-hours-table th {
+            word-break: break-word;
+            white-space: normal;
+          }
+          /* Info-row values: wrap long strings (e.g. long addresses) */
+          .info-row-value { word-break: break-all; overflow-wrap: anywhere; }
+          /* Bottom sticky CTA: keep within viewport */
+          .store-sticky-cta a { max-width: calc(100vw - 48px) !important; }
         }
         .toc-link {
           display: block;

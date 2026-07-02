@@ -754,3 +754,35 @@ These are forward-looking improvements beyond fixing known issues. Each would ma
 | `app/[locale]/[handle]/page.tsx` | Remove `maxWidth`/`overflow`/`textOverflow` from sticky CTA; remove `store-hero-btns` class |
 | `app/globals.css` | Remove mobile safety block at end of file |
 
+---
+
+### v1.15.0 — 2026-06-30 SAST
+**OmeruIO: WhatsApp bot number updated from 27750656348 → 27705736794 across all CTAs and config.**
+
+**What changed:**
+
+*`lib/storefront.ts`*
+- Fallback in `WA_NUMBER` constant updated from `27750656348` to `27705736794`
+
+*`components/Hero.tsx`*
+- Both hardcoded `wa.me/27750656348` CTAs (customer + merchant secondary) updated to `wa.me/27705736794`
+
+*`components/Nav.tsx`*
+- Both hardcoded `wa.me/27750656348` nav links updated to `wa.me/27705736794`
+
+*`.env.production.local` and `.env.example`*
+- `NEXT_PUBLIC_WA_NUMBER` updated from `27750656348` to `27705736794`
+
+**Score impact:**
+- No UX or score change — operational update only. All WhatsApp deep-links now route to the live bot number.
+
+### Rollback to v1.14.0
+
+| File | Change to reverse |
+|------|------------------|
+| `lib/storefront.ts` | Revert `WA_NUMBER` fallback to `'27750656348'` |
+| `components/Hero.tsx` | Revert both `wa.me/27705736794` hrefs to `wa.me/27750656348` |
+| `components/Nav.tsx` | Revert both `wa.me/27705736794` hrefs to `wa.me/27750656348` |
+| `.env.production.local` | Set `NEXT_PUBLIC_WA_NUMBER="27750656348\n"` |
+| `.env.example` | Set `NEXT_PUBLIC_WA_NUMBER="27750656348"` |
+

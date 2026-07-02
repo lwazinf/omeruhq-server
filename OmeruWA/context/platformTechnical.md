@@ -59,7 +59,7 @@ Status updates (sent / delivered / read) arrive via `statuses` field and are log
 | `PORT` | `8080` | Express server port |
 | `DATABASE_URL` | — | Prisma connection (pooled) |
 | `DIRECT_URL` | — | Prisma direct connection (for migrations) |
-| `WHATSAPP_PHONE_NUMBER` | `27750656348` | Bot's WhatsApp number |
+| `WHATSAPP_PHONE_NUMBER` | `27705736794` | Bot's WhatsApp number |
 | `WHATSAPP_WEBHOOK_VERIFY_TOKEN` | — | Webhook security token |
 | `ADMIN_WHATSAPP_NUMBER` | — | Single platform admin number |
 | `PLATFORM_ADMIN_NUMBERS` | — | Comma-separated admin numbers (overrides single) |

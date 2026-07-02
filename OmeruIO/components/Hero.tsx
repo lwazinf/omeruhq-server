@@ -67,7 +67,7 @@ export default function Hero() {
     primaryLabel: t('merchant.primary'),
     primaryHref: '#invite',
     secondaryLabel: t('merchant.secondary'),
-    secondaryHref: 'https://wa.me/27750656348?text=Hi%2C+I%27d+like+to+browse+stores+on+Omeru',
+    secondaryHref: 'https://wa.me/27705736794?text=Hi%2C+I%27d+like+to+browse+stores+on+Omeru',
   } : {
     pill: t('customer.pill'),
     headline: [t('customer.line1'), t('customer.line2'), t('customer.line3')],
@@ -75,7 +75,7 @@ export default function Hero() {
     body: t('customer.body'),
     sub: t('customer.sub'),
     primaryLabel: t('customer.primary'),
-    primaryHref: 'https://wa.me/27750656348?text=Hi%2C+I%27d+like+to+shop',
+    primaryHref: 'https://wa.me/27705736794?text=Hi%2C+I%27d+like+to+shop',
     secondaryLabel: t('customer.secondary'),
     secondaryHref: '#invite',
   };

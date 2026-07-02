@@ -1,119 +1,174 @@
 'use client';
 
 import { useTransition } from 'react';
-import { useTranslations } from 'next-intl';
-import { advanceOrderAction, cancelOrderAction } from './actions';
+import { advanceOrderAction } from './actions';
 
-type OrderItem = { product: { name: string } | null; quantity: number; price: number };
-type Order = { id: string; total: number; status: string; createdAt: Date; order_items: OrderItem[] };
+type Order = {
+  id: string;
+  total: number;
+  status: string;
+  createdAt: string;
+  customerName: string;
+  items: string;
+};
 
-function elapsed(d: Date) {
-  const mins = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
-  if (mins < 60) return `${mins}m`;
+type ColConfig = {
+  key: string;
+  label: string;
+  color: string;
+  next: string | undefined;
+  nextLabel: string | undefined;
+};
+
+const COLS: ColConfig[] = [
+  { key: 'PENDING',          label: 'PENDING',    color: 'var(--lime)',             next: 'PAID',             nextLabel: 'Accept' },
+  { key: 'PAID',             label: 'TO PREPARE', color: '#f5c842',                 next: 'READY_FOR_PICKUP', nextLabel: 'Mark ready' },
+  { key: 'READY_FOR_PICKUP', label: 'READY',      color: 'rgba(255,255,255,0.55)',  next: 'COMPLETED',        nextLabel: 'Complete' },
+  { key: 'COMPLETED',        label: 'DONE',       color: '#4ade80',                 next: undefined,          nextLabel: undefined },
+];
+
+function elapsed(iso: string): string {
+  const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+  if (mins < 60) return `${mins} min`;
   return `${Math.floor(mins / 60)}h ${mins % 60}m`;
 }
-function formatZAR(n: number) { return `R${n.toLocaleString('en-ZA', { minimumFractionDigits: 0 })}`; }
+
+function formatZAR(n: number) {
+  return `R ${n.toLocaleString('en-ZA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+}
+
+function DoneCheck() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <circle cx="7" cy="7" r="6.3" stroke="#4ade80" strokeWidth="1.2" />
+      <path d="M4.2 7l2 2 3.6-3.6" stroke="#4ade80" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function OrderKanban({ orders }: { orders: Order[] }) {
-  const t = useTranslations('Orders');
   const [, startTransition] = useTransition();
 
-  const COLS = [
-    { key: 'PENDING',          label: t('pending'),    next: undefined,           nextLabel: undefined },
-    { key: 'PAID',             label: t('toPrepare'),  next: 'READY_FOR_PICKUP', nextLabel: t('advance') },
-    { key: 'READY_FOR_PICKUP', label: t('ready'),      next: 'COMPLETED',         nextLabel: t('done') },
-    { key: 'COMPLETED',        label: t('done'),       next: undefined,           nextLabel: undefined },
-  ];
-
   function advance(orderId: string, next: string) {
-    const fd = new FormData(); fd.set('order_id', orderId); fd.set('next_status', next);
-    startTransition(() => advanceOrderAction(fd));
-  }
-  function cancel(orderId: string) {
-    if (!window.confirm(t('cancelConfirm'))) return;
-    const fd = new FormData(); fd.set('order_id', orderId);
-    startTransition(() => cancelOrderAction(fd));
+    const fd = new FormData();
+    fd.set('order_id', orderId);
+    fd.set('next_status', next);
+    startTransition(() => { void advanceOrderAction(fd); });
   }
 
   return (
-    <div className="kanban-outer">
-      <div className="kanban-inner" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, alignItems: 'start' }}>
-      {COLS.map(col => {
-        const colOrders = orders.filter(o => o.status === col.key);
-        return (
-          <div key={col.key}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <div style={{ height: 3, width: 18, borderRadius: 2, background: col.key === 'PAID' ? 'var(--lime)' : col.key === 'COMPLETED' ? 'var(--lime-muted)' : 'rgba(255,255,255,0.15)' }} />
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--mid-gray)' }}>
-                {col.label}
-              </span>
-              {colOrders.length > 0 && (
-                <span style={{ background: col.key === 'PAID' ? 'var(--lime)' : 'rgba(255,255,255,0.1)', color: col.key === 'PAID' ? 'var(--black)' : 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 100 }}>
-                  {colOrders.length}
-                </span>
-              )}
-            </div>
+    <div style={{ overflowX: 'auto' }}>
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+        gap: 16, minWidth: 720, alignItems: 'start',
+      }}>
+        {COLS.map(col => {
+          const colOrders = orders.filter(o => o.status === col.key);
+          const done = col.key === 'COMPLETED';
 
-            {colOrders.length === 0 ? (
-              <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 14, padding: '18px 16px', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-                {t('noOrders')}
+          return (
+            <div key={col.key}>
+              {/* ── Column header ── */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 14 }}>
+                <span style={{
+                  width: 7, height: 7, borderRadius: '50%',
+                  background: col.color, flexShrink: 0, display: 'inline-block',
+                }} />
+                <span style={{
+                  fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700,
+                  letterSpacing: '0.1em', textTransform: 'uppercase', color: col.color,
+                }}>
+                  {col.label}
+                </span>
+                {colOrders.length > 0 && (
+                  <span style={{
+                    fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700,
+                    color: col.color, opacity: 0.75,
+                  }}>
+                    {colOrders.length}
+                  </span>
+                )}
               </div>
-            ) : (
-              colOrders.map(o => (
-                <div key={o.id} className="card" style={{ padding: '14px 16px', marginBottom: 8 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--mid-gray)', letterSpacing: '0.04em' }}>#{o.id.slice(-6)}</span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>{elapsed(o.createdAt)}</span>
+
+              {/* ── Empty state ── */}
+              {colOrders.length === 0 && (
+                <div style={{
+                  background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)',
+                  borderRadius: 10, padding: '22px 16px', textAlign: 'center',
+                  fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.15)',
+                }}>
+                  Empty
+                </div>
+              )}
+
+              {/* ── Order cards ── */}
+              {colOrders.map(o => (
+                <div
+                  key={o.id}
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                    borderRadius: 10,
+                    padding: '14px 16px',
+                    marginBottom: 8,
+                  }}
+                >
+                  {/* Top row: #ID · time */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 9 }}>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.04em' }}>
+                      #{o.id.slice(-4).toUpperCase()}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: done ? '#4ade80' : 'rgba(255,255,255,0.3)' }}>
+                      {done ? 'done' : elapsed(o.createdAt)}
+                    </span>
                   </div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, letterSpacing: '-0.01em', marginBottom: 8 }}>{formatZAR(o.total)}</div>
-                  <div style={{ marginBottom: 12 }}>
-                    {o.order_items.slice(0, 3).map((item, i) => (
-                      <div key={i} style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4 }}>
-                        {item.quantity}× {item.product?.name ?? 'Item'}
+
+                  {/* Customer name */}
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, color: 'white', marginBottom: 3, lineHeight: 1.3 }}>
+                    {o.customerName}
+                  </div>
+
+                  {/* Items */}
+                  <div style={{
+                    fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.4)',
+                    marginBottom: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  }}>
+                    {o.items}
+                  </div>
+
+                  {/* Bottom row: Amount · Action */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 14, fontWeight: 700, color: 'var(--lime)', letterSpacing: '-0.01em' }}>
+                      {formatZAR(o.total)}
+                    </span>
+
+                    {done ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <DoneCheck />
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#4ade80' }}>Done</span>
                       </div>
-                    ))}
-                    {o.order_items.length > 3 && (
-                      <div style={{ fontSize: 11, color: 'var(--mid-gray)' }}>+{o.order_items.length - 3} more</div>
-                    )}
-                  </div>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    {col.next && (
+                    ) : col.next ? (
                       <button
                         onClick={() => advance(o.id, col.next!)}
-                        className="btn-lime"
-                        style={{ fontSize: 11, padding: '6px 12px', flex: 1, justifyContent: 'center' }}
+                        style={{
+                          fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 500,
+                          color: 'rgba(255,255,255,0.45)',
+                          background: 'none',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: 6, padding: '4px 10px',
+                          cursor: 'pointer', whiteSpace: 'nowrap',
+                        }}
                       >
-                        {col.nextLabel}
+                        {col.nextLabel} →
                       </button>
-                    )}
-                    {col.key !== 'COMPLETED' && (
-                      <button
-                        onClick={() => cancel(o.id)}
-                        className="btn-ghost"
-                        style={{ fontSize: 11, padding: '6px 10px', color: '#c0392b' }}
-                        title={t('cancel')}
-                      >
-                        ✕
-                      </button>
-                    )}
+                    ) : null}
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-        );
-      })}
+              ))}
+            </div>
+          );
+        })}
       </div>
-      <style>{`
-        .kanban-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .kanban-inner { min-width: 600px; }
-        @media (max-width: 768px) {
-          .kanban-inner { grid-template-columns: repeat(2, 1fr) !important; min-width: 0; }
-        }
-        @media (max-width: 480px) {
-          .kanban-inner { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </div>
   );
 }

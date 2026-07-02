@@ -973,7 +973,7 @@ Omeru uses a hybrid migration approach:
 # ── WhatsApp (360Dialog) ───────────────────────────────────────────
 WHATSAPP_API_URL="https://waba-v2.360dialog.io"
 WHATSAPP_API_KEY="<360dialog-api-key>"
-WHATSAPP_PHONE_NUMBER="27750656348"              # Bot's WhatsApp number (no +)
+WHATSAPP_PHONE_NUMBER="27705736794"              # Bot's WhatsApp number (no +)
 WHATSAPP_WEBHOOK_VERIFY_TOKEN="<token>"
 WHATSAPP_PHONE_ID="<phone-id>"
 

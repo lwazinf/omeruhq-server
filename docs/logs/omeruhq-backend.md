@@ -533,6 +533,33 @@ export function isRateLimited(key: string, maxRequests: number, windowMs: number
 
 ---
 
+### v1.13.0 — 2026-06-30 SAST
+**OmeruWA: WhatsApp bot number updated from 27750656348 → 27705736794 across code, env files, and context docs.**
+
+**What changed:**
+
+*`src/index.ts`*
+- Hardcoded fallback in `waLink` construction updated from `27750656348` to `27705736794`
+
+*`.env.example`*
+- `WHATSAPP_PHONE_NUMBER` default updated from `27750656348` to `27705736794`
+
+*`context/OMERU_PROJECT_CONTEXT.md` and `context/platformTechnical.md`*
+- Example/reference values for `WHATSAPP_PHONE_NUMBER` updated to `27705736794`
+
+**Note:** Live `.env` already contained the correct value (`27705736794`) — only the fallback and documentation references were stale.
+
+### Rollback to v1.12.0
+
+| File | Change to reverse |
+|------|------------------|
+| `src/index.ts` | Revert `waLink` fallback to `'27750656348'` |
+| `.env.example` | Set `WHATSAPP_PHONE_NUMBER="27750656348"` |
+| `context/OMERU_PROJECT_CONTEXT.md` | Revert `WHATSAPP_PHONE_NUMBER` example to `27750656348` |
+| `context/platformTechnical.md` | Revert `WHATSAPP_PHONE_NUMBER` default column to `27750656348` |
+
+---
+
 ## Roadmap — Next Fixes (Priority Order)
 
 > All fixes must be surgical. Each fix gets its own changelog entry with before/after scores.

@@ -8,7 +8,7 @@ export default async function PortalLayout({ children }: { children: React.React
   if (!session) redirect('/login');
 
   const [merchant, pendingOrders] = await Promise.all([
-    db.merchant.findUnique({ where: { id: session.merchant_id }, select: { manual_closed: true, handle: true } }),
+    db.merchant.findUnique({ where: { id: session.merchant_id }, select: { manual_closed: true, handle: true, address: true } }),
     db.order.count({ where: { merchant_id: session.merchant_id, status: { in: ['PENDING', 'PAID'] } } }),
   ]);
 
@@ -17,6 +17,7 @@ export default async function PortalLayout({ children }: { children: React.React
       <Sidebar
         merchantName={session.merchant_name}
         merchantHandle={merchant?.handle ?? ''}
+        merchantAddress={merchant?.address ?? undefined}
         isOpen={!merchant?.manual_closed}
         pendingOrders={pendingOrders}
       />

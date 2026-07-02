@@ -3,7 +3,7 @@
  */
 
 /** The platform WhatsApp number customers chat with (digits only). */
-export const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER || '27750656348';
+export const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER || '27705736794';
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://omeru.io';
 

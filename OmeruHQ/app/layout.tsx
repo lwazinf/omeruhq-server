@@ -13,6 +13,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
   return (
     <html lang={locale}>
+      {/* eslint-disable-next-line @next/next/no-before-interactive-script-component */}
+      <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('omeru-theme')==='light')document.documentElement.classList.add('theme-light');}catch(e){}` }} />
       <body>
         <NextIntlClientProvider messages={messages}>
           <div className="noise" aria-hidden />

@@ -74,7 +74,7 @@ export default async function AnalyticsPage() {
         select: { wa_id: true, display_name: true },
       })
     : [];
-  const nameByWaId = new Map(customerRecords.map(c => [c.wa_id, c.display_name ?? c.wa_id]));
+  const nameByWaId = new Map(customerRecords.map(c => [c.wa_id, c.display_name ?? 'Customer']));
 
   // ── Resolve top product names ──
   const productIds = topItems.map(t => t.product_id);
@@ -316,7 +316,7 @@ export default async function AnalyticsPage() {
                   <div key={c.customer_id}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
                       <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.8)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, marginRight: 12 }}>
-                        {nameByWaId.get(c.customer_id) ?? c.customer_id}
+                        {nameByWaId.get(c.customer_id) ?? 'Customer'}
                       </span>
                       <span style={{ fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.5)', flexShrink: 0 }}>{fmt(spend)}</span>
                     </div>

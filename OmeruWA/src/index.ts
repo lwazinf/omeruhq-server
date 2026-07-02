@@ -198,7 +198,7 @@ app.get('/api/whatsapp/webhook', (req: Request, res: Response) => {
 
 // ── Static payment result pages ────────────────────────────────────────────
 
-const waLink = `https://wa.me/${process.env.WHATSAPP_PHONE_NUMBER || '27750656348'}`;
+const waLink = `https://wa.me/${process.env.WHATSAPP_PHONE_NUMBER || '27705736794'}`;
 
 const paymentPage = (title: string, message: string, color: string): string => `
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
