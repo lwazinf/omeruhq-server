@@ -66,15 +66,32 @@ model CrBroadcast {
 }
 
 // ── Read-only mirrors of OmeruWA-owned tables ───────────────────────────────
+// Enum field types below must match OmeruWA/prisma/schema.prisma exactly —
+// these columns are native Postgres enums, and Prisma throws a runtime
+// conversion error (P2032) reading them back through a mismatched String field.
+
+enum MerchantStatus {
+  ONBOARDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  READY_FOR_PICKUP
+  COMPLETED
+  CANCELLED
+}
 
 model Merchant {
-  id             String   @id
-  wa_id          String   @unique
-  handle         String   @unique
+  id             String         @id
+  wa_id          String         @unique
+  handle         String         @unique
   trading_name   String
   store_category String?
   province       String?
-  status         String
+  status         MerchantStatus
   manual_closed  Boolean
   createdAt      DateTime
   orders         Order[]
@@ -93,11 +110,11 @@ model MerchantCustomer {
 }
 
 model Order {
-  id          String   @id
+  id          String      @id
   merchant_id String
-  merchant    Merchant @relation(fields: [merchant_id], references: [id])
+  merchant    Merchant    @relation(fields: [merchant_id], references: [id])
   customer_id String
   total       Float
-  status      String
+  status      OrderStatus
   createdAt   DateTime
 }
