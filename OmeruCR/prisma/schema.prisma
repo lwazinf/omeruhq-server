@@ -1,0 +1,103 @@
+// OmeruCR — Control Room schema
+// Shares the ecosystem Supabase Postgres. CR-owned tables are prefixed cr_.
+// The Merchant / MerchantCustomer / Order models below are READ-ONLY mirrors
+// of tables owned by OmeruWA — never run `prisma migrate` against them from
+// this app. Apply prisma/migrations/001_control_room.sql for the cr_ tables.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Control-Room-owned tables ────────────────────────────────────────────────
+
+model CrOperator {
+  id            String       @id @default(cuid())
+  email         String       @unique
+  name          String
+  password_hash String
+  is_root       Boolean      @default(false) // first registered user; immutable, holds all permissions
+  permissions   String[]     @default([])    // see lib/permissions.ts
+  disabled      Boolean      @default(false)
+  last_login_at DateTime?
+  created_by    String?      // operator id of the admin who created this account
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  audit_events  CrAuditLog[]
+  broadcasts    CrBroadcast[]
+
+  @@map("cr_operator")
+}
+
+model CrAuditLog {
+  id          String      @id @default(cuid())
+  operator_id String?
+  operator    CrOperator? @relation(fields: [operator_id], references: [id])
+  action      String      // LOGIN, LOGIN_FAILED, REGISTER_ROOT, OPERATOR_CREATED, OPERATOR_UPDATED, OPERATOR_DISABLED, BROADCAST_SENT ...
+  detail      Json?
+  ip          String?
+  createdAt   DateTime    @default(now())
+
+  @@index([operator_id, createdAt])
+  @@index([action, createdAt])
+  @@map("cr_audit_log")
+}
+
+model CrBroadcast {
+  id              String     @id @default(cuid())
+  operator_id     String
+  operator        CrOperator @relation(fields: [operator_id], references: [id])
+  audience        String     // ALL_CUSTOMERS | ALL_MERCHANTS | EVERYONE | INDIVIDUAL | SEGMENT
+  segment         Json?      // segment definition used to resolve recipients
+  message         String
+  recipient_count Int
+  sent_count      Int        @default(0)
+  failed_count    Int        @default(0)
+  status          String     @default("SENT") // SENT | PARTIAL | FAILED
+  createdAt       DateTime   @default(now())
+
+  @@index([createdAt])
+  @@map("cr_broadcast")
+}
+
+// ── Read-only mirrors of OmeruWA-owned tables ───────────────────────────────
+
+model Merchant {
+  id             String   @id
+  wa_id          String   @unique
+  handle         String   @unique
+  trading_name   String
+  store_category String?
+  province       String?
+  status         String
+  manual_closed  Boolean
+  createdAt      DateTime
+  orders         Order[]
+}
+
+model MerchantCustomer {
+  id                  String   @id
+  merchant_id         String
+  wa_id               String
+  display_name        String?
+  opt_out             Boolean
+  total_spend         Float
+  order_count         Int
+  last_interaction_at DateTime
+  province            String?
+}
+
+model Order {
+  id          String   @id
+  merchant_id String
+  merchant    Merchant @relation(fields: [merchant_id], references: [id])
+  customer_id String
+  total       Float
+  status      String
+  createdAt   DateTime
+}

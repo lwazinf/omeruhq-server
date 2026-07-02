@@ -1,0 +1,223 @@
+{
+  "id": "bella-booking",
+  "name": "Bella Beauty Studio",
+  "subtitle": "typing…",
+  "avatar": {
+    "initials": "BB",
+    "color": "#b5527a"
+  },
+  "verified": true,
+  "phoneTime": "09:41",
+  "battery": 82,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Your appointment is confirmed for Sat 10:30 ✨",
+  "messages": [
+    {
+      "type": "system",
+      "text": "Messages are end-to-end encrypted. Tap to learn more."
+    },
+    {
+      "type": "date",
+      "text": "Today"
+    },
+    {
+      "from": "user",
+      "text": "hi! do you have anything free this weekend for a balayage?",
+      "time": "09:32",
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "Hi Maya! 💇‍♀️ Lovely to hear from you. We'd be happy to fit you in this weekend. First — what are you in the mood for?",
+      "time": "09:33"
+    },
+    {
+      "from": "bot",
+      "list": {
+        "header": "Our Services",
+        "body": "Pick a treatment and I'll show you the open slots.",
+        "footer": "Prices shown are starting from",
+        "button": "View services",
+        "sections": [
+          {
+            "title": "Colour",
+            "rows": [
+              {
+                "id": "balayage",
+                "title": "Balayage",
+                "description": "From £120 · 2h 30m"
+              },
+              {
+                "id": "fullhead",
+                "title": "Full head colour",
+                "description": "From £85 · 2h"
+              }
+            ]
+          },
+          {
+            "title": "Cut & Style",
+            "rows": [
+              {
+                "id": "cut",
+                "title": "Cut & blow dry",
+                "description": "From £45 · 1h"
+              },
+              {
+                "id": "treatment",
+                "title": "Olaplex treatment",
+                "description": "From £30 · 30m"
+              }
+            ]
+          }
+        ]
+      },
+      "time": "09:33",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "Bella Beauty Studio",
+        "text": "Our Services"
+      },
+      "text": "Balayage",
+      "time": "09:34",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=640&q=80",
+      "text": "Gorgeous choice. Here's a balayage our senior stylist Priya did last week 😍",
+      "time": "09:34",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "reaction": "❤️",
+      "delay": 600,
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "sat",
+          "title": "Sat 10:30",
+          "reply": "Saturday 10:30 please"
+        },
+        {
+          "id": "sun",
+          "title": "Sun 13:00",
+          "reply": "Sunday 13:00 please"
+        },
+        {
+          "id": "more",
+          "title": "More times",
+          "reply": "Show me more times"
+        }
+      ],
+      "text": "Priya has two openings this weekend. Which suits you best?",
+      "time": "09:35",
+      "typing": 1100
+    },
+    {
+      "from": "user",
+      "text": "Saturday 10:30 please 🙌",
+      "time": "09:36",
+      "status": "read",
+      "delay": 800
+    },
+    {
+      "from": "bot",
+      "voice": {
+        "duration": "0:11",
+        "played": false
+      },
+      "text": "",
+      "time": "09:36",
+      "typing": 1200
+    },
+    {
+      "from": "bot",
+      "location": {
+        "name": "Bella Beauty Studio",
+        "address": "14 Marigold Lane, Shoreditch, London E1 6QL"
+      },
+      "text": "We're right by Shoreditch High Street station 📍",
+      "time": "09:37",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "poll": {
+        "question": "Quick one — what should we prep for your visit?",
+        "options": [
+          {
+            "text": "Just the balayage",
+            "votes": 0
+          },
+          {
+            "text": "Add a treatment (+£30)",
+            "votes": 0
+          },
+          {
+            "text": "Add a trim (+£20)",
+            "votes": 0
+          }
+        ],
+        "multiple": true
+      },
+      "time": "09:37"
+    },
+    {
+      "from": "user",
+      "text": "balayage + a little trim 💁‍♀️",
+      "time": "09:38",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "text": "Perfect — *Saturday at 10:30* with Priya, balayage + trim. I've popped you in! ✨",
+      "time": "09:38",
+      "typing": 900
+    },
+    {
+      "from": "bot",
+      "cta": {
+        "text": "Add it to your calendar so you don't forget 🗓️",
+        "display": "Add to calendar",
+        "url": "https://bellabeauty.example/booking/8821"
+      },
+      "time": "09:38",
+      "typing": 600
+    },
+    {
+      "from": "bot",
+      "contact": {
+        "name": "Bella Beauty Studio",
+        "phone": "+44 20 7946 0102",
+        "org": "Hair & Beauty"
+      },
+      "text": "Here's our number in case you need to reschedule 💛",
+      "time": "09:39",
+      "typing": 700
+    },
+    {
+      "from": "user",
+      "reaction": "🙏",
+      "delay": 600,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "amazing, thank you!! see you Saturday",
+      "time": "09:39",
+      "status": "read",
+      "delay": 500
+    }
+  ]
+}

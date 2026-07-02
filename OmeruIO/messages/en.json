@@ -18,7 +18,7 @@
       "line2": "WHATSAPP",
       "line3": "ALREADY.",
       "body": "Zero-friction commerce for South African merchants. Customers browse and buy without ever leaving WhatsApp.",
-      "sub": "Powered by Stitch · Invite-only · From R199/mo",
+      "sub": "Powered by Stitch · Invite-only · R499/mo flat, everything included",
       "primary": "Apply as a merchant",
       "secondary": "Shop on WhatsApp"
     },
@@ -36,7 +36,7 @@
       "waUsers": "WhatsApp users in SA",
       "firstSale": "Invite to first sale",
       "openRate": "Higher open vs email",
-      "starterFrom": "Starter from /mo"
+      "starterFrom": "Flat monthly fee"
     },
     "merchantView": "Merchant view",
     "customerView": "Customer view"
@@ -76,7 +76,7 @@
       {
         "title": "Native WhatsApp experience",
         "body": "Customers never leave WhatsApp. Browse, cart, checkout — all in the app they already spend hours in daily.",
-        "badge": "All tiers"
+        "badge": "Included"
       },
       {
         "title": "Stitch instant EFT",
@@ -86,22 +86,22 @@
       {
         "title": "Real-time analytics",
         "body": "Track sales, top products, and customer behaviour. Know what's selling before it goes out of stock.",
-        "badge": "Growth & Pro"
+        "badge": "Included"
       },
       {
         "title": "WhatsApp broadcasts",
         "body": "Send promotions and restock alerts to opted-in customers. Higher open rates than email, lower cost than SMS.",
-        "badge": "Growth & Pro"
+        "badge": "Included"
       },
       {
         "title": "Multi-location support",
         "body": "Manage up to 3 locations from a single Pro dashboard. Consolidated reporting across all your stores.",
-        "badge": "Pro tier"
+        "badge": "Included"
       },
       {
         "title": "Instant order alerts",
         "body": "Notified the moment an order is placed — via WhatsApp and your Omeru HQ dashboard. Accept, reject, or update customers from your phone or computer, in real time.",
-        "badge": "All tiers"
+        "badge": "Included"
       }
     ]
   },
@@ -148,65 +148,34 @@
         "metricLabel": "setup to first sale"
       },
       {
-        "quote": "We sell to restaurants and home cooks. The broadcast feature on Growth is incredible — we sent one message about a new chilli blend and had 23 orders in 40 minutes. That's better than any marketing I've done.",
+        "quote": "We sell to restaurants and home cooks. The broadcast feature is incredible — we sent one message about a new chilli blend and had 23 orders in 40 minutes. That's better than any marketing I've done.",
         "metricLabel": "from one broadcast"
       }
     ]
   },
   "Pricing": {
     "pill": "Pricing",
-    "heading": "Grow into the plan",
-    "headingAccent": "that fits your GMV.",
-    "subtext": "All prices in ZAR. Commission only on successful sales — Omeru wins when you win.",
-    "mostPopular": "Most popular",
+    "heading": "One price.",
+    "headingAccent": "Everything included.",
+    "subtext": "One flat monthly fee, 0% commission. You always know exactly what Omeru costs — and you keep every rand you sell.",
     "perMonth": "/mo",
-    "perSale": "per sale",
-    "footerNote": "All plans include Stitch instant EFT processing. Merchant payouts go directly to your SA bank account. Upgrade or downgrade at any time.",
-    "tiers": [
-      {
-        "name": "Starter",
-        "description": "For new merchants proving the concept.",
-        "cta": "Apply for Starter",
-        "note": "5-product cap · upgrade when ready",
-        "features": [
-          "Up to 5 products",
-          "5% commission per sale",
-          "Omeru HQ merchant dashboard",
-          "Real-time order alerts",
-          "Basic analytics",
-          "Email support"
-        ]
-      },
-      {
-        "name": "Growth",
-        "description": "For merchants ready to scale their catalogue.",
-        "cta": "Apply for Growth",
-        "note": "Most popular",
-        "features": [
-          "Up to 15 products",
-          "3.5% commission per sale",
-          "Everything in Starter",
-          "Broadcasts × 2 per month",
-          "Promotions & discount codes",
-          "Full analytics dashboard"
-        ]
-      },
-      {
-        "name": "Pro",
-        "description": "For established merchants scaling to multiple locations.",
-        "cta": "Apply for Pro",
-        "note": "Full platform access",
-        "features": [
-          "Unlimited products",
-          "2.5% commission per sale",
-          "Everything in Growth",
-          "Unlimited broadcasts + scheduling",
-          "Multi-location (up to 3)",
-          "Services module",
-          "Real-time analytics + export"
-        ]
-      }
-    ]
+    "flatBadge": "0% commission · flat fee",
+    "planName": "Omeru",
+    "planDescription": "Full platform access for every merchant. No tiers, no upgrades, no surprises — your costs stay flat while your sales scale.",
+    "cta": "Apply now",
+    "note": "Invite-only · cancel anytime",
+    "features": [
+      "Unlimited products",
+      "0% commission — keep every sale",
+      "Unlimited WhatsApp broadcasts + scheduling",
+      "Omeru HQ merchant dashboard",
+      "Real-time analytics + export",
+      "Services & bookings module",
+      "Promotions & discount codes",
+      "Real-time order alerts",
+      "Priority support"
+    ],
+    "footerNote": "Price in ZAR, VAT incl. Stitch instant EFT processing included. Merchant payouts go directly to your SA bank account. Cancel anytime."
   },
   "FAQ": {
     "pill": "FAQ",
@@ -227,12 +196,12 @@
         "a": "We use Stitch for secure instant EFT payments. Customers pay directly from their banking app — no card details required. Once a payment clears, the money settles directly to your SA bank account. We automatically deduct our commission so you never have to calculate it."
       },
       {
-        "q": "What happens when I hit the 5-product limit on Starter?",
-        "a": "You'll get a dashboard prompt to upgrade. The Starter cap isn't a punishment — it's designed so you don't pay for what you don't need yet. Once you've got traction and want to grow your catalogue, upgrading to Growth (15 products) or Pro (unlimited) takes about two minutes."
+        "q": "Are there product limits or plan tiers?",
+        "a": "No. Omeru is one flat monthly fee with everything included — unlimited products, unlimited broadcasts, full analytics, services and bookings. There is nothing to upgrade to and no cap to hit. Your cost stays the same whether you list 5 products or 500."
       },
       {
         "q": "Can I send promotions to my customers?",
-        "a": "Absolutely. On Growth and Pro, you can send WhatsApp broadcasts to customers who've opted in to hear from you. Growth gives you 2 broadcasts a month — perfect for a weekend special or restock announcement. Pro is unlimited with scheduling. WhatsApp open rates are typically 3× higher than email."
+        "a": "Absolutely. Every Omeru merchant can send unlimited WhatsApp broadcasts, with scheduling, to customers who've opted in to hear from you. WhatsApp open rates are typically 3× higher than email."
       },
       {
         "q": "What is the Services module on Pro?",

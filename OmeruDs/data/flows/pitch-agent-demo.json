@@ -1,0 +1,127 @@
+{
+  "id": "pitch-agent-demo",
+  "name": "Pitch Agent Demo",
+  "subtitle": "Omeru • Business Account",
+  "avatar": { "initials": "PD", "color": "#1f7a5a" },
+  "verified": true,
+  "phoneTime": "20:19",
+  "battery": 51,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Deadline locked in — 2026-02-18. Good luck with the pitch! 🚀",
+  "messages": [
+    { "type": "date", "text": "May 15, 2026" },
+    {
+      "type": "system",
+      "text": "This business uses a secure service from Meta to manage this chat. Tap to learn more."
+    },
+    { "type": "date", "text": "May 27, 2026" },
+    {
+      "from": "user",
+      "document": { "name": "Aurora_Mobility_RFP_Demo 1.docx", "size": "36 kB", "ext": "DOCX" },
+      "time": "10:30",
+      "status": "read",
+      "delay": 400
+    },
+    {
+      "from": "bot",
+      "text": "📄 Got *Aurora_Mobility_RFP_Demo 1.docx*. What would you like me to do with it?",
+      "time": "10:31"
+    },
+    {
+      "from": "bot",
+      "list": {
+        "header": "Pitch AI — Choose Analysis",
+        "body": "Select an agent to run on *Aurora_Mobility_RFP_Demo 1.docx*",
+        "footer": "More agents coming soon",
+        "button": "Choose",
+        "sections": [
+          {
+            "title": "Available Now",
+            "rows": [
+              { "id": "gng", "title": "Go/No-Go Qualification", "description": "Score win probability & strategic value" },
+              { "id": "full", "title": "Full Process", "description": "Run all available analyses in sequence" }
+            ]
+          },
+          {
+            "title": "Coming Soon",
+            "rows": [
+              { "id": "timeline", "title": "Pitch Timeline", "description": "WP1–WP4 master timeline from deadline", "disabled": true },
+              { "id": "team", "title": "Team Allocator", "description": "RACI matrix from tier & availability", "disabled": true }
+            ]
+          }
+        ]
+      },
+      "time": "10:31",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "Pitch Agent Demo",
+        "text": "Pitch AI — Choose Analysis\nSelect an agent to run on Aurora_Mobility_RFP_Demo 1.docx…"
+      },
+      "text": "Go/No-Go Qualification\nScore win probability & strategic value",
+      "time": "10:31",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "text": "🔍 Running Go/No-Go qualification on *Aurora_Mobility_RFP_Demo 1.docx*…",
+      "time": "10:31"
+    },
+    {
+      "from": "bot",
+      "text": "🎯 *Aurora Mobility GmbH*\n_High-value, well-scoped opportunity that plays directly to TME's integrated strengths — pursue as FLAGSHIP with full commitment and a senior-led team._\n\n🏆 *FLAGSHIP* · 90+ score\n📈 Win probability: *High*\n🤝 Strategic fit: *Excellent*",
+      "time": "10:32",
+      "typing": 1600
+    },
+    {
+      "from": "bot",
+      "text": "Key requirements detected:\n◆ Integrate brand, performance and CRM under one accountable lead, with measurable hand-offs and a single source of truth for reporting; the incumbent's siloed setup is a stated pain point and the buyer wants demonstrable de-risking before signature, including data-minimization concerns (§7, §8, App. B).\n◆ Produce a scalable creative system concept at pitch stage that visibly bridges brand and performance, and demonstrates modular localization for DACH and wider EU rollouts within the first two work-packages (§4, §5).",
+      "time": "10:32"
+    },
+    {
+      "from": "bot",
+      "text": "• commercial_risk: The performance incentive KPI definitions are not yet specified; without agreed controllable KPI definitions, the hybrid fee model cannot be accurately priced (§10).",
+      "time": "10:32",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        { "id": "confirm", "title": "Confirmed", "icon": "✅", "reply": "Confirmed", "selected": true },
+        { "id": "change", "title": "Change it", "icon": "✏️" }
+      ],
+      "text": "⏱️ The brief suggests a deadline of *2026-02-18* (-2361h remaining). Is that correct?",
+      "time": "10:32",
+      "typing": 800
+    },
+    {
+      "from": "bot",
+      "text": "📊 *Omeru — Activity*\n\n*16* briefs processed\n\n*By agent:*\n• go no go: *16*\n\n_Latest: Aurora Mobility GmbH · just now_",
+      "time": "10:32"
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "Pitch Agent Demo",
+        "text": "⏱️ The brief suggests a deadline of 2026-02-18 (-2361h remaining). Is that correct?"
+      },
+      "text": "✅ Confirmed",
+      "time": "10:33",
+      "status": "read",
+      "delay": 800
+    },
+    {
+      "from": "bot",
+      "text": "✅ Deadline locked in — *2026-02-18*. Good luck with the pitch! 🚀",
+      "time": "10:33",
+      "typing": 700
+    },
+    { "type": "date", "text": "June 4, 2026" },
+    { "from": "user", "text": "Hi", "time": "15:55", "status": "read", "delay": 600 }
+  ]
+}

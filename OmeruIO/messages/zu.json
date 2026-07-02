@@ -18,7 +18,7 @@
       "line2": "WHATSAPP",
       "line3": "USUYIKHONA.",
       "body": "Ukuthengisa okulula kubarekisi base-Mzansi. Abathengi babuka futhi bathenge bengaphumi ku-WhatsApp.",
-      "sub": "Isekwe i-Stitch · Isimemo kuphela · Kusuka ku-R199/iny",
+      "sub": "Isekelwa yi-Stitch · Ngokumenywa kuphela · R499/nyanga engaguquki, konke kufakiwe",
       "primary": "Faka isicelo njengomurekisi",
       "secondary": "Thenga ku-WhatsApp"
     },
@@ -36,7 +36,7 @@
       "waUsers": "Abasebenzisi be-WhatsApp e-Mzansi",
       "firstSale": "Kusimemo kuya ekuthengiseni kokuqala",
       "openRate": "Iphezulu kuneposi lokuvula",
-      "starterFrom": "Ukuqala kusuka ku-/iny"
+      "starterFrom": "Imali engaguquki yanyanga"
     },
     "merchantView": "Umbono womurekisi",
     "customerView": "Umbono womthengi"
@@ -86,17 +86,17 @@
       {
         "title": "Ukuhlaziywa kwe-isikhathi sangempela",
         "body": "Landela ukuthengiswa, imikhiqizo ephezulu, nokuphatha kwabathengi. Yazi okuthengwayo ngaphambi kokuba kuphelele.",
-        "badge": "Ukukhula & Pro"
+        "badge": "Kufakiwe"
       },
       {
         "title": "Ukusabalalisa kwe-WhatsApp",
         "body": "Thumela ama-promo nezaziso zokuphinda ugcwalise kubathengi abavumile ukuzwa. Amazinga okubutha aphezulu kuneposi, izindleko ziphansi kuneSMS.",
-        "badge": "Ukukhula & Pro"
+        "badge": "Kufakiwe"
       },
       {
         "title": "Ukusekela izindawo eziningi",
         "body": "Phatha izindawo ezifika kwezi-3 kusuka ku-dashboard eyodwa ye-Pro. Ukubika okuhlanganisiwe phakathi kwazo zonke izitolo zakho.",
-        "badge": "Izinga le-Pro"
+        "badge": "Kufakiwe"
       },
       {
         "title": "Izaziso zemiyalelo ngokushesha",
@@ -155,58 +155,27 @@
   },
   "Pricing": {
     "pill": "Amanani",
-    "heading": "Khula ungene kuhlelo",
-    "headingAccent": "olufanele i-GMV yakho.",
-    "subtext": "Amanani wonke ku-ZAR. Ikhomishini kuphela ekuthengiseni okuphumelelayo — i-Omeru iyahluma nawe uma uhluma.",
-    "mostPopular": "Ethandwa kakhulu",
-    "perMonth": "/iny",
-    "perSale": "ngokuthengiswa",
-    "footerNote": "Wonke amaplani afaka ukucwaninga kwe-Stitch ye-EFT esheshayo. Izinkokhelo zabarekisi ziya ngqo akhawuntini yakho ye-SA. Khulisa noma wehlisa noma nini.",
-    "tiers": [
-      {
-        "name": "Ukuqala",
-        "description": "Kubarekisi abasha abaqinisekisa umqondo.",
-        "cta": "Faka isicelo sokuQala",
-        "note": "Umkhawulo wemikhiqizo emi-5 · khulisa uma ulungele",
-        "features": [
-          "Kuze kufike imikhiqizo emi-5",
-          "Ikhomishini engu-5% ngokuthengiswa",
-          "I-dashboard ye-Omeru HQ yabarekisi",
-          "Izaziso zemiyalelo ze-isikhathi sangempela",
-          "Ukuhlaziywa kwesingeniso",
-          "Ukusekwa nge-imeyili"
-        ]
-      },
-      {
-        "name": "Ukukhula",
-        "description": "Kubarekisi abalungele ukukhulisa uhlu lwemikhiqizo yabo.",
-        "cta": "Faka isicelo sokuKhula",
-        "note": "Ethandwa kakhulu",
-        "features": [
-          "Kuze kufike imikhiqizo engu-15",
-          "Ikhomishini engu-3.5% ngokuthengiswa",
-          "Konke ku-Ukuqala",
-          "Ukusabalalisa × 2 ngenyanga",
-          "Ama-promo namakhodi okuphungula",
-          "I-dashboard yokucwaninga ephelele"
-        ]
-      },
-      {
-        "name": "Pro",
-        "description": "Kubarekisi abasungulekile abakhula baya ezindaweni eziningi.",
-        "cta": "Faka isicelo se-Pro",
-        "note": "Ukufinyelela kwenhlangano ephelele",
-        "features": [
-          "Imikhiqizo engalinganiswanga",
-          "Ikhomishini engu-2.5% ngokuthengiswa",
-          "Konke ku-Ukukhula",
-          "Ukusabalalisa okungalinganiswanga + isikhathi esimiselwe",
-          "Izindawo eziningi (kuze kube ngu-3)",
-          "Uhlelo lwezinsizakalo",
-          "Ukuhlaziywa kwe-isikhathi sangempela + ukuthekelisa"
-        ]
-      }
-    ]
+    "heading": "Inani elilodwa.",
+    "headingAccent": "Konke kufakiwe.",
+    "subtext": "Imali eyodwa engaguquki yanyanga zonke, 0% ikhomishini. Uhlale wazi kahle ukuthi i-Omeru ibiza malini — futhi ugcina yonke imali oyithengisayo.",
+    "perMonth": "/nyanga",
+    "flatBadge": "0% ikhomishini · imali engaguquki",
+    "planName": "Omeru",
+    "planDescription": "Ukufinyelela okugcwele kuplatifomu kubo bonke abathengisi. Awekho amazinga, akukho ukuthuthukisa, azikho izimanga — izindleko zakho zihlala zifana ngenkathi ukuthengisa kwakho kukhula.",
+    "cta": "Faka isicelo manje",
+    "note": "Ngokumenywa kuphela · khansela noma nini",
+    "features": [
+      "Imikhiqizo engenamkhawulo",
+      "0% ikhomishini — gcina konke okuthengisiwe",
+      "Ukusakaza kwe-WhatsApp okungenamkhawulo + ukuhlela",
+      "Ideshibhodi yomthengisi ye-Omeru HQ",
+      "Izibalo zesikhathi sangempela + ukukhipha",
+      "Imodyuli yezinsizakalo nokubhukha",
+      "Okukhethekile & amakhodi esaphulelo",
+      "Izaziso zama-oda zesikhathi sangempela",
+      "Ukwesekwa okubalulekile"
+    ],
+    "footerNote": "Inani nge-ZAR, i-VAT ifakiwe. Ukucutshungulwa kwe-Stitch instant EFT kufakiwe. Izinkokhelo ziya ngqo ku-akhawunti yakho yasebhange yase-SA. Khansela noma nini."
   },
   "FAQ": {
     "pill": "Imibuzo ejwayelekile",

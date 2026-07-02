@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ── Control Room design tokens ──────────────────────────────────────── */
+:root {
+  --lime: #C8F135;
+  --lime-dark: #a8d420;
+  --bg: #0a0a0a;
+  --panel: #121210;
+  --panel-2: #1a1a18;
+  --line: rgba(255,255,255,0.08);
+  --text: #f5f4ef;
+  --text-2: #9b9990;
+  --danger: #f15c6d;
+  --ok: #4ade80;
+  --font-display: var(--font-archivo), 'Archivo', sans-serif;
+  --font-body: var(--font-hanken), 'Hanken Grotesk', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+
+/* ── Primitives ───────────────────────────────────────────────────────── */
+.cr-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+}
+.cr-label {
+  display: block;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-2);
+  margin-bottom: 7px;
+}
+.cr-input, .cr-select, .cr-textarea {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 11px 13px;
+  transition: border-color 0.15s ease;
+}
+.cr-input:focus, .cr-select:focus, .cr-textarea:focus { border-color: var(--lime); outline: none; }
+.cr-textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
+
+.cr-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--lime); color: #0a0a0a;
+  border: none; border-radius: 100px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 700;
+  padding: 12px 24px; cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease, opacity 0.15s;
+}
+.cr-btn:hover { background: var(--lime-dark); transform: translateY(-1px); }
+.cr-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.cr-btn-ghost {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--line);
+}
+.cr-btn-ghost:hover { background: rgba(255,255,255,0.05); }
+.cr-btn-danger { background: var(--danger); color: #fff; }
+.cr-btn-danger:hover { background: #d94b5b; }
+
+.cr-kpi-number {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 800; letter-spacing: -0.02em; line-height: 1;
+}
+.cr-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.cr-table th {
+  text-align: left; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2);
+  padding: 10px 12px; border-bottom: 1px solid var(--line);
+}
+.cr-table td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cr-table tr:last-child td { border-bottom: none; }
+
+.cr-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: 100px; padding: 3px 10px;
+  background: rgba(200,241,53,0.12); color: var(--lime);
+}
+.cr-chip-muted { background: rgba(255,255,255,0.07); color: var(--text-2); }
+.cr-chip-danger { background: rgba(241,92,109,0.14); color: var(--danger); }
+.cr-chip-ok { background: rgba(74,222,128,0.12); color: var(--ok); }
+
+.cr-error { color: var(--danger); font-size: 13px; }
+.cr-help { color: var(--text-2); font-size: 12px; line-height: 1.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── Mobile (v0.1.1): scrollable tables, comfortable tap targets ── */
+@media (max-width: 720px) {
+  .cr-card { padding: 16px; }
+  .cr-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cr-table thead, .cr-table tbody, .cr-table tr { min-width: 560px; }
+  input, select, textarea { font-size: 16px !important; } /* stop iOS zoom */
+  .cr-btn { padding: 12px 20px; }
+}

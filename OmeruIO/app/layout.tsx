@@ -1,9 +1,27 @@
 import type { Metadata } from "next";
+import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import GoogleTag from "@/components/GoogleTag";
 import ConsentBanner from "@/components/ConsentBanner";
 import InviteModal from "@/components/InviteModal";
 import { getLocale } from 'next-intl/server';
+
+// Self-hosted fonts via next/font — removes the render-blocking Google Fonts
+// @import from globals.css, preloads WOFF2, and eliminates font layout shift.
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://omeru.io";
 
@@ -91,10 +109,8 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const locale = await getLocale();
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${syne.variable} ${dmSans.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://sciuelzkljjriiidtyry.supabase.co" />
         <script
           type="application/ld+json"

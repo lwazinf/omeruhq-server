@@ -9,6 +9,7 @@ import { handleOnboardingAction, startOnboarding } from './onboardingEngine';
 import { sendButtons, sendTextMessage, sendListMessage } from './sender';
 import { formatCurrency } from './messageTemplates';
 import { getPlatformBranding } from './platformBranding';
+import { merchantActionsViaHQ, hqUrl } from '../../config/mode';
 import { db } from '../../lib/db';
 import { log, AuditAction } from './auditLog';
 
@@ -91,6 +92,59 @@ export const handleMerchantAction = async (
                 );
                 return;
             }
+        }
+
+        // ── WhatsApp Lite for merchants ──────────────────────────────────────
+        // When MERCHANT_ACTIONS_VIA_HQ is on, active merchants keep a light
+        // taste of their store on WhatsApp — today's numbers at a glance and
+        // broadcasts — while the full picture (catalogue, orders, analytics,
+        // settings) lives in Omeru HQ. Onboarding above still completes here,
+        // go-live acceptance below still works, and outbound notifications
+        // (sale alerts etc.) are unaffected by this gate.
+        if (merchantActionsViaHQ() && merchant.status === 'ACTIVE' && !input.startsWith('ob_golive_accept_')) {
+            const lower = input.toLowerCase();
+
+            // Broadcasts remain fully available on WhatsApp
+            if (matchesPrefix(input, BROADCAST_PREFIXES) || session.active_prod_id === 'BROADCAST_MESSAGE') {
+                await handleBroadcastActions(from, input, session, merchant);
+                return;
+            }
+
+            // Daily snapshot — the teaser dashboard
+            if (input === 'm_dashboard' || input === 'm_stats' || lower === 'menu' || lower === 'home' || lower === 'stats') {
+                const startOfDay = new Date();
+                startOfDay.setHours(0, 0, 0, 0);
+                const [todayAgg, todayCount, pendingCount] = await Promise.all([
+                    db.order.aggregate({
+                        where: { merchant_id: merchant.id, createdAt: { gte: startOfDay }, status: { in: ['PAID', 'READY_FOR_PICKUP', 'COMPLETED'] as any } },
+                        _sum: { total: true },
+                    }),
+                    db.order.count({
+                        where: { merchant_id: merchant.id, createdAt: { gte: startOfDay }, status: { in: ['PAID', 'READY_FOR_PICKUP', 'COMPLETED'] as any } },
+                    }),
+                    db.order.count({ where: { merchant_id: merchant.id, status: { in: ['PENDING', 'PAID'] as any } } }),
+                ]);
+                const todayRevenue = todayAgg._sum.total ?? 0;
+                await sendButtons(from,
+                    `🏪 *${merchant.trading_name}* — Today\n\n` +
+                    `💰 Sales today: *${formatCurrency(todayRevenue, { merchant })}* (${todayCount} order${todayCount === 1 ? '' : 's'})\n` +
+                    `📦 Open orders: *${pendingCount}*\n\n` +
+                    `📈 Your full picture — live analytics, top products, customers, order management — is waiting in *Omeru HQ*:\n${hqUrl()}`,
+                    [
+                        { id: 'm_broadcast', title: '📣 Send Broadcast' },
+                        { id: 'm_dashboard', title: '🔄 Refresh' },
+                    ]
+                );
+                return;
+            }
+
+            // Everything else: point to the full merchant suite
+            await sendTextMessage(from,
+                `🏪 *${merchant.trading_name}*\n\n` +
+                `That lives in *Omeru HQ* — your full merchant suite for products, orders, customers, analytics and settings:\n\n${hqUrl()}\n\n` +
+                `Here on WhatsApp you'll keep getting sale alerts, plus type *menu* for today's numbers or *broadcast* to message your customers.`
+            );
+            return;
         }
 
         // Going-live disclaimer acceptance (end of old onboarding — kept for backward compat)

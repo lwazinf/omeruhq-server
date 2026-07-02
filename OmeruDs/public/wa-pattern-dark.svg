@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g fill="none" stroke="#e9edef" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.07">
+    <!-- smiley -->
+    <g transform="translate(36 40)">
+      <circle cx="0" cy="0" r="13"/>
+      <circle cx="-4.5" cy="-3" r="1.4" fill="#e9edef" stroke="none"/>
+      <circle cx="4.5" cy="-3" r="1.4" fill="#e9edef" stroke="none"/>
+      <path d="M-6 4 Q0 9 6 4"/>
+    </g>
+    <!-- heart -->
+    <g transform="translate(150 26) scale(1.1)">
+      <path d="M0 8 C-7 0 -12 -6 -6 -10 C-2 -12 0 -8 0 -6 C0 -8 2 -12 6 -10 C12 -6 7 0 0 8 Z"/>
+    </g>
+    <!-- star -->
+    <g transform="translate(252 52)">
+      <path d="M0 -13 L3.8 -4 L13 -4 L5.5 2 L8.5 12 L0 6 L-8.5 12 L-5.5 2 L-13 -4 L-3.8 -4 Z"/>
+    </g>
+    <!-- music note -->
+    <g transform="translate(96 108)">
+      <path d="M-6 8 a4 3 0 1 0 4 -3 V-10 L8 -13 V3 a4 3 0 1 0 4 -3"/>
+    </g>
+    <!-- sun -->
+    <g transform="translate(206 120)">
+      <circle cx="0" cy="0" r="7"/>
+      <path d="M0 -12 V-15 M0 12 V15 M-12 0 H-15 M12 0 H15 M-8.5 -8.5 L-11 -11 M8.5 8.5 L11 11 M-8.5 8.5 L-11 11 M8.5 -8.5 L11 -11"/>
+    </g>
+    <!-- camera -->
+    <g transform="translate(286 168)">
+      <rect x="-13" y="-9" width="26" height="18" rx="3"/>
+      <circle cx="0" cy="0" r="5.5"/>
+      <path d="M-9 -9 l3 -4 h12 l3 4"/>
+    </g>
+    <!-- leaf -->
+    <g transform="translate(44 150)">
+      <path d="M-10 10 C-10 -6 6 -10 10 -10 C10 6 -6 10 -10 10 Z"/>
+      <path d="M-7 7 L7 -7"/>
+    </g>
+    <!-- chat bubble -->
+    <g transform="translate(150 184)">
+      <path d="M-13 -9 h26 a3 3 0 0 1 3 3 v12 a3 3 0 0 1 -3 3 h-18 l-8 6 v-6 a3 3 0 0 1 -3 -3 v-12 a3 3 0 0 1 3 -3 Z"/>
+    </g>
+    <!-- coffee -->
+    <g transform="translate(70 248)">
+      <path d="M-9 -6 h16 v8 a8 8 0 0 1 -16 0 Z"/>
+      <path d="M7 -3 h4 a3 3 0 0 1 0 6 h-4"/>
+      <path d="M-5 -12 v-3 M0 -12 v-3 M5 -12 v-3"/>
+    </g>
+    <!-- balloon -->
+    <g transform="translate(168 268)">
+      <ellipse cx="0" cy="-4" rx="8" ry="10"/>
+      <path d="M0 6 v8 M-3 16 q3 -2 6 0"/>
+    </g>
+    <!-- paper plane -->
+    <g transform="translate(256 232)">
+      <path d="M-12 0 L12 -10 L4 12 L0 2 Z"/>
+      <path d="M-12 0 L0 2"/>
+    </g>
+    <!-- flower -->
+    <g transform="translate(282 288)">
+      <circle cx="0" cy="0" r="3"/>
+      <circle cx="0" cy="-8" r="3.5"/>
+      <circle cx="0" cy="8" r="3.5"/>
+      <circle cx="-8" cy="0" r="3.5"/>
+      <circle cx="8" cy="0" r="3.5"/>
+    </g>
+    <!-- lightning -->
+    <g transform="translate(34 296)">
+      <path d="M2 -12 L-6 2 H0 L-2 12 L8 -2 H2 Z"/>
+    </g>
+  </g>
+</svg>

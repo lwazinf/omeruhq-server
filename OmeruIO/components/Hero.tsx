@@ -16,7 +16,7 @@ function StatStrip() {
     { value: '47M+', label: t('waUsers') },
     { value: '< 24h', label: t('firstSale') },
     { value: '3×', label: t('openRate') },
-    { value: 'R199', label: t('starterFrom') },
+    { value: 'R499', label: t('starterFrom') },
   ];
   return (
     <div style={{ background: 'var(--black)', borderTop: '1px solid rgba(0,0,0,0.07)', position: 'relative', overflow: 'hidden' }}>
@@ -108,7 +108,7 @@ export default function Hero() {
                 <div ref={headlineRef} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(44px, 7vw, 108px)', fontWeight: 800, lineHeight: 0.9, letterSpacing: '-0.035em', color: 'var(--black)' }}>
                   {left.headline.map((line, i) => (
                     <div key={i} style={{ overflow: 'hidden', paddingBottom: '0.08em' }}>
-                      <span className="hw" style={{ display: 'inline-block', color: i === left.headlineAccent ? 'var(--lime-dark)' : 'var(--black)' }}>{line}</span>
+                      <span className={`hw ${i === left.headlineAccent ? 'hw-accent' : ''}`} style={{ display: 'inline-block', color: i === left.headlineAccent ? 'var(--black)' : 'var(--black)', position: 'relative' }}>{line}</span>
                     </div>
                   ))}
                 </div>
@@ -170,33 +170,50 @@ export default function Hero() {
                   )}
                 </div>
 
-                <div ref={outerRef} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  {[0, 1].map(idx => (
-                    <button
-                      key={idx}
-                      onClick={() => setSlide(idx)}
-                      aria-label={idx === 0 ? t('merchantView') : t('customerView')}
-                      style={{ width: 38, height: 38, borderRadius: '50%', border: '1.5px solid rgba(0,0,0,0.15)', background: slide === idx ? 'var(--black)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s' }}
-                      onMouseEnter={e => { if (slide !== idx) (e.currentTarget as HTMLElement).style.borderColor = 'var(--black)'; }}
-                      onMouseLeave={e => { if (slide !== idx) (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,0,0,0.15)'; }}
-                    >
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        {idx === 0 ? <path d="M8 2L4 6l4 4" stroke={slide === idx ? 'white' : 'var(--black)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/> : <path d="M4 2l4 4-4 4" stroke={slide === idx ? 'white' : 'var(--black)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>}
-                      </svg>
-                    </button>
-                  ))}
-                  <span style={{ fontSize: 12, color: 'var(--mid-gray)', fontWeight: 400, letterSpacing: '0.05em' }}>{slide + 1} / 2</span>
+                <div ref={outerRef} role="tablist" aria-label="Audience" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: 4, borderRadius: 100, border: '1.5px solid rgba(0,0,0,0.12)', background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(8px)' }}>
+                  {[0, 1].map(idx => {
+                    const active = slide === idx;
+                    return (
+                      <button
+                        key={idx}
+                        role="tab"
+                        aria-selected={active}
+                        onClick={() => setSlide(idx)}
+                        style={{ padding: '8px 16px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', background: active ? 'var(--black)' : 'transparent', color: active ? 'white' : 'var(--mid-gray)', transition: 'background 0.25s ease, color 0.25s ease', whiteSpace: 'nowrap' as const }}
+                        onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--black)'; }}
+                        onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--mid-gray)'; }}
+                      >
+                        {idx === 0 ? t('merchantView') : t('customerView')}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
           <div className="hero-placeholders">
-            <AnimatePresence mode="wait">
-              <motion.div key={`hero-img-${slide}`} className="hero-rect" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}>
-                <Image src={slide === 0 ? '/omeru-hero.png' : '/hero-phone.png'} alt={slide === 0 ? 'Omeru on WhatsApp' : 'Omeru merchant'} fill priority style={{ objectFit: 'contain' }} />
+            {/* Both slides stay mounted and crossfade — no re-decode flash on toggle. */}
+            {[0, 1].map(idx => (
+              <motion.div
+                key={`hero-img-${idx}`}
+                className="hero-rect"
+                initial={false}
+                animate={{ opacity: slide === idx ? 1 : 0, y: slide === idx ? 0 : 14 }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                style={{ pointerEvents: slide === idx ? 'auto' : 'none' }}
+                aria-hidden={slide !== idx}
+              >
+                <Image
+                  src={idx === 0 ? '/omeru-hero.png' : '/hero-phone.png'}
+                  alt={idx === 0 ? 'Omeru on WhatsApp' : 'Omeru merchant'}
+                  fill
+                  priority={idx === 0}
+                  loading={idx === 0 ? undefined : 'eager'}
+                  style={{ objectFit: 'contain' }}
+                />
               </motion.div>
-            </AnimatePresence>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -207,6 +224,20 @@ export default function Hero() {
 
       <style>{`
         .hero-outer { height: 100svh; min-height: 580px; overflow: hidden; }
+        .hw-accent::after {
+          content: '';
+          position: absolute;
+          left: -0.06em; right: -0.06em; bottom: 0.03em;
+          height: 0.34em;
+          background: var(--lime);
+          z-index: -1;
+          transform-origin: left center;
+          animation: hw-marker 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+        }
+        @keyframes hw-marker { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        @media (prefers-reduced-motion: reduce) {
+          .hw-accent::after { animation: none; transform: scaleX(1); }
+        }
         .hero-main-grid { flex: 1; display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 56px); max-width: 1280px; width: 100%; margin: 0 auto; padding: clamp(90px, 12vh, 120px) clamp(20px, 4vw, 48px) clamp(28px, 4vh, 44px); align-items: center; position: relative; z-index: 1; }
         .hero-placeholders { position: relative; height: clamp(480px, 75vh, 780px); }
         .hero-rect { position: absolute; inset: 0; -webkit-mask-image: linear-gradient(to bottom, black 0%, black 95%, transparent 100%); mask-image: linear-gradient(to bottom, black 0%, black 95%, transparent 100%); }

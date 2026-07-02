@@ -1,0 +1,181 @@
+{
+  "id": "nimbus-store",
+  "name": "Nimbus Store",
+  "subtitle": "Online",
+  "avatar": {
+    "initials": "NS",
+    "color": "#2f6df0"
+  },
+  "verified": true,
+  "phoneTime": "18:05",
+  "battery": 64,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Your order #NS-4471 is on its way 🚚",
+  "messages": [
+    {
+      "type": "system",
+      "text": "Messages are end-to-end encrypted. Tap to learn more."
+    },
+    {
+      "type": "date",
+      "text": "Today"
+    },
+    {
+      "from": "user",
+      "text": "hey, is the Aero running shoe back in stock?",
+      "time": "17:58",
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "Hey Sam 👟 Yes — the *Aero Glide 2* just restocked this morning. Here it is:",
+      "time": "17:59"
+    },
+    {
+      "from": "bot",
+      "product": {
+        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=640&q=80",
+        "name": "Aero Glide 2 — Running Shoe",
+        "price": "£129.00",
+        "description": "Lightweight daily trainer · carbon plate · 6 colourways",
+        "catalog": "View full catalog"
+      },
+      "time": "17:59",
+      "typing": 1000
+    },
+    {
+      "from": "bot",
+      "video": "",
+      "poster": "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=640&q=80",
+      "text": "30-second look at the new midsole 👇",
+      "time": "17:59",
+      "typing": 800
+    },
+    {
+      "from": "user",
+      "reaction": "🔥",
+      "delay": 600,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "love it. do you have a UK 9?",
+      "time": "18:00",
+      "status": "read",
+      "delay": 500
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "uk9",
+          "title": "UK 9 · Black",
+          "reply": "UK 9 in black please"
+        },
+        {
+          "id": "uk9b",
+          "title": "UK 9 · Blue",
+          "reply": "UK 9 in blue please"
+        },
+        {
+          "id": "size",
+          "title": "Size guide",
+          "reply": "Show me the size guide"
+        }
+      ],
+      "text": "UK 9 is in stock in two colours. Tap to add to your basket:",
+      "time": "18:00",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "text": "UK 9 in black please",
+      "time": "18:01",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "card": {
+        "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=640&q=80",
+        "title": "Basket · 1 item",
+        "subtitle": "Aero Glide 2 — UK 9, Black",
+        "body": "Subtotal £129.00\nFree next-day delivery 🚚",
+        "buttons": [
+          {
+            "id": "checkout",
+            "title": "Checkout",
+            "reply": "Checkout now"
+          },
+          {
+            "id": "keep",
+            "title": "Keep shopping"
+          }
+        ]
+      },
+      "time": "18:01",
+      "typing": 1100
+    },
+    {
+      "from": "user",
+      "text": "Checkout now",
+      "time": "18:02",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "cta": {
+        "text": "Tap to pay securely — Apple Pay, card or PayPal.",
+        "display": "Pay £129.00",
+        "url": "https://nimbus.example/checkout/NS-4471"
+      },
+      "time": "18:02",
+      "typing": 800
+    },
+    {
+      "from": "bot",
+      "text": "🎉 Payment received! Order *#NS-4471* is confirmed.",
+      "time": "18:03",
+      "typing": 1400
+    },
+    {
+      "from": "bot",
+      "document": {
+        "name": "Receipt_NS-4471.pdf",
+        "size": "48 kB",
+        "ext": "PDF",
+        "pages": "1 page"
+      },
+      "time": "18:03",
+      "typing": 600
+    },
+    {
+      "from": "bot",
+      "sticker": "https://em-content.zobj.net/source/microsoft-teams/363/party-popper_1f389.png",
+      "time": "18:03",
+      "typing": 500
+    },
+    {
+      "from": "user",
+      "reaction": "😍",
+      "delay": 600,
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "Your order is on its way 🚚 Expected *tomorrow before 1 PM*. I'll send tracking shortly!",
+      "time": "18:04",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "text": "you're the best 🙏",
+      "time": "18:05",
+      "status": "read",
+      "delay": 600
+    }
+  ]
+}

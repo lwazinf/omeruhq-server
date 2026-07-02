@@ -18,7 +18,7 @@
       "line2": "WHATSAPP",
       "line3": "AL KLAAR.",
       "body": "Sonder-wye handel vir Suid-Afrikaanse handelaars. Kliënte blaai en koop sonder om ooit WhatsApp te verlaat.",
-      "sub": "Aangedryf deur Stitch · Uitnodiging benodig · Vanaf R199/md",
+      "sub": "Aangedryf deur Stitch · Slegs op uitnodiging · R499/mnd vas, alles ingesluit",
       "primary": "Registreer as handelaar",
       "secondary": "Koop op WhatsApp"
     },
@@ -36,7 +36,7 @@
       "waUsers": "WhatsApp-gebruikers in SA",
       "firstSale": "Uitnodiging tot eerste verkoop",
       "openRate": "Hoër oopmaakkoers as e-pos",
-      "starterFrom": "Begin-plan vanaf /md"
+      "starterFrom": "Vaste maandelikse fooi"
     },
     "merchantView": "Handelaarsiening",
     "customerView": "Kliëntsiening"
@@ -76,7 +76,7 @@
       {
         "title": "Inheemse WhatsApp-ervaring",
         "body": "Kliënte verlaat WhatsApp nooit. Blaai, voeg by mandjie, koop af — alles in die app waar hulle reeds ure deurbring.",
-        "badge": "Alle vlakke"
+        "badge": "Ingesluit"
       },
       {
         "title": "Stitch onmiddellike EFT",
@@ -86,22 +86,22 @@
       {
         "title": "Intydse ontledings",
         "body": "Volg verkope, topprodukte en kliëntegedrag. Weet wat verkoop voor dit uit voorraad is.",
-        "badge": "Groei & Pro"
+        "badge": "Ingesluit"
       },
       {
         "title": "WhatsApp-uitsendings",
         "body": "Stuur promosies en hervoorraadwaarskuwings aan ingeskryfde kliënte. Hoër oopmaakkoerse as e-pos, laer koste as SMS.",
-        "badge": "Groei & Pro"
+        "badge": "Ingesluit"
       },
       {
         "title": "Ondersteuning vir verskeie liggings",
         "body": "Bestuur tot 3 liggings vanaf 'n enkele Pro-paneel. Gekonsolideerde verslagdoening oor al jou winkels.",
-        "badge": "Pro-vlak"
+        "badge": "Ingesluit"
       },
       {
         "title": "Onmiddellike bestellingswaarskuwings",
         "body": "Ontvang 'n kennisgewing die oomblik 'n bestelling geplaas word — via WhatsApp en jou Omeru HK-paneel. Aanvaar, weier of dateer kliënte op vanaf jou foon of rekenaar, intyds.",
-        "badge": "Alle vlakke"
+        "badge": "Ingesluit"
       }
     ]
   },
@@ -155,58 +155,27 @@
   },
   "Pricing": {
     "pill": "Pryse",
-    "heading": "Groei in die plan",
-    "headingAccent": "wat jou GMV pas.",
-    "subtext": "Alle pryse in ZAR. Kommissie slegs op suksesvolle verkope — Omeru wen as jy wen.",
-    "mostPopular": "Gewildste keuse",
-    "perMonth": "/md",
-    "perSale": "per verkoop",
-    "footerNote": "Alle planne sluit Stitch onmiddellike EFT-verwerking in. Handelaarsuitbetalings gaan direk na jou SA-bankrekening. Gradeer op of af enige tyd.",
-    "tiers": [
-      {
-        "name": "Begin",
-        "description": "Vir nuwe handelaars wat die konsep bewys.",
-        "cta": "Dien aan vir Begin",
-        "note": "5-produk-beperking · gradeer op wanneer gereed",
-        "features": [
-          "Tot 5 produkte",
-          "5% kommissie per verkoop",
-          "Omeru HK handelaarspaneel",
-          "Intydse bestellingswaarskuwings",
-          "Basiese ontledings",
-          "E-posondersteuning"
-        ]
-      },
-      {
-        "name": "Groei",
-        "description": "Vir handelaars gereed om hul katalogus te skaal.",
-        "cta": "Dien aan vir Groei",
-        "note": "Gewildste keuse",
-        "features": [
-          "Tot 15 produkte",
-          "3.5% kommissie per verkoop",
-          "Alles in Begin",
-          "Uitsendings × 2 per maand",
-          "Promosies & afslagkodes",
-          "Volledige ontledingspaneel"
-        ]
-      },
-      {
-        "name": "Pro",
-        "description": "Vir gevestigde handelaars wat na verskeie liggings skaal.",
-        "cta": "Dien aan vir Pro",
-        "note": "Volledige platformtoegang",
-        "features": [
-          "Onbeperkte produkte",
-          "2.5% kommissie per verkoop",
-          "Alles in Groei",
-          "Onbeperkte uitsendings + skedulering",
-          "Verskeie liggings (tot 3)",
-          "Dienstemodule",
-          "Intydse ontledings + uitvoer"
-        ]
-      }
-    ]
+    "heading": "Een prys.",
+    "headingAccent": "Alles ingesluit.",
+    "subtext": "Een vaste maandelikse fooi, 0% kommissie. Jy weet altyd presies wat Omeru kos — en jy hou elke rand wat jy verkoop.",
+    "perMonth": "/mnd",
+    "flatBadge": "0% kommissie · vaste fooi",
+    "planName": "Omeru",
+    "planDescription": "Volle platformtoegang vir elke handelaar. Geen vlakke, geen opgraderings, geen verrassings nie — jou koste bly vas terwyl jou verkope groei.",
+    "cta": "Doen nou aansoek",
+    "note": "Slegs op uitnodiging · kanselleer enige tyd",
+    "features": [
+      "Onbeperkte produkte",
+      "0% kommissie — hou elke verkoop",
+      "Onbeperkte WhatsApp-uitsendings + skedulering",
+      "Omeru HQ handelaar-kontroleskerm",
+      "Intydse analise + uitvoer",
+      "Dienste- en besprekingsmodule",
+      "Promosies & afslagkodes",
+      "Intydse bestellingswaarskuwings",
+      "Prioriteitsondersteuning"
+    ],
+    "footerNote": "Prys in ZAR, BTW ingesluit. Stitch kits-EFT-verwerking ingesluit. Uitbetalings gaan direk na jou SA-bankrekening. Kanselleer enige tyd."
   },
   "FAQ": {
     "pill": "Gereelde vrae",
@@ -227,12 +196,12 @@
         "a": "Ons gebruik Stitch vir veilige onmiddellike EFT-betalings. Kliënte betaal direk vanuit hul banktoepassing — geen kaartbesonderhede nodig nie. Sodra 'n betaling bevestig word, word die geld direk na jou SA-bankrekening oorgeplaas. Ons trek outomaties ons kommissie af sodat jy dit nooit self hoef te bereken nie."
       },
       {
-        "q": "Wat gebeur as ek die 5-produk-beperking op Begin bereik?",
-        "a": "Jy sal 'n paneelprompt kry om op te gradeer. Die Begin-beperking is nie 'n straf nie — dit is ontwerp sodat jy nie betaal vir wat jy nog nie nodig het nie. Sodra jy sukses het en jou katalogus wil uitbrei, neem dit net twee minute om op te gradeer na Groei (15 produkte) of Pro (onbeperk)."
+        "q": "Is daar produklimiete of planvlakke?",
+        "a": "Nee. Omeru is een vaste maandelikse fooi met alles ingesluit — onbeperkte produkte, onbeperkte uitsendings, volledige analise, dienste en besprekings. Daar is niks om na op te gradeer nie en geen limiet om te tref nie."
       },
       {
-        "q": "Kan ek promosies na my kliënte stuur?",
-        "a": "Absoluut. Op Groei en Pro kan jy WhatsApp-uitsendings stuur na kliënte wat ingestem het om van jou te hoor. Groei gee jou 2 uitsendings per maand — perfek vir 'n naweekspesiale of hervoorraadkennisgewing. Pro is onbeperk met skedulering. WhatsApp-oopmaakkoerse is tipies 3× hoër as e-pos."
+        "q": "Is daar produklimiete of planvlakke?",
+        "a": "Nee. Omeru is een vaste maandelikse fooi met alles ingesluit — onbeperkte produkte, onbeperkte uitsendings, volledige analise, dienste en besprekings. Daar is niks om na op te gradeer nie en geen limiet om te tref nie."
       },
       {
         "q": "Wat is die Dienstemodule op Pro?",

@@ -1,5 +1,7 @@
 # OmeruWA — WhatsApp Bot Backend CHANGELOG
 
+> 📍 **Log map:** this file is indexed in [`docs/logs/INDEX.md`](./INDEX.md) alongside every other app log in the ecosystem.
+
 ## About This App
 
 ### What OmeruWA Bot Is
@@ -604,3 +606,49 @@ These are forward-looking improvements beyond bug fixes. Each would materially e
 | **Merchant analytics digest** | Daily WhatsApp digest: "Yesterday: 12 orders, R4,200 revenue, 3 new customers" | Low | Merchant retention |
 | **Payout management** | Track what Omeru owes each merchant; mark as paid; merchant sees payout history | High | Financial operations |
 | **Integration test suite (full)** | Supertest-based tests for all major bot commands using a mocked WhatsApp sender and in-memory DB | High | Engineering safety net |
+
+### v1.14.0 — 2026-07-01 SAST — Platform mode flags: demo mode + merchant actions via HQ
+
+> ⚠️ First entry authored under the new ecosystem direction: **WhatsApp becomes notifications-only for merchants; Omeru HQ is the full merchant suite.** All changes are feature-flagged and default-safe.
+
+**What changed:**
+
+*`src/config/mode.ts` (new)*
+- `isDemoMode()` ← `DEMO_MODE` env ("true"/"false", default false)
+- `demoStoreHandle()` ← `DEMO_STORE_HANDLE` (default `stitch`)
+- `merchantActionsViaHQ()` ← `MERCHANT_ACTIONS_VIA_HQ` (default **true**)
+- `hqUrl()` ← `HQ_URL` (default `https://hq.omeru.io`)
+- `storeVisibilityFilter()` — Prisma where-fragment: demo mode → only the demo store is discoverable; live mode → the demo store is **excluded** from browse (the "stitch easter eggs" are hidden)
+
+*`src/services/whatsapp/customerDiscovery.ts`*
+- `...storeVisibilityFilter()` spread into all three store-discovery queries: category listing (`store_category not null`), total-store count, and the paged browse `whereClause`
+- Direct `@handle` entry is intentionally NOT filtered — the demo store stays reachable by handle in live mode for internal testing, it just never appears in browse
+
+*`src/services/whatsapp/handler.ts`*
+- `handleSwitchMode`: in demo mode, the active demo store is fetched by handle and offered to **everyone** in the SwitchOmeru menu — as a `🧵` button (≤ 3 options) or list row (4+). Customer-visible copy is deliberately neutral ("Browse & shop") — **front users are never shown the words demo/maintenance**; platform mode is only ever visible to admins inside cr.omeru.io
+- New `sw_demo_store` selection: resets the session to CUSTOMER mode and enters the demo store via the existing `@handle` path (`handleCustomerDiscovery`), so it behaves exactly like a live store — browse, cart, Stitch checkout
+
+*`src/services/whatsapp/merchantEngine.ts`* — **WhatsApp Lite gate** (amended same-day, pre-release)
+- New gate in `handleMerchantAction`, placed **after** onboarding routing and **before** dashboards. When `MERCHANT_ACTIONS_VIA_HQ` is on and the merchant is `ACTIVE`:
+  - **Broadcasts stay fully on WhatsApp** — `m_broadcast`/`b_` inputs and the `BROADCAST_MESSAGE` flow state route into the existing broadcast engine unchanged
+  - **`menu` / `m_dashboard` / `m_stats` / `stats` / `home`** return a *daily snapshot*: today's paid sales (ZAR + order count) and open orders, with `📣 Send Broadcast` / `🔄 Refresh` buttons and an Omeru HQ link for "the full picture" — a deliberate teaser that gives the taste and sells the suite
+  - **Everything else** replies with a short pointer to Omeru HQ, reminding them `menu` and `broadcast` still work here
+  - Onboarding still completes on WhatsApp, `ob_golive_accept_` still works, and **outbound notifications (sale alerts) are untouched**
+
+*`.env.example`*
+- New "Platform mode" section documenting all four variables, including the note to use **Stitch TEST client credentials** in demo mode
+
+**Why:** (1) The ecosystem direction is HQ-as-merchant-suite; the bot keeps merchants close with alerts, a daily snapshot and broadcasts — the superficial layer that makes them want the full stats — while administration converts to HQ at a single reversible choke point. (2) Sales demos need a WhatsApp number where a prospect can type `SwitchOmeru`, tap the Stitch demo store, and experience a full live purchase — without any real merchant leaking into view, and without the demo store ever appearing in production browse.
+
+**Score impact:** Reliability unchanged (flags default to current-safe behaviour except the HQ redirect, which is the new intended behaviour). Ops: one env section to review at deploy.
+
+### Rollback to v1.13.0
+
+| File | Change to reverse |
+|------|------------------|
+| `src/config/mode.ts` | Delete file |
+| `src/services/whatsapp/customerDiscovery.ts` | Remove `import { storeVisibilityFilter } from '../../config/mode';` and remove `, ...storeVisibilityFilter()` from the three queries (restoring `where: { status: 'ACTIVE', show_in_browse: true, store_category: { not: null } }`, `where: { status: 'ACTIVE', show_in_browse: true }`, and `const whereClause: any = { status: 'ACTIVE', manual_closed: false, show_in_browse: true };`) |
+| `src/services/whatsapp/handler.ts` | Remove `import { isDemoMode, demoStoreHandle } from '../../config/mode';`; remove the `demoStore` const block in `handleSwitchMode`; restore `const totalOptions = 1 + (isAdmin ? 1 : 0) + stores.length;`; remove the demo-store button push and list-row push; remove the whole `if (input === 'sw_demo_store' && isDemoMode())` block |
+| `src/services/whatsapp/merchantEngine.ts` | Remove `import { merchantActionsViaHQ, hqUrl } from '../../config/mode';` and the entire "WhatsApp Lite for merchants" gate block (from its comment banner to the closing `return;` before the going-live disclaimer) |
+| `.env.example` | Remove the "Platform mode" section (DEMO_MODE, DEMO_STORE_HANDLE, MERCHANT_ACTIONS_VIA_HQ, HQ_URL) |
+

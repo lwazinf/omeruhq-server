@@ -1,0 +1,252 @@
+{
+  "id": "thandi-bridal",
+  "name": "Thandi Bridal",
+  "subtitle": "on OMERU · Business Account",
+  "avatar": {
+    "initials": "TB",
+    "color": "#9a7b3f"
+  },
+  "verified": true,
+  "phoneTime": "10:34",
+  "battery": 88,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Order #TB-0112 confirmed 🤍 Fitting booked for Saturday",
+  "messages": [
+    {
+      "type": "system",
+      "text": "Messages are end-to-end encrypted. Tap to learn more."
+    },
+    {
+      "type": "date",
+      "text": "Today"
+    },
+    {
+      "from": "user",
+      "text": "hi, I'm getting married in April and I need a dress 🤍",
+      "time": "10:20",
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "Congratulations! 💍 Welcome to *Thandi Bridal* — South Africa's home for bridal couture on WhatsApp.\n\nI'm here to help you find the one. Let's start by seeing what speaks to you:",
+      "time": "10:20"
+    },
+    {
+      "from": "bot",
+      "list": {
+        "header": "Our Collections",
+        "body": "Ready-to-wear gowns, available now.",
+        "footer": "Free fitting consultation included with every gown",
+        "button": "Browse collections",
+        "sections": [
+          {
+            "title": "✨ Silhouettes",
+            "rows": [
+              {
+                "id": "aline",
+                "title": "A-Line & Fitted",
+                "description": "Timeless elegance · R4 500–R9 000"
+              },
+              {
+                "id": "ballgown",
+                "title": "Ball Gown",
+                "description": "Full skirt, princess feel · R6 000–R15 000"
+              },
+              {
+                "id": "modern",
+                "title": "Sleek & Minimalist",
+                "description": "Clean, contemporary · R5 000–R10 500"
+              }
+            ]
+          },
+          {
+            "title": "🌸 SA Designer Picks",
+            "rows": [
+              {
+                "id": "ubuntu",
+                "title": "Ubuntu Couture Line",
+                "description": "Beadwork & lace, African-inspired · R7 000–R14 000"
+              },
+              {
+                "id": "garden",
+                "title": "Garden Romance",
+                "description": "Floral lace, soft tulle · R5 500–R11 000"
+              }
+            ]
+          }
+        ]
+      },
+      "time": "10:20",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "Thandi Bridal",
+        "text": "Our Collections · Ready-to-wear…"
+      },
+      "text": "Ubuntu Couture Line",
+      "time": "10:21",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "image": "https://images.unsplash.com/photo-1519741497674-611481863552?w=640&q=80",
+      "text": "A beautiful choice 🤍 The *Ubuntu Couture Line* blends African craftsmanship with bridal elegance — hand-beaded lace, ivory satin, and kente-inspired sash details.\n\nHere's our current bestseller:",
+      "time": "10:22",
+      "typing": 1100
+    },
+    {
+      "from": "bot",
+      "product": {
+        "image": "https://images.unsplash.com/photo-1487530811015-780f620e3c65?w=640&q=80",
+        "name": "Ubuntu Ivory — Beaded Lace Gown",
+        "price": "R9 200",
+        "description": "Hand-beaded lace overlay · Sweetheart neckline · Chapel train · Sizes 6–24",
+        "catalog": "View full Ubuntu line"
+      },
+      "time": "10:22",
+      "typing": 800
+    },
+    {
+      "from": "user",
+      "reaction": "😍",
+      "delay": 500,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "this is stunning!! is a size 12 available?",
+      "time": "10:23",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "s10",
+          "title": "Size 10",
+          "reply": "Size 10"
+        },
+        {
+          "id": "s12",
+          "title": "Size 12 ✓",
+          "reply": "Size 12"
+        },
+        {
+          "id": "s14",
+          "title": "Size 14",
+          "reply": "Size 14"
+        }
+      ],
+      "text": "Yes! Size 12 is in stock 🎉 We also have:",
+      "time": "10:23",
+      "typing": 700
+    },
+    {
+      "from": "user",
+      "text": "Size 12",
+      "time": "10:24",
+      "status": "read",
+      "delay": 500
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "buy",
+          "title": "Secure dress + book fitting",
+          "reply": "Secure it"
+        },
+        {
+          "id": "fitting",
+          "title": "Book fitting first",
+          "reply": "Book fitting first"
+        }
+      ],
+      "text": "Every gown comes with a *free fitting consultation* at our Sandton or Rosebank studio — our seamstress will tailor it to you perfectly. ✂️\n\nWould you like to secure the dress now?",
+      "time": "10:24",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "text": "Secure it",
+      "time": "10:25",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "card": {
+        "image": "https://images.unsplash.com/photo-1487530811015-780f620e3c65?w=640&q=80",
+        "title": "Your Order",
+        "subtitle": "Thandi Bridal · Ubuntu Ivory, Size 12",
+        "body": "Ubuntu Ivory — Beaded Lace  R9 200\nFitting consultation  FREE\nAlteration allowance  INCLUDED\n─────────────\n*Total  R9 200*\n\n📍 *Studio:* Sandton City, Level 2\n🗓 *Fitting date:* we confirm within 24h",
+        "buttons": [
+          {
+            "id": "pay",
+            "title": "Pay now",
+            "reply": "Pay now"
+          },
+          {
+            "id": "change",
+            "title": "Change details"
+          }
+        ]
+      },
+      "time": "10:25",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "text": "Pay now",
+      "time": "10:26",
+      "status": "read",
+      "delay": 500
+    },
+    {
+      "from": "bot",
+      "cta": {
+        "text": "Tap below to pay securely — card, EFT, SnapScan or Capitec Pay.",
+        "display": "Pay now",
+        "url": "https://omeru.io/pay/TB-0112"
+      },
+      "time": "10:26",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "text": "🤍 *Your dress is secured!* Order *#TB-0112* confirmed.\n\nOur studio coordinator will WhatsApp you within 24 hours to lock in your fitting slot — Saturday mornings are popular, grab one early! ✨\n\nApril bride, here you come 💐",
+      "time": "10:27",
+      "typing": 1400
+    },
+    {
+      "from": "bot",
+      "document": {
+        "name": "Order_TB-0112_Receipt.pdf",
+        "size": "38 kB",
+        "ext": "PDF",
+        "pages": "1 page"
+      },
+      "time": "10:27",
+      "typing": 500
+    },
+    {
+      "from": "user",
+      "reaction": "🥹",
+      "delay": 600,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "I literally just bought my wedding dress on WhatsApp 😭 this is unreal, thank you!!!",
+      "time": "10:28",
+      "status": "read",
+      "delay": 500
+    }
+  ]
+}

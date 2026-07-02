@@ -7,6 +7,7 @@ import { db } from '../../lib/db';
 import { getCustomerAddress, startAddressFlow } from './customerAddress';
 import { log, AuditAction } from './auditLog';
 import { track } from '../../lib/track';
+import { storeVisibilityFilter } from '../../config/mode';
 
 const STORE_PROD_PAGE_SIZE = 3;
 const BROWSE_PAGE_SIZE = 5;
@@ -394,7 +395,7 @@ const sendCategorySelection = async (from: string): Promise<void> => {
     track('menu_browse', { session_wa_id: from });
     // Only show categories that have at least one active, browse-visible store
     const storesWithCats = await (db.merchant as any).findMany({
-        where: { status: 'ACTIVE', show_in_browse: true, store_category: { not: null } },
+        where: { status: 'ACTIVE', show_in_browse: true, store_category: { not: null }, ...storeVisibilityFilter() },
         select: { store_category: true },
         distinct: ['store_category']
     });
@@ -402,7 +403,7 @@ const sendCategorySelection = async (from: string): Promise<void> => {
         storesWithCats.map((m: any) => m.store_category).filter(Boolean)
     );
     const totalStores = await (db.merchant as any).count({
-        where: { status: 'ACTIVE', show_in_browse: true }
+        where: { status: 'ACTIVE', show_in_browse: true, ...storeVisibilityFilter() }
     });
 
     if (totalStores === 0) {
@@ -433,7 +434,7 @@ const sendCategoryStores = async (from: string, slug: string, page: number): Pro
     const categoryInfo = STORE_CATEGORIES.find(c => c.slug === slug);
     const categoryLabel = isAll ? '🛒 All Stores' : categoryInfo ? `${categoryInfo.emoji} ${categoryInfo.label}` : '🛒 Stores';
 
-    const whereClause: any = { status: 'ACTIVE', manual_closed: false, show_in_browse: true };
+    const whereClause: any = { status: 'ACTIVE', manual_closed: false, show_in_browse: true, ...storeVisibilityFilter() };
     if (!isAll && categoryInfo) {
         whereClause.store_category = categoryInfo.label;
     }

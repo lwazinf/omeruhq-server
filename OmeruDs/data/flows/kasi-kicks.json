@@ -1,0 +1,164 @@
+{
+  "id": "kasi-kicks",
+  "name": "Kasi Kicks",
+  "subtitle": "on OMERU · Business Account",
+  "avatar": {
+    "initials": "KK",
+    "color": "#e85c1a"
+  },
+  "verified": true,
+  "phoneTime": "11:05",
+  "battery": 91,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Order #KK-0891 confirmed 📦 Dispatching in 24h",
+  "messages": [
+    {
+      "type": "system",
+      "text": "Messages are end-to-end encrypted. Tap to learn more."
+    },
+    {
+      "type": "date",
+      "text": "Today"
+    },
+    {
+      "from": "user",
+      "text": "yo I saw your reels, are those runners still available?",
+      "time": "10:58",
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "Hey! 👟 Yeah, the *Kasi Runner Pro* is still available — almost gone though. Here it is:",
+      "time": "10:58"
+    },
+    {
+      "from": "bot",
+      "product": {
+        "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=640&q=80",
+        "name": "Kasi Runner Pro",
+        "price": "R650",
+        "description": "High-performance running shoe · Foam midsole · 3 colourways",
+        "catalog": "Browse all kicks"
+      },
+      "time": "10:59",
+      "typing": 800
+    },
+    {
+      "from": "bot",
+      "video": "",
+      "poster": "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=640&q=80",
+      "text": "Quick 30s look at the Runner Pro 👇",
+      "time": "10:59",
+      "typing": 700
+    },
+    {
+      "from": "user",
+      "reaction": "🔥",
+      "delay": 500,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "that colourway is different bro 🤩 do you have a 10?",
+      "time": "11:00",
+      "status": "read",
+      "delay": 500
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "orange",
+          "title": "Size 10 · Orange",
+          "reply": "Size 10 orange please"
+        },
+        {
+          "id": "black",
+          "title": "Size 10 · Black",
+          "reply": "Size 10 black please"
+        },
+        {
+          "id": "guide",
+          "title": "Size guide",
+          "reply": "Show me the size guide"
+        }
+      ],
+      "text": "Size 10 is in stock in two colourways right now:",
+      "time": "11:00",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "text": "Size 10 orange please",
+      "time": "11:01",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "card": {
+        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=640&q=80",
+        "title": "Basket · 1 item",
+        "subtitle": "Kasi Runner Pro · Size 10 · Orange",
+        "body": "Subtotal  R650\nDelivery  R80\n─────────\n*Total  R730*",
+        "buttons": [
+          {
+            "id": "checkout",
+            "title": "Checkout",
+            "reply": "Checkout now"
+          },
+          {
+            "id": "keep",
+            "title": "Keep browsing"
+          }
+        ]
+      },
+      "time": "11:01",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "text": "Checkout now",
+      "time": "11:02",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "cta": {
+        "text": "Tap below to pay securely — card, EFT, SnapScan or Capitec Pay.",
+        "display": "Pay now",
+        "url": "https://omeru.io/pay/KK-0891"
+      },
+      "time": "11:02",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "text": "🎉 Paid! Order *#KK-0891* confirmed.\n\nWe'll have them packed and out the door within 24h 💪",
+      "time": "11:03",
+      "typing": 1300
+    },
+    {
+      "from": "bot",
+      "sticker": "https://em-content.zobj.net/source/microsoft-teams/363/party-popper_1f389.png",
+      "time": "11:03",
+      "typing": 500
+    },
+    {
+      "from": "user",
+      "reaction": "😍",
+      "delay": 500,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "legend!! see you when the next drop drops 🙏",
+      "time": "11:04",
+      "status": "read",
+      "delay": 400
+    }
+  ]
+}

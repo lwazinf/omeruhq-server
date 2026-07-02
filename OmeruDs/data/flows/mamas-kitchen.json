@@ -1,0 +1,225 @@
+{
+  "id": "mamas-kitchen",
+  "name": "Mama's Kitchen",
+  "subtitle": "on OMERU · Business Account",
+  "avatar": {
+    "initials": "MK",
+    "color": "#c47c1a"
+  },
+  "verified": true,
+  "phoneTime": "12:15",
+  "battery": 64,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Order #MK-0177 confirmed 🍖 Ready by 13:30",
+  "messages": [
+    {
+      "type": "system",
+      "text": "Messages are end-to-end encrypted. Tap to learn more."
+    },
+    {
+      "type": "date",
+      "text": "Today"
+    },
+    {
+      "from": "user",
+      "text": "hi, is there anything ready for lunch today?",
+      "time": "12:05",
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "Sawubona! 👋 Yes mama's cooking today — here's what's on the menu:",
+      "time": "12:05"
+    },
+    {
+      "from": "bot",
+      "list": {
+        "header": "Today's Menu",
+        "body": "Fresh-cooked. Ready by 13:00.",
+        "footer": "Delivery within 5km · R40 flat rate",
+        "button": "See menu",
+        "sections": [
+          {
+            "title": "🍖 Mains",
+            "rows": [
+              {
+                "id": "oxtail",
+                "title": "Oxtail & pap",
+                "description": "R120 · Slow-cooked, rich gravy"
+              },
+              {
+                "id": "chicken",
+                "title": "Umleqwa stew",
+                "description": "R95 · Free-range chicken, soft pap"
+              },
+              {
+                "id": "braai",
+                "title": "Braai pack",
+                "description": "R150 · Chops, wors, half-chicken"
+              }
+            ]
+          },
+          {
+            "title": "🫙 Sides",
+            "rows": [
+              {
+                "id": "chakalaka",
+                "title": "Chakalaka & pap",
+                "description": "R45 · Spicy relish side"
+              },
+              {
+                "id": "salad",
+                "title": "Garden salad",
+                "description": "R30"
+              }
+            ]
+          }
+        ]
+      },
+      "time": "12:05",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "Mama's Kitchen",
+        "text": "Today's Menu · Fresh-cooked…"
+      },
+      "text": "Oxtail & pap",
+      "time": "12:06",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "image": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=640&q=80",
+      "text": "Best choice 😄 Mama's oxtail has been slow-cooking since 6am.\n\nWould you like to add anything?",
+      "time": "12:06",
+      "typing": 900
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "just",
+          "title": "Just the oxtail",
+          "reply": "Just oxtail please"
+        },
+        {
+          "id": "chakalaka",
+          "title": "+ Chakalaka R45",
+          "reply": "Oxtail + chakalaka"
+        },
+        {
+          "id": "salad",
+          "title": "+ Salad R30",
+          "reply": "Oxtail + salad"
+        }
+      ],
+      "text": "",
+      "time": "12:06",
+      "typing": 400
+    },
+    {
+      "from": "user",
+      "text": "Oxtail + chakalaka",
+      "time": "12:07",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "location": {
+        "name": "Mama's Kitchen",
+        "address": "88 Vilakazi Street, Orlando West, Soweto"
+      },
+      "text": "Perfect! Are you collecting or do you want delivery?",
+      "time": "12:07",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "delivery",
+          "title": "Delivery please",
+          "reply": "Delivery"
+        },
+        {
+          "id": "collect",
+          "title": "I'll collect",
+          "reply": "I'll collect"
+        }
+      ],
+      "text": "",
+      "time": "12:07",
+      "typing": 200
+    },
+    {
+      "from": "user",
+      "text": "Delivery",
+      "time": "12:08",
+      "status": "read",
+      "delay": 500
+    },
+    {
+      "from": "bot",
+      "card": {
+        "title": "Your order",
+        "subtitle": "Mama's Kitchen · delivery",
+        "body": "Oxtail & pap  R120\nChakalaka & pap  R45\nDelivery  R40\n─────────\n*Total  R205*\n\nEstimated ready: *13:30*",
+        "buttons": [
+          {
+            "id": "pay",
+            "title": "Pay now",
+            "reply": "Pay now"
+          },
+          {
+            "id": "edit",
+            "title": "Edit order"
+          }
+        ]
+      },
+      "time": "12:08",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "text": "Pay now",
+      "time": "12:09",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "cta": {
+        "text": "Tap below to pay securely — card, EFT, SnapScan or Capitec Pay.",
+        "display": "Pay now",
+        "url": "https://omeru.io/pay/MK-0177"
+      },
+      "time": "12:09",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "text": "🎉 *Paid!* Order *#MK-0177* confirmed.\n\nMama will have it ready by *13:30*. Driver will contact you when on the way 🚗",
+      "time": "12:10",
+      "typing": 1300
+    },
+    {
+      "from": "user",
+      "reaction": "🙏",
+      "delay": 500,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "can't wait! thanks mama 😁",
+      "time": "12:10",
+      "status": "read",
+      "delay": 400
+    }
+  ]
+}

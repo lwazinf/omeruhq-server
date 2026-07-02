@@ -1,5 +1,7 @@
 # OmeruHQ Merchant Portal — CHANGELOG
 
+> 📍 **Log map:** this file is indexed in [`docs/logs/INDEX.md`](./INDEX.md) alongside every other app log in the ecosystem.
+
 ## About This App
 
 ### What the Merchant Portal Is
@@ -316,4 +318,48 @@ v0.1.0 is the initial commit. Rolling back removes the entire `OmeruHQ/` directo
 | `omeru-intel/` | Delete entire directory |
 | `omeru-vault/` | Delete entire directory |
 | `.mcp.json` | Delete file |
+
+### v0.5.0 — 2026-07-01 SAST — Self-hosted fonts + perf flags
+
+**What changed:**
+
+*`app/layout.tsx`*
+- Added `Archivo` + `Hanken_Grotesk` via `next/font/google` (`--font-archivo` / `--font-hanken`, `display: swap`), applied on `<html className>`
+- Material Symbols icon font moved from a CSS `@import` to a `<link rel="stylesheet">` in `<head>` with `preconnect` hints (the icon font keeps variable axes only the Fonts API serves; a `<link>` is discovered by the preload scanner before CSS parses, unlike `@import`)
+
+*`app/globals.css`*
+- Removed both render-blocking `@import url(...)` font lines
+- `--font-display` / `--font-body` now resolve from next/font variables with the original families as fallback
+
+*`next.config.ts`*
+- `compress: true`, `poweredByHeader: false`, `compiler.removeConsole` in production (keeps `error`/`warn`)
+
+**Why:** Two chained `@import`s at the top of `globals.css` were the largest render-blockers on dashboard first paint. Text fonts are now bundled and preloaded by Next; only the icon font remains remote, and it now starts downloading earlier.
+
+**Score impact:** No behaviour change. Faster first paint on the login and dashboard routes; display face no longer flashes fallback on slow connections.
+
+### Rollback to v0.4.0
+
+| File | Change to reverse |
+|------|------------------|
+| `app/layout.tsx` | Remove the `Archivo, Hanken_Grotesk` import and both font consts; revert `<html lang={locale} className={...}>` to `<html lang={locale}>`; delete the `<head>` block containing the two `preconnect` links and the Material Symbols `<link rel="stylesheet">` |
+| `app/globals.css` | Restore lines 1–2: `@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');` and `@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');`; revert font vars to `--font-display: 'Archivo', sans-serif; --font-body: 'Hanken Grotesk', sans-serif;`; remove the explanatory comment |
+| `next.config.ts` | Remove `compress`, `poweredByHeader`, and `compiler.removeConsole` keys |
+
+### v0.6.0 — 2026-07-01 SAST — Mobile polish: in-card table scrolling, iOS input zoom fix
+
+**What changed:** (`app/globals.css` only — appended block "Mobile polish (v0.6.0)")
+- ≤ 768px: `.data-table` becomes a horizontally scrollable block inside its card (`display:block; overflow-x:auto` with momentum scrolling and a 560px row min-width) instead of stretching the page
+- ≤ 768px: `input`/`select`/`textarea` forced to 16px to stop iOS Safari's auto-zoom on focus
+- Modal cards capped at `calc(100vw - 24px)`; ≤ 480px grid gaps tightened
+
+**Why:** The portal already had a proper mobile drawer system; wide order/customer tables were the remaining thing that broke small screens, and iOS zoom-on-focus made every form feel janky.
+
+**Score impact:** Usability +0.5 on mobile sessions; no desktop change.
+
+### Rollback to v0.5.0
+
+| File | Change to reverse |
+|------|------------------|
+| `app/globals.css` | Delete the appended block starting with the comment `/* ── Mobile polish (v0.6.0): tables, inputs, tap targets ── */` through the final `@media (max-width: 480px)` rule |
 

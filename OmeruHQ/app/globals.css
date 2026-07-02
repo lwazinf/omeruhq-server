@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+/* Text fonts are self-hosted via next/font (app/layout.tsx); the Material
+   Symbols icon font is loaded via <link> in the layout head. */
 @import "tailwindcss";
 
 :root {
@@ -12,8 +12,8 @@
   --mid-gray: #9b9990;
   --dark-gray: #1a1a18;
   --sidebar-width: 248px;
-  --font-display: 'Archivo', sans-serif;
-  --font-body: 'Hanken Grotesk', sans-serif;
+  --font-display: var(--font-archivo), 'Archivo', sans-serif;
+  --font-body: var(--font-hanken), 'Hanken Grotesk', sans-serif;
   --font-icons: 'Material Symbols Outlined';
 }
 
@@ -244,3 +244,20 @@ html.theme-light .card { background: rgba(10,10,10,0.88); border-color: rgba(0,0
 }
 .input-light:focus { border-color: var(--black); }
 .input-light::placeholder { color: var(--mid-gray); }
+
+/* ── Mobile polish (v0.6.0): tables, inputs, tap targets ── */
+@media (max-width: 768px) {
+  /* Tables scroll horizontally inside their card instead of breaking layout */
+  .data-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .data-table thead, .data-table tbody, .data-table tr { min-width: 560px; }
+
+  /* Prevent iOS auto-zoom on focus (inputs must be >= 16px) */
+  input, select, textarea { font-size: 16px !important; }
+
+  /* Modals breathe on small screens */
+  .modal-card, [class*="modal"] > div { max-width: calc(100vw - 24px); }
+}
+
+@media (max-width: 480px) {
+  .revenue-grid, .kpi-grid { gap: 10px !important; }
+}

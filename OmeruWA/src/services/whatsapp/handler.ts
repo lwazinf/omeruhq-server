@@ -8,6 +8,7 @@ import { handlePlatformAdminActions } from './platformAdmin';
 import { handleHelpCommand } from './helpEngine';
 import { sendTextMessage, sendButtons, sendListMessage, sendImageMessage } from './sender';
 import { getPlatformSettings, getPlatformBranding } from './platformBranding';
+import { isDemoMode, demoStoreHandle } from '../../config/mode';
 import { createPaymentRequest } from '../payments/stitch';
 import { db } from '../../lib/db';
 import { handleAddressActions } from './customerAddress';
@@ -111,6 +112,13 @@ export const handleIncomingMessage = async (message: any): Promise<void> => {
         if (input === 'sw_customer') {
             await db.userSession.update({ where: { wa_id: from }, data: { mode: 'CUSTOMER', active_merchant_id: null, active_prod_id: null, state: null } });
             await sendCustomerWelcome(from);
+            return;
+        }
+
+        // Demo mode: open the active Stitch demo store as a customer
+        if (input === 'sw_demo_store' && isDemoMode()) {
+            await db.userSession.update({ where: { wa_id: from }, data: { mode: 'CUSTOMER', active_merchant_id: null, active_prod_id: null, state: null } });
+            await handleCustomerDiscovery(from, `@${demoStoreHandle()}`);
             return;
         }
 
@@ -521,6 +529,11 @@ const handleSwitchMode = async (from: string, _session: any): Promise<void> => {
         include: { merchant: true }
     });
 
+    // Demo mode: everyone sees the active Stitch demo store in the switcher
+    const demoStore = isDemoMode()
+        ? await db.merchant.findUnique({ where: { handle: demoStoreHandle() } })
+        : null;
+
     const stores: Array<{ id: string; name: string; onboarding: boolean }> = [];
     if (directMerchant && directMerchant.status !== MerchantStatus.SUSPENDED) {
         stores.push({ id: directMerchant.id, name: directMerchant.trading_name, onboarding: directMerchant.status === MerchantStatus.ONBOARDING });
@@ -532,7 +545,7 @@ const handleSwitchMode = async (from: string, _session: any): Promise<void> => {
     }
 
     const isAdmin = isPlatformAdmin(from);
-    const totalOptions = 1 + (isAdmin ? 1 : 0) + stores.length;
+    const totalOptions = 1 + (isAdmin ? 1 : 0) + stores.length + (demoStore ? 1 : 0);
 
     if (totalOptions <= 3) {
         // Use buttons for 2-3 options
@@ -540,6 +553,9 @@ const handleSwitchMode = async (from: string, _session: any): Promise<void> => {
             { id: 'sw_customer', title: '👤 Customer Mode' }
         ];
         if (isAdmin) buttons.push({ id: 'sw_admin', title: '🛡️ Platform Admin' });
+        if (demoStore && buttons.length < 3) {
+            buttons.push({ id: 'sw_demo_store', title: `🧵 ${demoStore.trading_name}`.substring(0, 20) });
+        }
         for (const store of stores.slice(0, 3 - buttons.length)) {
             const icon = store.onboarding ? '⚙️' : '🏪';
             buttons.push({ id: `sw_merchant_${store.id}`, title: `${icon} ${store.name}`.substring(0, 20) });
@@ -552,6 +568,9 @@ const handleSwitchMode = async (from: string, _session: any): Promise<void> => {
         ];
         if (isAdmin) {
             rows.push({ id: 'sw_admin', title: '🛡️ Platform Admin', description: 'Manage platform & merchants' });
+        }
+        if (demoStore) {
+            rows.push({ id: 'sw_demo_store', title: `🧵 ${demoStore.trading_name}`.substring(0, 24), description: 'Browse & shop' });
         }
         for (const store of stores) {
             const icon = store.onboarding ? '⚙️' : '🏪';

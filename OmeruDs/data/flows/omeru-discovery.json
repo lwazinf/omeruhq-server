@@ -1,0 +1,273 @@
+{
+  "id": "omeru-discovery",
+  "name": "OMERU",
+  "subtitle": "WhatsApp Commerce · SA",
+  "avatar": {
+    "initials": "O",
+    "color": "#0d1117"
+  },
+  "verified": true,
+  "phoneTime": "13:48",
+  "battery": 76,
+  "theme": "dark",
+  "wallpaper": "default",
+  "speed": 1,
+  "preview": "Order #OM-2201 confirmed 🎉 Kasi Kicks will dispatch in 24h",
+  "messages": [
+    {
+      "type": "system",
+      "text": "Messages are end-to-end encrypted. Tap to learn more."
+    },
+    {
+      "type": "date",
+      "text": "Today"
+    },
+    {
+      "from": "user",
+      "text": "hi",
+      "time": "13:38",
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "text": "👋 Hey! Welcome to *OMERU* — browse and buy from South African stores, right here on WhatsApp.\n\nNo app. No account. Just tap and shop 🛍️",
+      "time": "13:38"
+    },
+    {
+      "from": "bot",
+      "list": {
+        "header": "Browse OMERU",
+        "body": "Discover stores or search by category.",
+        "footer": "Secure checkout",
+        "button": "Browse stores",
+        "sections": [
+          {
+            "title": "🛍️ Categories",
+            "rows": [
+              {
+                "id": "fashion",
+                "title": "Fashion & Streetwear",
+                "description": "Sneakers, clothing, accessories"
+              },
+              {
+                "id": "food",
+                "title": "Food & Home Cooking",
+                "description": "Meals, baked goods, spices"
+              },
+              {
+                "id": "beauty",
+                "title": "Beauty & Wellness",
+                "description": "Skincare, hair, nails"
+              }
+            ]
+          },
+          {
+            "title": "⭐ Featured stores",
+            "rows": [
+              {
+                "id": "kasi",
+                "title": "Kasi Kicks",
+                "description": "@KasiKicks · Sneakers & streetwear · Soweto"
+              },
+              {
+                "id": "mama",
+                "title": "Mama's Kitchen",
+                "description": "@MamasKitchen · Home-cooked meals · Johannesburg"
+              },
+              {
+                "id": "bridal",
+                "title": "Thandi Bridal",
+                "description": "@ThandiBridal · Bridal gowns & couture · Sandton"
+              }
+            ]
+          }
+        ]
+      },
+      "time": "13:38",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "OMERU",
+        "text": "Browse OMERU · Discover stores…"
+      },
+      "text": "@KasiKicks",
+      "time": "13:39",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=640&q=80",
+      "text": "👟 You're now browsing *Kasi Kicks* — fresh sneakers and streetwear, born in Soweto.\n\nHere's what's dropping right now:",
+      "time": "13:40",
+      "typing": 1000
+    },
+    {
+      "from": "bot",
+      "list": {
+        "header": "Kasi Kicks Catalogue",
+        "body": "Browse their latest drops.",
+        "footer": "Free delivery on orders over R500",
+        "button": "View catalogue",
+        "sections": [
+          {
+            "title": "🔥 New drops",
+            "rows": [
+              {
+                "id": "air1",
+                "title": "Township Air 1 Low",
+                "description": "R799 · 6 colourways · All sizes"
+              },
+              {
+                "id": "runner",
+                "title": "Kasi Runner Pro",
+                "description": "R650 · Running · Limited sizes left"
+              }
+            ]
+          },
+          {
+            "title": "📦 Back in stock",
+            "rows": [
+              {
+                "id": "court",
+                "title": "Classic Court Hi",
+                "description": "R450 · White/Black · Sizes 5–12"
+              }
+            ]
+          }
+        ]
+      },
+      "time": "13:40",
+      "typing": 1000
+    },
+    {
+      "from": "user",
+      "quote": {
+        "author": "Kasi Kicks",
+        "text": "Kasi Kicks Catalogue · Browse their…"
+      },
+      "text": "Township Air 1 Low",
+      "time": "13:41",
+      "status": "read",
+      "delay": 700
+    },
+    {
+      "from": "bot",
+      "product": {
+        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=640&q=80",
+        "name": "Township Air 1 Low",
+        "price": "R799",
+        "description": "Lightweight street sneaker · Sizes 4–13 · 6 colourways",
+        "catalog": "View full Kasi Kicks catalogue"
+      },
+      "time": "13:41",
+      "typing": 700
+    },
+    {
+      "from": "user",
+      "reaction": "🔥",
+      "delay": 500,
+      "status": "read"
+    },
+    {
+      "from": "bot",
+      "buttons": [
+        {
+          "id": "s8",
+          "title": "Size 8",
+          "reply": "Size 8"
+        },
+        {
+          "id": "s9",
+          "title": "Size 9",
+          "reply": "Size 9"
+        },
+        {
+          "id": "s10",
+          "title": "Size 10",
+          "reply": "Size 10"
+        }
+      ],
+      "text": "What size are you?",
+      "time": "13:41",
+      "typing": 600
+    },
+    {
+      "from": "user",
+      "text": "Size 9",
+      "time": "13:42",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "card": {
+        "title": "Basket · 1 item",
+        "subtitle": "Kasi Kicks · Township Air 1 Low · Size 9",
+        "body": "Subtotal  R799\nDelivery  R80\n─────────\n*Total  R879*",
+        "buttons": [
+          {
+            "id": "pay",
+            "title": "Pay now",
+            "reply": "Pay now"
+          },
+          {
+            "id": "keep",
+            "title": "Keep browsing"
+          }
+        ]
+      },
+      "time": "13:42",
+      "typing": 900
+    },
+    {
+      "from": "user",
+      "text": "Pay now",
+      "time": "13:43",
+      "status": "read",
+      "delay": 600
+    },
+    {
+      "from": "bot",
+      "cta": {
+        "text": "Tap below to pay securely — card, EFT, SnapScan or Capitec Pay.",
+        "display": "Pay now",
+        "url": "https://omeru.io/pay/OM-2201"
+      },
+      "time": "13:43",
+      "typing": 700
+    },
+    {
+      "from": "bot",
+      "text": "🎉 *Payment confirmed!* Order *#OM-2201* is in.\n\nKasi Kicks will pack and dispatch within 24 hours — I'll send tracking here as soon as it ships.",
+      "time": "13:44",
+      "typing": 1400
+    },
+    {
+      "from": "bot",
+      "document": {
+        "name": "Receipt_OM-2201.pdf",
+        "size": "44 kB",
+        "ext": "PDF",
+        "pages": "1 page"
+      },
+      "time": "13:44",
+      "typing": 500
+    },
+    {
+      "from": "user",
+      "reaction": "🙌",
+      "delay": 500,
+      "status": "read"
+    },
+    {
+      "from": "user",
+      "text": "that was so easy! shopping on WA >>>",
+      "time": "13:45",
+      "status": "read",
+      "delay": 400
+    }
+  ]
+}
